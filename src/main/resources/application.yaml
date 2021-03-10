@@ -1,0 +1,50 @@
+server:
+  port: ${PORT:8080}
+  hostname: localhost
+spring:
+  application:
+    name: calculator
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:file:~/test
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+
+#  datasource:
+#     name: 'dataCalculator'
+#     url: jdbc:${DATABASE_PATH:mysql://localhost:3306/db_calculator?serverTimezone=UTC}
+#     username: ${DATABASE_USER:root}
+#     password: ${DATABASE_PASSWORD:12345}
+
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:${DATABASE_PATH:postgresql://localhost:5432/db_calculator}
+#    username: ${DATABASE_USER:postgres}
+#    password: ${DATABASE_PASSWORD:123456}
+#    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    baseline-on-migrate: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, beans, mappings
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+
+
+
+
+
+
+
