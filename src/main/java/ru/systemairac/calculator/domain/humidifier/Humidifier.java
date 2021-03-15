@@ -1,7 +1,6 @@
 package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.*;
-import ru.systemairac.calculator.domain.Option;
 import ru.systemairac.calculator.domain.Unit;
 
 import javax.persistence.*;
@@ -57,7 +56,7 @@ public class Humidifier {
     private float maxVaporOutput;
 
     /**
-     * Фазность (1 или 3).
+     * Число фаз (1 или 3).
      */
     private int phasicity;
 
@@ -113,7 +112,5 @@ public class Humidifier {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "humidifier_id")
     private Unit unit;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Option> options;
 
 }
