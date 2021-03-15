@@ -12,6 +12,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.repository.UserRepository;
@@ -32,10 +34,12 @@ public class UserServiceTests {
     private UserRepository userRepository;
 
     private static Faker faker;
+    private static PasswordEncoder encoder;
 
     @BeforeAll
     static void init() {
         faker = new Faker(new Locale("ru"), new RandomService());
+        encoder = new BCryptPasswordEncoder();
     }
 
     @BeforeEach
@@ -49,7 +53,7 @@ public class UserServiceTests {
 //        user.setId(null);
         user.setName(faker.regexify("[A-Za-z0-9]{5,50}"));
         user.setFullName(faker.name().fullName());
-        user.setPassword(faker.regexify("[A-Za-z0-9]{8,20}"));
+        user.setPassword(encoder.encode(faker.regexify("[A-Za-z0-9]{8,20}")));
         user.setEmail(faker.bothify("?#?#?#?#?#@example.com"));
         user.setNameCompany(faker.company().name());
         user.setPost(faker.address().fullAddress());
