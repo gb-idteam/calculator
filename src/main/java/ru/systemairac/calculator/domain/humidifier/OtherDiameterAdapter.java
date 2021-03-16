@@ -7,15 +7,14 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "tbl_vapor_distributors")
-public class VaporDistributor extends ArticledEntity {
+@Table(name = "tbl_other_diameter_adapters")
+public class OtherDiameterAdapter extends ArticledEntity {
 
     // TODO: int, float, double, BigDecimal?
 
-    private int diameter;
+    private float bigDiameter;
 
-    private int length;
-
+    private float smallDiameter;
 }

@@ -4,21 +4,12 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+// @AllArgsConstructor
 @Entity
 @Table(name = "tbl_led_displays")
-public class LEDDisplay {
+public class LEDDisplay extends ArticledEntity {
 
-    private static final String SEQ_NAME = "led_display_seq";
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
-    private Long id;
-
-    @Column(unique = true)
-    private String articleNumber;
 }

@@ -6,10 +6,11 @@ import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
 @NoArgsConstructor
 // @AllArgsConstructor
 @Entity
-@Table(name = "tbl_drainage_cooling_kits")
-public class DrainageCoolingKit extends ArticledEntity {
+@Table(name = "tbl_cylinder_casings")
+public class CylinderCasing extends ArticledEntity {
 
 }

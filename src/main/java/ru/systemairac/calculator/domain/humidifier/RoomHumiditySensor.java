@@ -9,7 +9,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 //@AllArgsConstructor
 @Entity
-@Table(name = "tbl_master_slave_panels")
-public class MasterSlavePanel extends ArticledEntity {
+@Table(name = "tbl_room_humidity_sensors")
+public class RoomHumiditySensor extends ArticledEntity {
 
+    // TODO: тип комнатного датчика
 }

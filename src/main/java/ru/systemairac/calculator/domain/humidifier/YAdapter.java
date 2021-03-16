@@ -7,9 +7,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-// @AllArgsConstructor
+//@AllArgsConstructor
 @Entity
-@Table(name = "tbl_drainage_cooling_kits")
-public class DrainageCoolingKit extends ArticledEntity {
-
+@Table(name = "tbl_y_adapters")
+public class YAdapter extends ArticledEntity {
 }

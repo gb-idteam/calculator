@@ -1,27 +1,15 @@
 package ru.systemairac.calculator.domain.humidifier;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+// @AllArgsConstructor
 @Entity
 @Table(name = "tbl_fan_distributors")
-public class FanDistributor {
+public class FanDistributor extends ArticledEntity {
 
-    private static final String SEQ_NAME = "fan_distributor_seq";
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
-    private Long id;
-
-    @Column(unique = true)
-    private String articleNumber;
 }

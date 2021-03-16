@@ -108,7 +108,32 @@ public class Humidifier {
     @ManyToOne
     private DrainageCoolingKit drainageCoolingKit;
 
+    @ManyToOne
+    private CylinderWaterHeatingKit cylinderWaterHeatingKit;
+
+    @ManyToOne
+    private ProtectiveCabinet protectiveCabinet;
+
+    @ManyToOne
+    private LeakSensor leakSensor;
+
+    @ManyToOne
+    private YAdapter yAdapter;
+
+    // TODO: что делать с "неразб. цилиндр" и "разборн. цилиндр"?
+
+    @ManyToMany
+    private List<OtherDiameterAdapter> otherDiameterAdapters;
+
+    // TODO: что такое "канальный"?
+
+    @ManyToMany
+    private List<RoomHumiditySensor> roomHumiditySensors;
+
+    // TODO: трубки, возможно, лучше отдельно?
+
     private BigDecimal price;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "humidifier_id")
     private Unit unit;

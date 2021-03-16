@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 // @AllArgsConstructor
 @Entity
-@Table(name = "tbl_drainage_cooling_kits")
-public class DrainageCoolingKit extends ArticledEntity {
+@Table(name = "tbl_cylinder_water_heating_kits")
+public class CylinderWaterHeatingKit extends ArticledEntity {
 
 }
