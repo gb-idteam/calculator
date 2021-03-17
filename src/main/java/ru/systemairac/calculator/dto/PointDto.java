@@ -25,9 +25,11 @@ public class PointDto {
 
     private Double calcDensity(PointBuilder builder) {
         Double t = calcTemperature(builder);
-        Integer h = calcHumidity(builder);
+        Integer d = calcHumidity(builder);
 
-        return ATMOSPHERE_PRESSURE * 1000 * (h / 1000 + 1) / 461.39 / (273.15 + t) / (h / 1000 + 0.6222);
+//        ATMOSPHERE_PRESSURE * 1000 * (h / 1000 + 1) / 461.39 / (273.15 + t) / (h / 1000 + 0.6222)
+
+        return (ATMOSPHERE_PRESSURE * 10) / (4.62 * (0.622 + d / 1000) * (t + 273.5));
     }
 
     private Double calcMoistureContent(PointBuilder builder) {
