@@ -107,9 +107,9 @@ public class PointDto {
         return null;
     }
 
-    private Double calcPressureD(Double t) throws IllegalArgumentException {
+    private Double calcPressureD(Double t) {
         if (t<=-50 || t>100) {
-            new IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
         if (t<0)
             return 0.6112 * Math.exp(( ALFA_ICE * t)/(BETA_ICE + t));
@@ -123,22 +123,36 @@ public class PointDto {
         private Double enthalpy;
         private Double moistureContent;
 
-        public PointBuilder setTemperature(Double temperature) {
+        private static final int MAX_PARAMETERS_DEFINED = 2;
+
+        private int definedParametersCounter = 0;
+
+        private void checkAndIncrementCounter() {
+            if (definedParametersCounter >= MAX_PARAMETERS_DEFINED)
+                throw new RuntimeException("Задано больше двух определяющих параметров.");
+            definedParametersCounter++;
+        }
+
+        public PointBuilder temperature(Double temperature) {
+            checkAndIncrementCounter();
             this.temperature = temperature;
             return this;
         }
 
-        public PointBuilder setHumidity(Integer humidity) {
+        public PointBuilder humidity(Integer humidity) {
+            checkAndIncrementCounter();
             this.humidity = humidity;
             return this;
         }
 
-        public PointBuilder setEnthalpy(Double enthalpy) {
+        public PointBuilder enthalpy(Double enthalpy) {
+            checkAndIncrementCounter();
             this.enthalpy = enthalpy;
             return this;
         }
 
-        public PointBuilder setMoistureContent(Double moistureContent) {
+        public PointBuilder moistureContent(Double moistureContent) {
+            checkAndIncrementCounter();
             this.moistureContent = moistureContent;
             return this;
         }
@@ -146,5 +160,9 @@ public class PointDto {
         public PointDto build() {
             return new PointDto(this);
         }
+    }
+
+    public static PointBuilder builder() {
+        return new PointBuilder();
     }
 }
