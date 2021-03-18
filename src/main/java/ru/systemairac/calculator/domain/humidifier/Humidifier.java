@@ -40,10 +40,8 @@ public class Humidifier {
     /**
      * Тип увлажнителя: ТЭНовый или электродный.
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private HumidifierType humidifierType;
 
-    // TODO: int, float, double, BigDecimal?
+    private HumidifierType humidifierType;
 
     /**
      * Максимальная потребляемая электрическая мощность, в кВт.
@@ -73,69 +71,7 @@ public class Humidifier {
     /**
      * Диаметр паропровода, в мм.
      */
-    private float vaporPipeDiameter;
-
-    /**
-     * Доступные (много) для данной модели увлажнителя парораспределители.
-     */
-    @ManyToMany
-    private List<VaporDistributor> vaporDistributors;
-
-    /**
-     * Доступный (один) для данной модели вентиляторный распределитель.
-     */
-    @ManyToOne
-    private FanDistributor fanDistributor;
-
-    /**
-     * Доступная (одна) для данной модели панель master-slave.
-     */
-    @ManyToOne
-    private MasterSlavePanel masterSlavePanel;
-
-    /**
-     * Доступный (один) для данной модели LED-дисплей.
-     */
-    @ManyToOne
-    private LEDDisplay ledDisplay;
-
-    // TODO: место для поля "кабель для LED-дисплея"
-    // возможно, лучше отправить его в LEDDisplay
-
-    /**
-     * Доступный (один) для данной модели комплект охлаждения дренажа.
-     */
-    @ManyToOne
-    private DrainageCoolingKit drainageCoolingKit;
-
-    @ManyToOne
-    private CylinderWaterHeatingKit cylinderWaterHeatingKit;
-
-    @ManyToOne
-    private ProtectiveCabinet protectiveCabinet;
-
-    @ManyToOne
-    private LeakSensor leakSensor;
-
-    @ManyToOne
-    private YAdapter yAdapter;
-
-    // TODO: что делать с "неразб. цилиндр" и "разборн. цилиндр"?
-
-    @ManyToMany
-    private List<OtherDiameterAdapter> otherDiameterAdapters;
-
-    // TODO: что такое "канальный"?
-
-    @ManyToMany
-    private List<RoomHumiditySensor> roomHumiditySensors;
-
-    // TODO: трубки, возможно, лучше отдельно?
+    private int vaporPipeDiameter;
 
     private BigDecimal price;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "humidifier_id")
-    private Unit unit;
-
 }
