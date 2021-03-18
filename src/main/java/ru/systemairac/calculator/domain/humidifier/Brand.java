@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table("tbl_brands")
 public class Brand {
 
     private static final String SEQ_NAME = "brand_seq";
