@@ -98,6 +98,7 @@ public class PointDto {
 /*
 Максимально плохой вариант, но рабочий.
  */
+    //TODO исправить, когда будет время пока оставляем как есть
         public Double iterTemp(Double humidity, Double enthalpy) {
             double eps = 0.001;
             double x1;
