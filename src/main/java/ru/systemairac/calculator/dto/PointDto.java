@@ -15,7 +15,7 @@ public class PointDto {
     private Double pressureD; // kPa
     private Double pressureS; // kPa парциальное давление
     private Double temperature; //°C
-    private Integer humidity; //%
+    private Double humidity; //%
     private Double enthalpy; //kJ/kg
     private Double moistureContent; // g/kg
     private Double density; // kg/m³
@@ -30,13 +30,13 @@ public class PointDto {
         this.density = calcDensity(builder);
     }
 
-    private double calcPressureS(Integer u) {
+    private double calcPressureS(Double u) {
         return (u / 100) * pressureD / 1000;
     }
 
     private Double calcDensity(PointBuilder builder) {
         Double t = calcTemperature(builder);
-        Integer d = calcHumidity(builder);
+        Double d = calcHumidity(builder);
 //        ATMOSPHERE_PRESSURE * 1000 * (h / 1000 + 1) / 461.39 / (273.15 + t) / (h / 1000 + 0.6222)
         return (ATMOSPHERE_PRESSURE * 10) / (4.62 * (0.622 + d / 1000) * (t + 273.5));
     }
@@ -46,7 +46,7 @@ public class PointDto {
             return builder.moistureContent;
         }
         if (builder.temperature!= null && builder.enthalpy!=null) {
-            double moistureContentByT = 622 * calcPressureS(100) / (ATMOSPHERE_PRESSURE - calcPressureS(100));
+            double moistureContentByT = 622 * calcPressureS(100.0) / (ATMOSPHERE_PRESSURE - calcPressureS(100.0));
             double moistureContentByH = (enthalpy - 1.006 * temperature) / (2501 + 1.805 * temperature) * 1000;
             return Math.min(moistureContentByT, moistureContentByH);
         }
@@ -60,18 +60,18 @@ public class PointDto {
         if (builder.enthalpy != null) {
             return builder.enthalpy;
         }
-        Double t = builder.temperature != null ? builder.temperature : calcTemperature(builder);
-        Double d = builder.moistureContent != null ? builder.moistureContent : calcMoistureContent(builder);
-
-        return 1.006 * t + (2501 + 1.805 * t) * d / 1000;
+        this.temperature  = builder.temperature != null ? builder.temperature : calcTemperature(builder);
+        this.moistureContent = builder.moistureContent != null ? builder.moistureContent : calcMoistureContent(builder);
+        return 1.006 * temperature + (2501 + 1.805 * temperature) * moistureContent / 1000;
     }
 
-    private Integer calcHumidity(PointBuilder builder) {
+    private Double calcHumidity(PointBuilder builder) {
         if (builder.humidity != null) {
             return builder.humidity;
         }
-
-        //TODO дописать формулу для расчета влажности
+        if (builder.temperature!= null && builder.moistureContent!=null) {
+            return ATMOSPHERE_PRESSURE / pressureD *1000 / (0.622 / moistureContent * 1000 + 1) * 100;
+        }
         return null;
     }
 
@@ -90,6 +90,12 @@ public class PointDto {
                 return (234 * Math.log(pressureD)-1500.3) / (23.5- Math.log(pressureD));
         }
         if (builder.humidity!= null && builder.enthalpy!=null) {
+            Double temperature = 0.0;
+
+            //Метод итераций temperature будет вычислена, если x1-x2 сравняются.
+            pressureD = calcPressureD(temperature);
+            Double x1 = 0.6222* builder.humidity/100 *pressureD/(ATMOSPHERE_PRESSURE-builder.humidity/100*pressureD/1000);
+            Double x2 = (builder.enthalpy - 1.006 * temperature) / (2501 + 1.805 * temperature) / 1000;
             //TODO???
         }
         if (builder.enthalpy!= null && builder.moistureContent!=null) {
@@ -119,7 +125,7 @@ public class PointDto {
 
     public static class PointBuilder {
         private Double temperature;
-        private Integer humidity;
+        private Double humidity;
         private Double enthalpy;
         private Double moistureContent;
 
@@ -139,7 +145,7 @@ public class PointDto {
             return this;
         }
 
-        public PointBuilder humidity(Integer humidity) {
+        public PointBuilder humidity(Double humidity) {
             checkAndIncrementCounter();
             this.humidity = humidity;
             return this;
