@@ -115,7 +115,7 @@ public class PointDto {
 
     private Double calcPressureD(Double t) {
         if (t<=-50 || t>100) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Температура должна лежать в диапазоне от -50 до 100. Задаянная температура: " + t );
         }
         if (t<0)
             return 0.6112 * Math.exp(( ALFA_ICE * t)/(BETA_ICE + t));
