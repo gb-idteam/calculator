@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PointDto {
 
-    private final double ATMOSPHERE_PRESSURE = 94.5; // kPa
-    private final double ALFA_WATER = 17.504;
-    private final double ALFA_ICE = 22.489;
-    private final double BETA_WATER = 241.2;
-    private final double BETA_ICE = 272.88;
+    private final static double ATMOSPHERE_PRESSURE = 94.5; // kPa
     private Double pressureD; // kPa
     private Double pressureS; // kPa парциальное давление
     private Double temperature; //°C
@@ -75,7 +71,6 @@ public class PointDto {
         return null;
     }
 
-
     private Double calcTemperature(PointBuilder builder) {
         if (builder.temperature != null) {
             return builder.temperature;
@@ -90,86 +85,41 @@ public class PointDto {
                 return (234 * Math.log(pressureD)-1500.3) / (23.5- Math.log(pressureD));
         }
         if (builder.humidity!= null && builder.enthalpy!=null) {
-            double tHigh = 80, tLow = -60; // TODO: диапазон?
-
-            double eHigh, eLow;
-
-            enthalpy = builder.enthalpy;
-            humidity = builder.humidity;
-
-            eHigh = calcEnthalpyFromTemperatureAndHumidity(tHigh, humidity);
-            eLow = calcEnthalpyFromTemperatureAndHumidity(tLow, humidity);
-
-            if (enthalpy > eHigh || enthalpy < eLow)
-                throw new IllegalArgumentException("Энтальпия вне диапазона расчетов");
-
-            Double temperature = findTemp(tLow, tHigh, enthalpy);
-
-            //Метод итераций temperature будет вычислена, если x1-x2 сравняются.
-            pressureD = calcPressureD(temperature);
-//            Double x1 = 0.6222* builder.humidity/100 *pressureD/(ATMOSPHERE_PRESSURE-builder.humidity/100*pressureD/1000);
-//            Double x2 = (builder.enthalpy - 1.006 * temperature) / (2501 + 1.805 * temperature) / 1000;
-            //TODO???
+            return iterTemp(builder.humidity, builder.enthalpy);
         }
         if (builder.enthalpy!= null && builder.moistureContent!=null) {
-            Double t1 = (humidity - 2501 * moistureContent /1000)/(1.006 + 1.805 * moistureContent/1000);
-            //TODO t2
-            Double t2=0.0;
+            Double t1 = (enthalpy - 2501 * moistureContent /1000)/(1.006 + 1.805 * moistureContent/1000);
+            Double t2 = iterTemp(100.0, builder().enthalpy);
             return Math.max(t1,t2);
         }
-        //TODO дописать формулу для расчета температуры
-
-        /**
-         * После расчета температуры считается давление водяных паров насыщенного воздуха
-         */
         this.pressureD = calcPressureD(this.temperature);
         return null;
     }
-
-    private static final double HEAT_CAPACITY_AIR_DRY = 1006; // Дж / (кг * К)
-    private static final double HEAT_OF_FUSION_WATER_0 = 2501000; // Дж / кг
-    private static final double HEAT_OF_FUSION_WATER_DELTA = 2360; // Дж / (кг * К)
-    private static final double HEAT_CAPACITY_WATER_VAPOR = 1860; // Дж / (кг * К)
-    private static final double MOLAR_RATIO = 0.622;
-
-
-    private double calcEnthalpyFromTemperatureAndHumidity(double temperature, double humidity) {
-        double pressureSaturatedVapor = pressureSaturatedVapor(temperature);
-        return HEAT_CAPACITY_AIR_DRY * temperature + (HEAT_OF_FUSION_WATER_0 - HEAT_OF_FUSION_WATER_DELTA * temperature
-                + HEAT_CAPACITY_WATER_VAPOR * temperature) * MOLAR_RATIO * pressureSaturatedVapor * humidity
-                / (101325 - pressureSaturatedVapor);
-    }
-
-    private double pressureSaturatedVapor(double temperature) {
-        return 1000 * Math.exp((16.57 * temperature - 115.72) / (233.77 + 0.997 * temperature));
-    }
-
-    private double findTemp(double tLow, double tHigh, double enthalpy) {
-        final double EPSILON = 0.0001;
-        double tMid = tHigh + tLow;
-        while (tHigh - tLow > EPSILON) {
-            tMid = (tHigh + tLow)/2;
-            // eHigh > eLow -- всегда (?)
-            double eMid = calcEnthalpyFromTemperatureAndHumidity(tMid, humidity);
-            if (eMid == enthalpy) {
-                return tMid;
-            } else if (eMid < enthalpy) {
-                tLow = tMid;
-            } else {
-                tHigh = tMid;
-            }
+/*
+Максимально плохой вариант, но рабочий.
+ */
+        public Double iterTemp(Double humidity, Double enthalpy) {
+            double eps = 0.001;
+            double x1;
+            double x2;
+            double temperature=-50;
+            do{
+                temperature+=0.001;
+                pressureD = calcPressureD(temperature);
+                x1 = 0.6222 * humidity / 100 * pressureD / (ATMOSPHERE_PRESSURE - humidity / 100 * pressureD / 1000);
+                x2 = (enthalpy - 1.006 * temperature) / (2501 + 1.805 * temperature) * 1000;
+            } while (Math.abs(x1-x2)>=eps);
+            return temperature;
         }
-        return tMid;
-    }
 
     private Double calcPressureD(Double t) {
         if (t<=-50 || t>100) {
             throw new IllegalArgumentException("Температура должна лежать в диапазоне от -50 до 100. Задаянная температура: " + t );
         }
         if (t<0)
-            return 0.6112 * Math.exp(( ALFA_ICE * t)/(BETA_ICE + t));
+            return Math.exp((1738.4+28.74*t)/(271+t));
         else
-            return 0.6112 * Math.exp((ALFA_WATER * t)/(BETA_WATER + t));
+            return Math.exp((1500.3+23.5*t)/(234+t));
     }
 
     public static class PointBuilder {
