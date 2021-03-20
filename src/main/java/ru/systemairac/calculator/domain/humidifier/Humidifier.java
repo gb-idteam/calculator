@@ -85,9 +85,17 @@ public class Humidifier {
      * Парораспределители, подходящие для данной модели.
      */
     @ManyToMany
+    @JoinTable(
+            name = "humidifiers_vaporDistributors",
+            joinColumns = @JoinColumn(name = "humidifier_id"),
+            inverseJoinColumns = @JoinColumn(name = "vaporDistributor_id"))
     private List<VaporDistributor> vaporDistributors;
 
     @ManyToMany
+    @JoinTable(
+            name = "humidifiers_humidifierComponents",
+            joinColumns = @JoinColumn(name = "humidifier_id"),
+            inverseJoinColumns = @JoinColumn(name = "humidifierComponent_id"))
     private List<HumidifierComponent> humidifierComponents;
 
     private BigDecimal price;

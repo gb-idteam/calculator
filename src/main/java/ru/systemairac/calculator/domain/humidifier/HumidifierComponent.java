@@ -24,9 +24,10 @@ public class HumidifierComponent {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Brand brand;
 
-    // TODO: у разных брендов может быть один артикуль?
+    @Column(unique = true)
     private String articleNumber;
 
+    @Enumerated(EnumType.STRING)
     private HumidifierComponentType type;
 
     private boolean optional;

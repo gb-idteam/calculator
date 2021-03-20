@@ -25,7 +25,7 @@ public class VaporDistributor {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Brand brand;
 
-    // TODO: у разных брендов может быть один артикуль?
+    @Column(unique = true)
     private String articleNumber;
 
     private int length;
