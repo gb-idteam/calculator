@@ -188,6 +188,7 @@ public class UserServiceTests {
         String[] rolesExpected = new String[] {user.getRole().name()};
         assertArrayEquals(rolesExpected, rolesActual);
     }
+    /*
 
     private Project generateGoodProject(User user) {
         Project project = new Project();
@@ -216,5 +217,6 @@ public class UserServiceTests {
         assertEquals(p.getAddress(), project.getAddress());
         assertEquals(p.getTitle(), project.getTitle());
     }
+    */
 
 }
