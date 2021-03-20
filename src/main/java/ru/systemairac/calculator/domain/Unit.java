@@ -20,4 +20,7 @@ public class Unit {
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private UnitType type;
+
 }
