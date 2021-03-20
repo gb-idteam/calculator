@@ -1,7 +1,7 @@
 package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.*;
-import ru.systemairac.calculator.domain.Unit;
+import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.domain.UnitType;
 
 import javax.persistence.*;
@@ -77,6 +77,18 @@ public class Humidifier {
      * Диаметр паропровода, в мм.
      */
     private int vaporPipeDiameter;
+
+
+    // cascade для сущностей ниже не нужен
+
+    /**
+     * Парораспределители, подходящие для данной модели.
+     */
+    @ManyToMany
+    private List<VaporDistributor> vaporDistributors;
+
+    @ManyToMany
+    private List<HumidifierComponent> humidifierComponents;
 
     private BigDecimal price;
 }

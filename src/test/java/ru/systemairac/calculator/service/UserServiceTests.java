@@ -10,15 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -184,6 +187,34 @@ public class UserServiceTests {
                 .toArray(String[]::new);
         String[] rolesExpected = new String[] {user.getRole().name()};
         assertArrayEquals(rolesExpected, rolesActual);
+    }
+
+    private Project generateGoodProject(User user) {
+        Project project = new Project();
+        project.setUser(user);
+        project.setAddress(faker.address().fullAddress());
+        project.setTitle(faker.company().buzzword());
+        return project;
+    }
+
+    @Test
+    void testSaveUserWithSingleProject() {
+        User user = generateGoodUser();
+        Project project = generateGoodProject(user);
+        userRepository.save(user);
+    }
+
+    @Test
+    void testFindUserWithSingleProject() {
+        User u = generateGoodUser();
+        Project p = generateGoodProject(u);
+        userRepository.save(u);
+
+        User user = userRepository.findFirstByName(u.getName());
+        Project project = user.getProjects().get(0);
+        assertEquals(p.getUser(), project.getUser());
+        assertEquals(p.getAddress(), project.getAddress());
+        assertEquals(p.getTitle(), project.getTitle());
     }
 
 }

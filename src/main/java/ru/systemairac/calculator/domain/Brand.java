@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.domain.humidifier;
+package ru.systemairac.calculator.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
