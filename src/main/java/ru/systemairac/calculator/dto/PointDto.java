@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 public class PointDto {
 
     private final static double ATMOSPHERE_PRESSURE = 94.5; // kPa
+    private static final double HEAT_CAPACITY_AIR_DRY = 1.006; // kJ / (kg * K)
+    private static final double HEAT_OF_FUSION_WATER_0 = 2501.000; // kJ / kg
+    private static final double HEAT_OF_FUSION_WATER_DELTA = 2.360; // kJ / (kg * K)
+    private static final double HEAT_CAPACITY_WATER_VAPOR = 1.860; // kJ / (kg * K)
+    private static final double MOLAR_RATIO = 0.622;
     private Double pressureD; // kPa
     private Double pressureS; // kPa парциальное давление
     private Double temperature; //°C
@@ -43,7 +48,7 @@ public class PointDto {
         }
         if (builder.temperature!= null && builder.enthalpy!=null) {
             double moistureContentByT = 622 * calcPressureS(100.0) / (ATMOSPHERE_PRESSURE - calcPressureS(100.0));
-            double moistureContentByH = (enthalpy - 1.006 * temperature) / (2501 + 1.805 * temperature) * 1000;
+            double moistureContentByH = (enthalpy - 1.006 * temperature) / (HEAT_OF_FUSION_WATER_0 + 1.805 * temperature) * 1000;
             return Math.min(moistureContentByT, moistureContentByH);
         }
         if ((builder.humidity!= null && builder.enthalpy!=null) || (builder.temperature!= null && builder.humidity!=null)) {
@@ -58,7 +63,7 @@ public class PointDto {
         }
         this.temperature  = builder.temperature != null ? builder.temperature : calcTemperature(builder);
         this.moistureContent = builder.moistureContent != null ? builder.moistureContent : calcMoistureContent(builder);
-        return 1.006 * temperature + (2501 + 1.805 * temperature) * moistureContent / 1000;
+        return 1.006 * temperature + (HEAT_OF_FUSION_WATER_0 + 1.805 * temperature) * moistureContent / 1000;
     }
 
     private Double calcHumidity(PointBuilder builder) {
@@ -88,30 +93,38 @@ public class PointDto {
             return iterTemp(builder.humidity, builder.enthalpy);
         }
         if (builder.enthalpy!= null && builder.moistureContent!=null) {
-            Double t1 = (enthalpy - 2501 * moistureContent /1000)/(1.006 + 1.805 * moistureContent/1000);
+            Double t1 = (enthalpy - HEAT_OF_FUSION_WATER_0 * moistureContent /1000)/(1.006 + 1.805 * moistureContent/1000);
             Double t2 = iterTemp(100.0, builder().enthalpy);
             return Math.max(t1,t2);
         }
         this.pressureD = calcPressureD(this.temperature);
         return null;
     }
-/*
-Максимально плохой вариант, но рабочий.
- */
-    //TODO исправить, когда будет время пока оставляем как есть
+
         public Double iterTemp(Double humidity, Double enthalpy) {
-            double eps = 0.001;
-            double x1;
-            double x2;
-            double temperature=-50;
-            do{
-                temperature+=0.001;
-                pressureD = calcPressureD(temperature);
-                x1 = 0.6222 * humidity / 100 * pressureD / (ATMOSPHERE_PRESSURE - humidity / 100 * pressureD / 1000);
-                x2 = (enthalpy - 1.006 * temperature) / (2501 + 1.805 * temperature) * 1000;
-            } while (Math.abs(x1-x2)>=eps);
-            return temperature;
+            double tHigh = 100, tLow = -50;
+            final double EPSILON = 0.0001;
+            Double tMid = (tHigh + tLow)/2;
+            while (Math.abs(tHigh - tLow) > EPSILON) {
+                tMid = (tHigh + tLow)/2;
+                double eMid = calcEnthalpyFromTemperatureAndHumidity(tMid, humidity);
+                if (eMid == enthalpy) {
+                    return tMid;
+                } else if (eMid < enthalpy) {
+                    tLow = tMid;
+                } else {
+                    tHigh = tMid;
+                }
+            }
+            return tMid;
         }
+
+    private double calcEnthalpyFromTemperatureAndHumidity(double temperature, double humidity) {
+        double pressureSaturatedVapor = calcPressureD(temperature);
+        return HEAT_CAPACITY_AIR_DRY * temperature + (HEAT_OF_FUSION_WATER_0 - HEAT_OF_FUSION_WATER_DELTA * temperature
+                + HEAT_CAPACITY_WATER_VAPOR * temperature) * MOLAR_RATIO * pressureSaturatedVapor * humidity/100
+                / (ATMOSPHERE_PRESSURE * 1000 - pressureSaturatedVapor);
+    }
 
     private Double calcPressureD(Double t) {
         if (t<=-50 || t>100) {
