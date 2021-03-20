@@ -2,6 +2,7 @@ package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.*;
 import ru.systemairac.calculator.domain.Unit;
+import ru.systemairac.calculator.domain.UnitType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -25,6 +26,10 @@ public class Humidifier {
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
 
+    /**
+     * Тип установки, для того, чтобы таблица Calculation знала к какой таблице обращаться
+     */
+    private UnitType type = UnitType.HUMIDIFIER;
     /**
      * Номер артикуля. Должен быть уникален.
      */
