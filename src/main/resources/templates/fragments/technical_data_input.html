@@ -7,7 +7,7 @@
 <body>
 <div id="part-2" th:fragment="frag (techDataDto)">
     <h3  id="part2-head">Ввод технических данных</h3>
-    <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
+    <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%" th:object="${techDataDto}">
         <tr>
             <td>Расход воздуха</td>
             <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.airFlow}"/></td>
@@ -28,7 +28,7 @@
             <h1>Тип расположения парораспределителя</h1>
             <select name="type">
                 <option th:each="r : ${T(ru.systemairac.calculator.domain.TypeMontage).values()}"
-                        th:value="${techDataDto.TypeMontage}" th:text="${r}"></option>
+                        th:value="${r}" th:text="${r}"></option>
             </select>
 <!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
             <table th:if="${techDataDto.typeMontage != TypeMontage.FAN_DISTRIBUTOR}">
@@ -46,7 +46,7 @@
             <td>
                 <select name="type">
                     <option th:each="r : ${T(ru.systemairac.calculator.domain.humidifier.HumidifierType).values()}"
-                            th:value="${techDataDto.humidifierType}" th:text="${r}"></option>
+                            th:value="${r}" th:text="${r}"></option>
                 </select>
             </td>
             <!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
@@ -55,7 +55,7 @@
             <td th:if="${techDataDto.humidifierType != HumidifierType.HEATING_ELEMENT}">
                 <select name="type">
                     <option th:each="r : ${T(ru.systemairac.calculator.domain.humidifier.TypeWater).values()}"
-                            th:value="${techDataDto.typeWater}" th:text="${r}"></option>
+                            th:value="${r}" th:text="${r}"></option>
                 </select>
             </td>
         </tr>
