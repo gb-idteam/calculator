@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="part-1" th:fragment="frag (infoDto)">
+    <h3  id="part1-head" style="padding-top: 18px;">Заполнение информации об объекте</h3>
+        <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
+            <tr>
+                <td>ФИО</td>
+                <td><input type="text" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${infoDto.fullName}"/></td>
+                <td>Должность</td>
+                <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${infoDto.post}"/></td>
+            </tr>
+            <tr>
+                <td>Название компании</td>
+                <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${infoDto.nameCompany}"/></td>
+            </tr>
+            <tr>
+                <td>Телефон</td>
+                <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${infoDto.phone}"/></td>
+                <td>E-mail</td>
+                <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${infoDto.email}"/></td>
+            </tr>
+        </table>
+</div>
+</body>
+</html>
