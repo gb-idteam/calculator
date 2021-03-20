@@ -1,12 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Technical Data</title>
 </head>
 <body>
-<div id="part-2">
+<div id="part-2" th:fragment="frag (techDataDto)">
     <h3  id="part2-head">Ввод технических данных</h3>
+    <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
+        <tr>
+            <td>Расход воздуха</td>
+            <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.airFlow}"/></td>
+        </tr>
+        <tr>
+            <td>Температура на входа</td>
+            <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.tempIn}"/></td>
+            <td>Температура на выходе </td>
+            <td><input type="number" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.tempOut}"/></td>
+        </tr>
+        <tr>
+            <td>Влажность на входа</td>
+            <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.humIn}"/></td>
+            <td>Влажность на выходе </td>
+            <td><input type="number" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.humOut}"/></td>
+        </tr>
+        <tr>
+            <h1>Тип расположения парораспределителя</h1>
+            <select name="type">
+                <option th:each="r : ${T(ru.systemairac.calculator.domain.TypeMontage).values()}"
+                        th:value="${techDataDto.TypeMontage}" th:text="${r}"></option>
+            </select>
+<!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
+            <table th:if="${techDataDto.typeMontage != TypeMontage.FAN_DISTRIBUTOR}">
+                <tr>
+                    <td>Длина</td>
+                    <td>Ширина</td>
+                </tr>
+                <tr>
+                    <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.length}"/></td>
+                    <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.width}"/></td>
+            </table>
+        </tr>
+        <tr>
+            <p>Выберите тип увлажнителя</p>
+            <td>
+                <select name="type">
+                    <option th:each="r : ${T(ru.systemairac.calculator.domain.humidifier.HumidifierType).values()}"
+                            th:value="${techDataDto.humidifierType}" th:text="${r}"></option>
+                </select>
+            </td>
+            <!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
+            <td th:if="${techDataDto.humidifierType != HumidifierType.ELECTRODE}" th:text="${TypeCylinder.DISMOUNTABLE_CYLINDER}">
+            </td>
+            <td th:if="${techDataDto.humidifierType != HumidifierType.HEATING_ELEMENT}">
+                <select name="type">
+                    <option th:each="r : ${T(ru.systemairac.calculator.domain.humidifier.TypeWater).values()}"
+                            th:value="${techDataDto.typeWater}" th:text="${r}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+        <td>Выберите фазность сети</td>
+        <td>
+            <select th:field="${techDataDto.phase}">
+                <option th:value="1" th:text="1"></option>
+                <option th:value="3" th:text="3"></option>
+            </select>
+        </td>
+        <tr>
+            <td th:if="${techDataDto.phase == '1'}" th:text="220" th:value="${techDataDto.voltage}">
+            <td th:if="${techDataDto.phase == '3'}" th:text="380" th:value="${techDataDto.voltage}">
+        </tr>
+    </tr>
+    </table>
 </div> <!--  part-2  -->
 </body>
 </html>
