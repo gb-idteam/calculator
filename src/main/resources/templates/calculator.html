@@ -4,7 +4,7 @@
     <title>Расчет увлажнителя</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="statico/css/style2.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
@@ -20,7 +20,7 @@
 <!--                 part-1 -->
                 <div th:replace="fragments/info_project.html :: frag(infoDto)"></div>
                 <!--  part-2  -->
-                <div th:replace="fragments/technical_data_input :: frag(techDataDto)"></div>
+                <div th:replace="fragments/technical_data_input.html :: frag(techDataDto)"></div>
                 <!--  part-3  -->
                 <div th:insert="~{fragments/select_humidifier :: #part-3}"></div>
             </div>

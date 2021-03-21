@@ -20,11 +20,4 @@ public enum TypeMontage {
         }
         throw new IllegalArgumentException("No enum found with url: [" + txt + "]");
     }
-
-    @Override
-    public String toString() {
-        return "TypeMontage{" +
-                "txt='" + txt + '\'' +
-                '}';
-    }
 }

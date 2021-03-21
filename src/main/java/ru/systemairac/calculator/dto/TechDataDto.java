@@ -25,6 +25,6 @@ public class TechDataDto {
     private TypeCylinder typeCylinder;
     private int voltage;
     private int phase;
-    private int lengthDuct;
-    private int widthDuct;
+    private int length;
+    private int width;
 }
