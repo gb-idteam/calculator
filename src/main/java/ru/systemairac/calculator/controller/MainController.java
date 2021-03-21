@@ -18,11 +18,7 @@ public class MainController {
     public String index(Model model){
         model.addAttribute("infoDto", new InfoDto());
         model.addAttribute("humidifierDto", new HumidifierDto());
-        TechDataDto techData = TechDataDto.builder().
-                typeMontage(TypeMontage.AHU).
-                typeWater(TypeWater.TAP_WATER).
-                humidifierType(HumidifierType.ELECTRODE).build();
-        model.addAttribute("techDataDto", techData);
+        model.addAttribute("techDataDto", new TechDataDto());
         return "calculator";
     }
 
