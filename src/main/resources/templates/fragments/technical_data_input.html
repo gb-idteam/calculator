@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Technical Data</title>
+</head>
+<body>
+<!--/*@thymesVar id="techDataDto" type="ru.systemairac.calculator.dto.TechDataDto"*/-->
+<div id="part-2" th:fragment="frag (techDataDto)">
+    <h3  id="part2-head">Ввод технических данных</h3>
+    <form th:action="@{/techdata}" th:object="${techDataDto}" method="post">
+        <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
+            <tr>
+                <td>Расход воздуха</td>
+                <input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.airFlow}"/></td>
+            </tr>
+            <tr>
+                <td>Температура на входа</td>
+                <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.tempIn}"/></td>
+                <td>Температура на выходе </td>
+                <td><input type="number" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.tempOut}"/></td>
+            </tr>
+            <tr>
+                <td>Влажность на входа</td>
+                <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.humIn}"/></td>
+                <td>Влажность на выходе </td>
+                <td><input type="number" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.humOut}"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <h6>Тип расположения парораспределителя</h6>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="type">
+                        <option th:each="r : ${T(ru.systemairac.calculator.domain.TypeMontage).values()}"
+                                th:value="${r}" th:text="${r.getTxt()}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <!--            TODO Так и не работает if-->
+                    <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.domain.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
+                        <tr>
+                            <td>Длина</td>
+                            <td>Ширина</td>
+                        </tr>
+                        <tr>
+                            <td><input type="number" th:field="${techDataDto.length}"/></td>
+                            <td><input type="number" th:field="${techDataDto.width}"/></td>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <h6><p>Выберите тип увлажнителя</p></h6>
+                </td>
+                <!--            TODO Так и не работает if-->
+                <td th:if="${techDataDto.getHumidifierType()}==${T(ru.systemairac.calculator.domain.humidifier.HumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${TypeCylinder.DISMOUNTABLE_CYLINDER}">
+                    <!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
+            </tr>
+            <tr colspan="2">
+                <td>Тип цилиндра</td>
+                <td
+                        th:text="${T(ru.systemairac.calculator.domain.humidifier.TypeCylinder).DISMOUNTABLE_CYLINDER.getTxt()}">
+                </td>
+            </tr>
+            <!--/*@thymesVar id="humidifierType" type="String"*/-->
+            <tr colspan="2" th:if="${techDataDto.getHumidifierType()}==${T(ru.systemairac.calculator.domain.humidifier.HumidifierType).HEATING_ELEMENT.getTxt()}">
+                <!--            <tr colspan="2">-->
+                <td>Выберите тип воды</td>
+                <td>
+                    <select name="type">
+                        <option th:each="r : ${T(ru.systemairac.calculator.domain.humidifier.TypeWater).values()}"
+                                th:value="${r}" th:text="${r.getTxt()}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Выберите фазность сети</td>
+                <td>
+                    <select th:field="${techDataDto.phase}">
+                        <option th:value=1 th:text="1"></option>
+                        <option th:value=3 th:text="3"></option>
+                    </select>
+                </td>
+            </tr>
+            <!--            TODO Так и не работает if-->
+            <!--            <tr>-->
+            <!--                <td>Вольтаж</td>-->
+            <!--                <td th:if="${techDataDto.phase == '1'}" th:text="220" th:value="${techDataDto.voltage}">-->
+            <!--                <td th:if="${techDataDto.phase == '3'}" th:text="380" th:value="${techDataDto.voltage}">-->
+            <!--            </tr>-->
+        </table>
+        <button type="submit">Расчет</button>
+    </form>
+</div> <!--  part-2  -->
+</body>
+</html>

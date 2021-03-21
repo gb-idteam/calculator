@@ -61,7 +61,7 @@ public class Humidifier {
     /**
      * Число фаз (1 или 3).
      */
-    private int phasicity;
+    private int phase;
 
     /**
      * Рабочее напряжение, в В.
