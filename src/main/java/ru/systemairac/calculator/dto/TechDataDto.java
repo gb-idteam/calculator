@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.systemairac.calculator.domain.TypeMontage;
+import ru.systemairac.calculator.domain.humidifier.HumidifierType;
+import ru.systemairac.calculator.domain.humidifier.TypeCylinder;
+import ru.systemairac.calculator.domain.humidifier.TypeWater;
 
 @Data
 @Builder
@@ -15,10 +19,10 @@ public class TechDataDto {
     private double tempOut;
     private double humIn;
     private double humOut;
-    private String humidifierType;
-    private String typeMontage;
-    private String typeWater;
-    private String typeCylinder;
+    private HumidifierType humidifierType;
+    private TypeMontage typeMontage;
+    private TypeWater typeWater;
+    private TypeCylinder typeCylinder;
     private int voltage;
     private int phase;
     private int length;

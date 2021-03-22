@@ -24,13 +24,15 @@
             <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
                 <tr>
                     <td><p>ФИО</p></td>
-                    <td><input type="text" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="*{fullName}"/></td>
+                    <td><input type="text"th:field="*{fullName}"/></td>
                     <td>Должность</td>
                     <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="*{post}"/></td>
                 </tr>
                 <tr>
                     <td>Название компании</td>
                     <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="*{nameCompany}"/></td>
+                    <td>Адрес компании</td>
+                    <td><input type="text" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="*{addressCompany}"/></td>
                 </tr>
                 <tr>
                     <td>Телефон</td>
@@ -50,17 +52,17 @@
                 <tr>
                     <td>Расход воздуха</td>
                     <td><!--/*@thymesVar id="airFlow" type=""*/-->
-                        <input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="*{airFlow}"/></td>
+                        <input type="number"th:field="*{airFlow}"/></td>
                 </tr>
                 <tr>
                     <td>Температура на входа</td>
-                    <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="*{tempIn}"/></td>
+                    <td><input type="number"th:field="*{tempIn}"/></td>
                     <td>Температура на выходе </td>
                     <td><input type="number" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="*{tempOut}"/></td>
                 </tr>
                 <tr>
                     <td>Влажность на входа</td>
-                    <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="*{humIn}"/></td>
+                    <td><input type="number"th:field="*{humIn}"/></td>
                     <td>Влажность на выходе </td>
                     <td><input type="number" style=" font-size:80%; margin: -7px 10px 10px 22px" th:field="*{humOut}"/></td>
                 </tr>
