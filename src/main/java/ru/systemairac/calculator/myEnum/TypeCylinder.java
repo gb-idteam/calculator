@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.domain.humidifier;
+package ru.systemairac.calculator.myEnum;
 
 public enum TypeCylinder {
     DISMOUNTABLE_CYLINDER("Разборный цилиндр"), MOUNTABLE_CYLINDER("Неразборный цилиндр");

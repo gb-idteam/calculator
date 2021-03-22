@@ -1,6 +1,7 @@
 package ru.systemairac.calculator.domain;
 
 import lombok.*;
+import ru.systemairac.calculator.myEnum.Role;
 
 import javax.persistence.*;
 import java.util.List;

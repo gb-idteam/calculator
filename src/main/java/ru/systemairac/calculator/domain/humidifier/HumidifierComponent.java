@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.myEnum.HumidifierComponentType;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.domain.humidifier;
+package ru.systemairac.calculator.myEnum;
 
 public enum HumidifierType {
     HEATING_ELEMENT("Тэновый"), ELECTRODE("Электродный");

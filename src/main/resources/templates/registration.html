@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="frame content">
+    <form th:action="@{#}" th:object="${userDto}" method="post">
+        <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
+            <tr>
+                <td>ФИО</td>
+                <td><input type="text" th:field="*{fullName}"/></td>
+                <td>Должность</td>
+                <td><input type="text" th:field="*{post}"/></td>
+            </tr>
+            <tr>
+                <td>Название компании</td>
+                <td><input type="text" th:field="*{nameCompany}"/></td>
+                <td>Адрес компании</td>
+                <td><input type="text" th:field="*{addressCompany}"/></td>
+            </tr>
+            <tr>
+                <td>Телефон</td>
+                <td><input type="number" th:field="*{phone}"/></td>
+                <td>E-mail</td>
+                <td><input type="text" th:field="*{email}"/></td>
+            </tr>
+        </table>
+        <button type="submit">OK</button>
+    </form>
+</div>
+</body>
+</html>

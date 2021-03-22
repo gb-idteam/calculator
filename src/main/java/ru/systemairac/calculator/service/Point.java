@@ -1,11 +1,11 @@
-package ru.systemairac.calculator.dto;
+package ru.systemairac.calculator.service;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PointDto {
+public class Point {
 
     private final static double ATMOSPHERE_PRESSURE = 94.5; // kPa
     private static final double HEAT_CAPACITY_AIR_DRY = 1.006; // kJ / (kg * K)
@@ -21,7 +21,7 @@ public class PointDto {
     private Double moistureContent; // g/kg
     private Double density; // kg/m³
 
-    private PointDto(PointBuilder builder) {
+    private Point(PointBuilder builder) {
         this.temperature = calcTemperature(builder);
         this.pressureD = calcPressureD(temperature);
         this.humidity = calcHumidity(builder);
@@ -176,8 +176,8 @@ public class PointDto {
             return this;
         }
 
-        public PointDto build() {
-            return new PointDto(this);
+        public Point build() {
+            return new Point(this);
         }
     }
 

@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.domain.humidifier;
+package ru.systemairac.calculator.myEnum;
 
 public enum TypeWater {
     TAP_WATER("Водопроводная вода"), DEMINERALIZED_WATER("Деминерализованная вода");

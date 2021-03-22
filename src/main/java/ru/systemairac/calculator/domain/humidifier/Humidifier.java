@@ -3,6 +3,7 @@ package ru.systemairac.calculator.domain.humidifier;
 import lombok.*;
 import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.domain.UnitType;
+import ru.systemairac.calculator.myEnum.HumidifierType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

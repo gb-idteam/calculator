@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.domain;
+package ru.systemairac.calculator.myEnum;
 
 public enum TypeMontage {
     DUCT("В канале"), AHU("В центральном кондиционере"), FAN_DISTRIBUTOR("Вентиляторный распределитель");

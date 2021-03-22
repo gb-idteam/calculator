@@ -1,13 +1,12 @@
 package ru.systemairac.calculator.service;
 
 import org.springframework.stereotype.Service;
-import ru.systemairac.calculator.dto.PointDto;
 
 @Service
 public class CalculationServiceImpl implements CalculationService {
 
     @Override
-    public double calcPower(double airFlow, PointDto inPoint, PointDto outPoint) {
+    public double calcPower(double airFlow, Point inPoint, Point outPoint) {
         double averageDensity = (inPoint.getDensity()+outPoint.getDensity())/2;
         return airFlow * averageDensity  * (outPoint.getMoistureContent()-inPoint.getMoistureContent())/1000;
     }
