@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class CalculatorApplication implements WebMvcConfigurer {
+public class CalculatorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CalculatorApplication.class, args);
 	}

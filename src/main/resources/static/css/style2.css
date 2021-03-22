@@ -71,10 +71,19 @@ body {
     margin-bottom: 52px;
 }
 
-.content h5 {
-    color:  #242424;
-    font-size: 24px;
+.content h6 {
+    color: #242424;
+    font-size: 16px;
     text-align: left;
+}
+
+.content .box td {
+    color: #242424;
+    font-size: 24px;
+    font-weight: 100;
+    text-align: left;
+    margin-top: 37px;
+    margin-bottom: 30px;
 }
 
 .content img {
@@ -173,5 +182,26 @@ body {
 }
 
 .footer a {
+    color: inherit;
+}
+
+.content .box button {
+    display: block;
+    float: left;
+    background-color:  #8cbbd3;
+    color:  #ffffff;
+    font-size: 24px;
+    font-weight: 300;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 30px;
+    padding:11px 51px;
+}
+
+.content .box button:hover {
+    background-color: #5ba1d3;
+}
+
+.footer button {
     color: inherit;
 }

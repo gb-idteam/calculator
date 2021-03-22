@@ -1,17 +1,18 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Technical Data</title>
 </head>
 <body>
+<!--/*@thymesVar id="techDataDto" type="ru.systemairac.calculator.dto.TechDataDto"*/-->
 <div id="part-2" th:fragment="frag (techDataDto)">
     <h3  id="part2-head">Ввод технических данных</h3>
     <form th:action="@{/techdata}" th:object="${techDataDto}" method="post">
         <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
             <tr>
                 <td>Расход воздуха</td>
-                <td><input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.airFlow}"/></td>
+                <input type="number" style="font-size:80%; margin: -7px 10px 10px 22px" th:field="${techDataDto.airFlow}"/></td>
             </tr>
             <tr>
                 <td>Температура на входа</td>
@@ -41,8 +42,7 @@
             <tr>
                 <td colspan="2">
                     <!--            TODO Так и не работает if-->
-                    <!--            <table th:if="${techDataDto.typeMontage.equils(TypeMontage.FAN_DISTRIBUTOR)}">-->
-                    <table>
+                    <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.domain.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
                         <tr>
                             <td>Длина</td>
                             <td>Ширина</td>
@@ -58,8 +58,8 @@
                     <h6><p>Выберите тип увлажнителя</p></h6>
                 </td>
                 <!--            TODO Так и не работает if-->
-                <!--            <td th:if="${techDataDto.humidifierType == T(ru.systemairac.calculator.domain.humidifier.HumidifierType).ELECTRODE}" th:text="${TypeCylinder.DISMOUNTABLE_CYLINDER}">-->
-                <!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
+                <td th:if="${techDataDto.getHumidifierType()}==${T(ru.systemairac.calculator.domain.humidifier.HumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${TypeCylinder.DISMOUNTABLE_CYLINDER}">
+                    <!--    TODO Сразу ли в techDataDto попадает выбранная информация        -->
             </tr>
             <tr colspan="2">
                 <td>Тип цилиндра</td>
@@ -67,8 +67,9 @@
                         th:text="${T(ru.systemairac.calculator.domain.humidifier.TypeCylinder).DISMOUNTABLE_CYLINDER.getTxt()}">
                 </td>
             </tr>
-            <!--            <tr colspan="2" th:if="${techDataDto.humidifierType==T(ru.systemairac.calculator.domain.humidifier.HumidifierType).HEATING_ELEMENT}">-->
-            <tr colspan="2">
+            <!--/*@thymesVar id="humidifierType" type="String"*/-->
+            <tr colspan="2" th:if="${techDataDto.getHumidifierType()}==${T(ru.systemairac.calculator.domain.humidifier.HumidifierType).HEATING_ELEMENT.getTxt()}">
+                <!--            <tr colspan="2">-->
                 <td>Выберите тип воды</td>
                 <td>
                     <select name="type">
@@ -81,17 +82,17 @@
                 <td>Выберите фазность сети</td>
                 <td>
                     <select th:field="${techDataDto.phase}">
-                        <option th:value="1" th:text="1"></option>
-                        <option th:value="3" th:text="3"></option>
+                        <option th:value=1 th:text="1"></option>
+                        <option th:value=3 th:text="3"></option>
                     </select>
                 </td>
             </tr>
-<!--            TODO Так и не работает if-->
-<!--            <tr>-->
-<!--                <td>Вольтаж</td>-->
-<!--                <td th:if="${techDataDto.phase == '1'}" th:text="220" th:value="${techDataDto.voltage}">-->
-<!--                <td th:if="${techDataDto.phase == '3'}" th:text="380" th:value="${techDataDto.voltage}">-->
-<!--            </tr>-->
+            <!--            TODO Так и не работает if-->
+            <!--            <tr>-->
+            <!--                <td>Вольтаж</td>-->
+            <!--                <td th:if="${techDataDto.phase == '1'}" th:text="220" th:value="${techDataDto.voltage}">-->
+            <!--                <td th:if="${techDataDto.phase == '3'}" th:text="380" th:value="${techDataDto.voltage}">-->
+            <!--            </tr>-->
         </table>
         <button type="submit">Расчет</button>
     </form>

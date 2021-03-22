@@ -11,18 +11,31 @@ import ru.systemairac.calculator.dto.InfoDto;
 import ru.systemairac.calculator.dto.PointDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class MainController {
-
+    private List<HumidifierDto> himidifiers = new ArrayList<>();
     @RequestMapping({"","/"})
     public String index(Model model){
+        // Тестовая dtoшка
+        HumidifierDto humidifierDto = HumidifierDto.builder()
+                .id(1L)
+                .articleNumber("1")
+                .electricPower(5)
+                .maxVaporOutput(20)
+                .phase(3)
+                .vaporPipeDiameter(25)
+                .numberOfCylinders(1)
+                .voltage(380)
+                .price(BigDecimal.valueOf(1000))
+                .build();
+        himidifiers.add(humidifierDto);
         model.addAttribute("infoDto", new InfoDto());
-        model.addAttribute("humidifierDto", new HumidifierDto());
-        TechDataDto techData = TechDataDto.builder().
-                typeMontage(TypeMontage.AHU).
-                typeWater(TypeWater.TAP_WATER).
-                humidifierType(HumidifierType.ELECTRODE).build();
-        model.addAttribute("techDataDto", techData);
+        model.addAttribute("himidifiers", himidifiers);
+        model.addAttribute("techDataDto", new TechDataDto());
         return "calculator";
     }
 

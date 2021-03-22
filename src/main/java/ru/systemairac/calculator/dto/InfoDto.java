@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class InfoDto {
     private String fullName;
     private String nameCompany;
+    private String addressCompany;
     private String post;
     private Long phone;
     private String email;
