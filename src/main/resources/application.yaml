@@ -17,8 +17,11 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
-
-#  datasource:
+  mvc:
+    servlet:
+      path: /systemair-ac
+    static-path-pattern: /statico/**
+  #  datasource:
 #     name: 'dataCalculator'
 #     url: jdbc:${DATABASE_PATH:mysql://localhost:3306/db_calculator?serverTimezone=UTC}
 #     username: ${DATABASE_USER:root}

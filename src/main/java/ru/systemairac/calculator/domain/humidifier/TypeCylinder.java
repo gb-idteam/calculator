@@ -1,10 +1,10 @@
 package ru.systemairac.calculator.domain.humidifier;
 
-public enum HumidifierType {
-    HEATING_ELEMENT("Тэновый"), ELECTRODE("Электродный");
+public enum TypeCylinder {
+    DISMOUNTABLE_CYLINDER("Разборный цилиндр"), MOUNTABLE_CYLINDER("Неразборный цилиндр");
     private final String txt;
 
-    HumidifierType(String txt) {
+    TypeCylinder(String txt) {
         this.txt= txt;
     }
 
@@ -12,8 +12,8 @@ public enum HumidifierType {
         return txt;
     }
 
-    public static HumidifierType getTypeByTxt(String txt) {
-        for (HumidifierType env : values()) {
+    public static TypeCylinder getTypeByTxt(String txt) {
+        for (TypeCylinder env : values()) {
             if (env.getTxt().equals(txt)) {
                 return env;
             }
