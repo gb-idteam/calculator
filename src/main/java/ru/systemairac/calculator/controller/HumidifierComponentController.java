@@ -66,7 +66,7 @@ public class HumidifierComponentController {
     @GetMapping("/delete{id}")
     public void deleteComponent(@PathVariable Long id) {
         componentService.deleteById(id);
-//        return "redirect:/humidifier";
+//        return "redirect:/humidifier-component";
     }
 
 }
