@@ -2,6 +2,7 @@ package ru.systemairac.calculator.service;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.TypeMontage;
+import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierType;
 import ru.systemairac.calculator.dto.HumidifierDto;
 
@@ -36,5 +37,33 @@ public class HumidifierServiceImpl implements HumidifierService {
                         .voltage(380)
                         .price(BigDecimal.valueOf(1000))
                         .build());
+    }
+
+    @Override
+    public HumidifierDto findById(Long id) {
+        return HumidifierDto.builder()
+                .id(1L)
+                .articleNumber("1")
+                .electricPower(5)
+                .maxVaporOutput(20)
+                .phase(3)
+                .vaporPipeDiameter(25)
+                .numberOfCylinders(1)
+                .voltage(380)
+                .price(BigDecimal.valueOf(1000))
+                .build();
+    }
+
+    @Override
+    public List<HumidifierDto> getAll() {
+        return null;
+    }
+
+    @Override
+    public void save(HumidifierDto humidifierDto) {
+    }
+
+    @Override
+    public void deleteById(Long id) {
     }
 }
