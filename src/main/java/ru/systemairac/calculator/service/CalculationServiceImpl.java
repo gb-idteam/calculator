@@ -2,7 +2,6 @@ package ru.systemairac.calculator.service;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.dto.PointDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 
 import java.util.List;
@@ -17,23 +16,26 @@ public class CalculationServiceImpl implements CalculationService {
     }
 
     @Override
-    public List<HumidifierDto> calcAndGetHumidifier(TechDataDto techDataDto) {
-        return humidifierService.findHumidifiers(calcPower(techDataDto), techDataDto.getPhase(),
+    public List<HumidifierDto> getHumidifiers(TechDataDto techDataDto) {
+        return humidifierService.findHumidifiers(techDataDto.getCalcCapacity(), techDataDto.getPhase(),
                 techDataDto.getHumidifierType(),techDataDto.getTypeMontage());
     }
 
     @Override
-    public double calcPower(TechDataDto techDataDto) {
-        PointDto inPoint = PointDto.builder()
+    public TechDataDto calcPower(TechDataDto techDataDto) {
+        Point inPoint = Point.builder()
                 .temperature(techDataDto.getTempIn())
                 .humidity(techDataDto.getHumIn())
                 .build();
-        PointDto outPoint = PointDto.builder()
+        Point outPoint = Point.builder()
                 .temperature(techDataDto.getTempIn())
-                .humidity(techDataDto.getHumIn())
+                .humidity(techDataDto.getHumOut())
                 .build();
         int airFlow = techDataDto.getAirFlow();
         double averageDensity = (inPoint.getDensity()+outPoint.getDensity())/2;
-        return airFlow * averageDensity  * (outPoint.getMoistureContent()-inPoint.getMoistureContent())/1000;
+        double capacity = airFlow * averageDensity  * (outPoint.getMoistureContent()-inPoint.getMoistureContent())/1000;
+        techDataDto.setCalcCapacity(capacity);
+        return techDataDto;
+
     }
 }

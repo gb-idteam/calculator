@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.dto.InfoDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.service.CalculationService;
@@ -21,11 +20,9 @@ public class MainController {
 
     private final UserService userService;
     private final CalculationService calculationService;
-
-    private InfoDto infoDto = new InfoDto();
+    private ProjectDto projectDto = new ProjectDto();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
     private TechDataDto techDataDto = new TechDataDto();
-    private Double power;
 
     public MainController(UserService userService, CalculationService calculationService) {
         this.userService = userService;
@@ -36,18 +33,17 @@ public class MainController {
 
     @RequestMapping({"","/"})
     public String index(Model model){
-        model.addAttribute("infoDto", infoDto);
+        model.addAttribute("projectDto", projectDto);
         model.addAttribute("himidifiers", humidifiers);
         model.addAttribute("techDataDto", techDataDto);
         return "calculator";
     }
 
     @PostMapping("/calc")
-    public String calcAndGetHumidifier(InfoDto infoDto, TechDataDto techDataDto){
-        this.infoDto = infoDto;
-        this.techDataDto = techDataDto;
-        this.power = calculationService.calcPower(techDataDto);
-        humidifiers.addAll(calculationService.calcAndGetHumidifier(techDataDto));
+    public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
+        this.projectDto = projectDto;
+        this.techDataDto = calculationService.calcPower(techDataDto);
+        humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
         return "redirect:/systemair-ac/";
     }
 

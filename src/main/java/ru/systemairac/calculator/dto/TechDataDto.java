@@ -16,7 +16,6 @@ import ru.systemairac.calculator.myEnum.TypeWater;
 public class TechDataDto {
     private int airFlow;
     private double tempIn;
-    private double tempOut;
     private double humIn;
     private double humOut;
     private HumidifierType humidifierType;
@@ -27,4 +26,5 @@ public class TechDataDto {
     private int phase;
     private int length;
     private int width;
+    private double calcCapacity;
 }
