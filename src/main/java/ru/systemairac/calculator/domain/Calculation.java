@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,8 +23,8 @@ public class Calculation {
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private Unit unit;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<Unit> unit;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")

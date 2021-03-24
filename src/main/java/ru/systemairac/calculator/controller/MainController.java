@@ -44,7 +44,7 @@ public class MainController {
         this.projectDto = projectDto;
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        return "redirect:/systemair-ac/";
+        return "redirect:/systemair-ac";
     }
 
     @RequestMapping("/login")

@@ -80,8 +80,6 @@ public class Humidifier {
     private int vaporPipeDiameter;
 
 
-    // cascade для сущностей ниже не нужен
-
     /**
      * Парораспределители, подходящие для данной модели.
      */

@@ -26,15 +26,15 @@ spring:
      url: jdbc:${DATABASE_PATH:mysql://localhost:3306/systemairac?serverTimezone=UTC}
      username: ${DATABASE_USER:root}
      password: ${DATABASE_PASSWORD:Nbirf}
-
+  flyway:
+    baseline-on-migrate: true
 #    driver-class-name: org.postgresql.Driver
 #    url: jdbc:${DATABASE_PATH:postgresql://localhost:5432/db_calculator}
 #    username: ${DATABASE_USER:postgres}
 #    password: ${DATABASE_PASSWORD:123456}
 #    driver-class-name: org.postgresql.Driver
 
-  flyway:
-    baseline-on-migrate: true
+
 management:
   endpoints:
     web:
