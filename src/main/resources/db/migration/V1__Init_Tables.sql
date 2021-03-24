@@ -6,20 +6,23 @@ CREATE SCHEMA systemairac
 USE systemairac;
 
 # TODO: BIGINT/INT
+create table user_seq (next_val bigint) engine=InnoDB;
+insert into user_seq values ( 1 );
 
 drop table if exists tbl_users cascade;
 create table tbl_users (
    id              BIGINT,
    name            VARCHAR(255) UNIQUE NOT NULL ,
    password        VARCHAR(255) not null,
-   full_name        VARCHAR(255),
-   name_company     VARCHAR(255),
-   address_company  VARCHAR(255),
+   full_name       VARCHAR(255),
+   name_company    VARCHAR(255),
+   address_company VARCHAR(255),
    post            VARCHAR(255),
    phone           BIGINT,
    email           VARCHAR(255) UNIQUE NOT NULL ,
    PRIMARY KEY (id)
 );
+
 
 drop table if exists tbl_roles;
 create table tbl_roles (
@@ -46,6 +49,9 @@ CREATE TABLE tbl_unit_types (
 INSERT INTO tbl_unit_types (id, table_name)
     VALUES (1, 'tbl_humidifiers');
 
+drop sequence if exists unit_seq;
+create sequence unit_seq start with 1 increment by 1;
+
 drop table if exists tbl_units cascade;
 create table tbl_units (
     id bigint,
@@ -59,6 +65,8 @@ create table tbl_units (
 # TODO: если у нас Unit / Calculation -- OneToOne, то они должны быть слиты в единую таблицу!!
 # Но, скорее всего, это просто ошибка, они ведь должны быть "много Calculation на один Unit" (?)
 
+drop sequence if exists calculation_seq;
+create sequence calculation_seq start with 1 increment by 1;
 drop table if exists tbl_calculations cascade;
 create table tbl_calculations (
   id BIGINT,
@@ -69,6 +77,8 @@ create table tbl_calculations (
   CONSTRAINT fk__tbl_units__tbl_calculations FOREIGN KEY (unit_id) REFERENCES tbl_units (id)
 );
 
+drop sequence if exists project_seq;
+create sequence project_seq start with 1 increment by 1;
 
 DROP TABLE IF EXISTS tbl_projects CASCADE;
 CREATE TABLE tbl_projects (
@@ -82,6 +92,8 @@ CREATE TABLE tbl_projects (
 ALTER TABLE tbl_calculations
     ADD CONSTRAINT fk__tbl_calculations__tbl_projects FOREIGN KEY (project_id) REFERENCES tbl_projects (id);
 
+drop sequence if exists brand_seq;
+create sequence brand_seq start with 1 increment by 1;
 
 drop table if exists tbl_brands cascade;
 create table tbl_brands (
@@ -91,19 +103,10 @@ create table tbl_brands (
 );
 
 
-
-# insert into users (name, password, role, fullName, nameCompamy, addressComapany, post, phone, email) values
-# ('Ivan','$2y$12$pDKtGkFNC9Gbp1BhK4SeNOSsqRiHapo83WE9VqyMD/MVjvMnvLluK',
-#  'admin','Ivanov', 'X-Company', 'Earth, worldCity, AAA', 'XXX555', 8999888777666555, 'admin@email.com');
-
-
-
-# insert into roles (name)
-# values
-# ('USER'), ('ADMIN');
-
-
 -- Humidifiers and all about them
+drop sequence if exists humidifier_component_seq;
+create sequence humidifier_component_seq start with 1 increment by 1;
+
 drop table if exists tbl_humidifier_components cascade;
 create table tbl_humidifier_components (
    id BIGINT,
@@ -114,6 +117,9 @@ create table tbl_humidifier_components (
    primary key(id),
    CONSTRAINT fk__tbl_humidifier_components__tbl_brands FOREIGN KEY (brand_id) REFERENCES tbl_brands (id)
 );
+
+drop sequence if exists vapor_distributor_seq;
+create sequence vapor_distributor_seq start with 1 increment by 1;
 
 drop table if exists tbl_vapor_distributors cascade;
 create table tbl_vapor_distributors (
@@ -134,6 +140,9 @@ CREATE TABLE tbl_humidifier_types
     type_name VARCHAR(255) UNIQUE NOT NULL,
     PRIMARY KEY (id)
 );
+
+drop sequence if exists humidifier_seq;
+create sequence humidifier_seq start with 1 increment by 1;
 
 drop table if exists tbl_humidifiers cascade;
 create table tbl_humidifiers (
