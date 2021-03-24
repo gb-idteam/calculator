@@ -1,122 +1,164 @@
-drop table if exists tbl_projects cascade;
-create table tbl_projects (
-                    id bigserial
-                    address varchar (255),
-                    title varchar(255),
-                    user varchar (255),
-                    primary key(id)
+# DROP SCHEMA systemairac;
+# CREATE SCHEMA systemairac
+#     DEFAULT CHARACTER SET utf8mb4
+#     COLLATE utf8mb4_general_ci;
+
+# USE systemairac;
+
+# TODO: BIGINT/INT
+
+drop table if exists tbl_users cascade;
+create table tbl_users (
+   id              BIGINT,
+   name            VARCHAR(255) UNIQUE NOT NULL ,
+   password        VARCHAR(255) not null,
+   fullName        VARCHAR(255),
+   name_company     VARCHAR(255),
+   address_company  VARCHAR(255),
+   post            VARCHAR(255),
+   phone           BIGINT,
+   email           VARCHAR(255) UNIQUE NOT NULL ,
+   PRIMARY KEY (id)
 );
+
+drop table if exists tbl_roles;
+create table tbl_roles (
+   id SMALLINT,
+   name VARCHAR(128) unique not null,
+   primary key (id)
+);
+
+DROP TABLE IF EXISTS tbl_users_roles;
+CREATE TABLE tbl_users_roles (
+    user_id BIGINT NOT NULL ,
+    role_id SMALLINT NOT NULL ,
+    CONSTRAINT fk__tbl_users_roles__tbl_users FOREIGN KEY (user_id) REFERENCES tbl_users (id),
+    CONSTRAINT fk__tbl_users_roles__tbl_roles FOREIGN KEY (role_id) REFERENCES tbl_roles (id)
+);
+
+drop table if exists tbl_units cascade;
+create table tbl_units (
+    id bigint,
+    type varchar(255) UNIQUE NOT NULL ,
+    primary key(id)
+);
+
+# TODO: если у нас Unit / Calculation -- OneToOne, то они должны быть слиты в единую таблицу!!
+# Но, скорее всего, это просто ошибка, они ведь должны быть "много Calculation на один Unit" (?)
+
+drop table if exists tbl_calculations cascade;
+create table tbl_calculations (
+  id BIGINT,
+  unit_id BIGINT,
+  project_id BIGINT,
+  date DATE,
+  primary key(id),
+  CONSTRAINT fk__tbl_units__tbl_calculations FOREIGN KEY (unit_id) REFERENCES tbl_units (id)
+);
+
+
+DROP TABLE IF EXISTS tbl_projects CASCADE;
+CREATE TABLE tbl_projects (
+    id bigint,
+    address varchar (255),
+    title varchar (255),
+    user_id BIGINT NOT NULL ,
+    primary key(id),
+    CONSTRAINT fk__tbl_projects__tbl_users FOREIGN KEY (user_id) REFERENCES tbl_users (id)
+);
+ALTER TABLE tbl_calculations
+    ADD CONSTRAINT fk__tbl_calculations__tbl_projects FOREIGN KEY (project_id) REFERENCES tbl_projects (id);
 
 
 drop table if exists tbl_brands cascade;
 create table tbl_brands (
-                              id bigserial
-                              name varchar (255),
-                              primary key(id)
+  id bigint,
+  name varchar (255) UNIQUE NOT NULL ,
+  primary key(id)
 );
 
 
-drop table if exists tbl_units cascade;
-create table tbl_units (
-                              id bigserial
-                              name varchar (255),
-                              unitType varchar(255),
-                              primary key(id)
-);
 
--- Users and Roles
-drop table if exists tbl_users cascade;
-create table tbl_users (
-                       id              bigserial,
-                       name            VARCHAR(255),
-                       password        VARCHAR(255) not null,
-                       role            VARCHAR(255),
-                       fullName        VARCHAR(255),
-                       nameCompany     VARCHAR(255),
-                       addressCompany  VARCHAR(255),
-                       post            VARCHAR(255),
-                       phone           bigserial,
-                       email           VARCHAR(50) UNIQUE,
-                       PRIMARY KEY (id)
-);
-
-insert into users (name, password, role, fullName, nameCompamy, addressComapany, post, phone, email) values
-('Ivan','$2y$12$pDKtGkFNC9Gbp1BhK4SeNOSsqRiHapo83WE9VqyMD/MVjvMnvLluK',
- 'admin','Ivanov', 'X-Company', 'Earth, worldCity, AAA', 'XXX555', 8999888777666555, 'admin@email.com');
+# insert into users (name, password, role, fullName, nameCompamy, addressComapany, post, phone, email) values
+# ('Ivan','$2y$12$pDKtGkFNC9Gbp1BhK4SeNOSsqRiHapo83WE9VqyMD/MVjvMnvLluK',
+#  'admin','Ivanov', 'X-Company', 'Earth, worldCity, AAA', 'XXX555', 8999888777666555, 'admin@email.com');
 
 
-drop table if exists tbl_roles;
-create table tbl_roles (
-                       id                    serial,
-                       name                  VARCHAR(50) not null,
-                       primary key (id)
-);
 
-insert into roles (name)
-values
-('USER'), ('ADMIN');
+# insert into roles (name)
+# values
+# ('USER'), ('ADMIN');
 
-drop table if exists users_roles cascade;
-create table users_roles (
-                             user_id               INT NOT NULL,
-                             role_id               INT NOT NULL,
-                             primary key (user_id, role_id),
-                             FOREIGN KEY (user_id)
-                             REFERENCES users (id),
-                             FOREIGN KEY (role_id)
-                             REFERENCES roles (id)
-);
-
-insert into users_roles (user_id, role_id)
-values
-(1, 1),
-(1, 2);
-
-drop table if exists tbl_calculations cascade;
-create table tbl_calculations (
-                            id bigserial,
-                            unit_name varchar (255),
-                            project_title varchar (255),
-                            date current_date,
-                            primary key(id)
-);
 
 -- Humidifiers and all about them
 drop table if exists tbl_humidifier_components cascade;
 create table tbl_humidifier_components (
-                                           id bigserial,
-                                           brand_name varchar (255),
-                                           articleNumber varchar (255),
-                                           HumidifierComponentType varchar (255),
-                                           primary key(id)
+   id BIGINT,
+   brand_id BIGINT NOT NULL ,
+   article_number varchar (255) NOT NULL ,
+   optional BOOLEAN,
+#    HumidifierComponentType varchar (255),
+   primary key(id),
+   CONSTRAINT fk__tbl_humidifier_components__tbl_brands FOREIGN KEY (brand_id) REFERENCES tbl_brands (id)
 );
 
 drop table if exists tbl_vapor_distributors cascade;
 create table tbl_vapor_distributors (
-                                           id bigserial,
-                                           brand_name varchar (255),
-                                           articleNumber varchar (255),
-                                           length int (10),
-                                           diameter int (10),
-                                           price numeric (8, 2),
-                                           primary key(id)
+    id BIGINT,
+    brand_id BIGINT NOT NULL ,
+    article_number varchar (255) NOT NULL ,
+    length INT NOT NULL ,
+    diameter INT NOT NULL ,
+    price DECIMAL (10, 2),
+    primary key(id),
+    CONSTRAINT fk__tbl_vapor_distributors__tbl_brands FOREIGN KEY (brand_id) REFERENCES tbl_brands (id)
+);
+
+DROP TABLE IF EXISTS tbl_humidifier_types CASCADE;
+CREATE TABLE tbl_humidifier_types
+(
+    id        TINYINT,
+    type_name VARCHAR(255) UNIQUE NOT NULL,
+    PRIMARY KEY (id)
 );
 
 drop table if exists tbl_humidifiers cascade;
 create table tbl_humidifiers (
-                                        id bigserial,
-                                        unitType varchar (255) unique,
-                                        articleNumber varchar (255) unique,
-                                        brand_name varchar (255),
-                                        humidifier_type varchar (255),
-                                        electricPower float (10),
-                                        maxVaporOutput float (10),
-                                        phase int (10),
-                                        voltage int (10),
-                                        numberOfCylinders int (10),
-                                        vaporPipeDiameter int (10),
-                                        price numeric (8, 2),
-                                        primary key(id),
-                                        constraint humidifiers_vaporDistributors foreign key (humidifier_id) references tbl_vapor_distributors (id),
-                                        constraint humidifiers_humidifierComponents foreign key (humidifier_id) references tbl_humidifier_components (id)
+    id BIGINT,
+    brand_id BIGINT NOT NULL ,
+    article_number varchar (255) unique NOT NULL ,
+    humidifier_type varchar (255),
+    electric_power DECIMAL(6, 2),
+    capacity DECIMAL(6, 2),
+    phase SMALLINT,
+    voltage SMALLINT,
+    number_of_cylinders TINYINT,
+    vapor_pipe_diameter SMALLINT,
+    price DECIMAL(10, 2),
+    primary key(id),
+    CONSTRAINT fk__tbl_humidifiers__tbl_brands
+        FOREIGN KEY (brand_id) REFERENCES tbl_brands (id),
+    CONSTRAINT fk__tbl_humidifiers__tbl_humidifier_types
+        FOREIGN KEY (humidifier_type) REFERENCES tbl_humidifier_types (id)
+);
+
+
+drop table if exists tbl_humidifiers_humidifier_components cascade;
+CREATE TABLE tbl_humidifiers_humidifier_components (
+    humidifier_id BIGINT NOT NULL ,
+    humidifier_component_id BIGINT NOT NULL ,
+    CONSTRAINT fk__tbl_humidifiers_humidifier_components__tbl_humidifiers
+        FOREIGN KEY (humidifier_id) REFERENCES tbl_humidifiers (id),
+    CONSTRAINT fk__tbl_humidifiers_humidifier_components__tbl_humidifier_compon     # слишком длинный!
+        FOREIGN KEY (humidifier_component_id) REFERENCES tbl_humidifier_components (id)
+);
+
+DROP TABLE IF EXISTS tbl_humidifiers_vapor_distributors CASCADE;
+CREATE TABLE tbl_humidifiers_vapor_distributors (
+   humidifier_id BIGINT NOT NULL ,
+   vapor_distributor_id BIGINT NOT NULL ,
+   CONSTRAINT fk__tbl_humidifiers_vapor_distributors__tbl_humidifiers
+       FOREIGN KEY (humidifier_id) REFERENCES tbl_humidifiers (id),
+   CONSTRAINT fk__tbl_humidifiers_vapor_distributors__tbl_vapor_distributors
+       FOREIGN KEY (vapor_distributor_id) REFERENCES tbl_vapor_distributors (id)
 );

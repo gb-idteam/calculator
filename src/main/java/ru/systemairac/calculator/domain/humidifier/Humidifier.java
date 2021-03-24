@@ -57,7 +57,7 @@ public class Humidifier {
     /**
      * Максимальная производительность увлажнителя, в кг воды в час (кг/ч)
      */
-    private float maxVaporOutput;
+    private float capacity;
 
     /**
      * Число фаз (1 или 3).
