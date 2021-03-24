@@ -1,4 +1,3 @@
-<
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Расчет увлажнителя</title>
@@ -19,12 +18,9 @@
 <div class="frame content">
     <!-- part-1 -->
     <div id="part-1" class="box">
-        <h1  id="part1-head">
-            <span class="bg_circle" style="background: rgb(122, 214, 211);">1</span>
-            Заполнение информации об объекте
-        </h1>
-        <form th:action="@{#}" th:object="${projectDto}" method="post">
-            <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
+        <h1  id="part1-head" style="padding-top: 18px;">Заполнение информации об объекте</h1>
+        <form th:action="@{/techdata}" th:object="${projectDto}" method="post">
+            <table border="0" cellspacing="0" cellpadding="0" id="project-input" width="100%">
                 <tr>
                     <td>Название проекта</td>
                     <td>
@@ -45,36 +41,33 @@
     </div>
     <!--  part-2  -->
     <div id="part-2" class="box">
-
-        <h1  id="part2-head">
-            <span class="bg_circle" style="background: rgb(122, 214, 211);">2</span>
-            Ввод технических данных
-        </h1>
-        <form th:action="@{calc}" th:object="${techDataDto}" method="post">
+        <h1  id="part2-head">Ввод технических данных</h1>
+        <form th:action="@{/techdata}" th:object="${techDataDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
-                    <tr>
-                        <td>Расход воздуха</td>
-                        <td><input type="number"th:field="*{airFlow}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Температура на входе</td>
-                        <td><input type="number"th:field="*{tempIn}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Влажность на входе</td>
-                        <td><input type="number"th:field="*{humIn}"/></td>
-                    </tr>
-                    <tr th:border="2">
-                        <td>Влажность на выходе </td>
-                        <td><input type="number" th:field="*{humOut}"/></td>
-                    </tr>
-                    <tr>
-                <td colspan="2">
-                    <h3>Тип расположения парораспределителя</h3>
-                </td>
+                <tr>
+                    <td>Расход воздуха</td>
+                    <td><!--/*@thymesVar id="airFlow" type=""*/-->
+                        <input type="number"th:field="*{airFlow}"/></td>
+                </tr>
+                <tr>
+                    <td>Температура на входа</td>
+                    <td><input type="number"th:field="*{tempIn}"/></td>
+                    <td>Температура на выходе </td>
+                    <td><input type="number" th:field="*{tempOut}"/></td>
+                </tr>
+                <tr>
+                    <td>Влажность на входа</td>
+                    <td><input type="number"th:field="*{humIn}"/></td>
+                    <td>Влажность на выходе </td>
+                    <td><input type="number" th:field="*{humOut}"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
+                        <h3>Тип расположения парораспределителя</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <select name="typeMontage">
                             <option th:each="r : ${T(ru.systemairac.calculator.myEnum.TypeMontage).values()}"
                                     th:value="${r}" th:text="${r.getTxt()}"></option>
@@ -109,44 +102,40 @@
                     </td>
                     <td th:text="${T(ru.systemairac.calculator.myEnum.TypeCylinder).DISMOUNTABLE_CYLINDER.getTxt()}"></td>
                 </tr>
-                <tr>
-                    <td th:if="${techDataDto.humidifierType}==${T(ru.systemairac.calculator.myEnum.HumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${T(ru.systemairac.calculator.myEnum.TypeCylinder).DISMOUNTABLE_CYLINDER}">
-                </tr>
-                <tr colspan="2" th:if="${techDataDto.humidifierType}==${T(ru.systemairac.calculator.myEnum.HumidifierType).HEATING_ELEMENT.getTxt()}">
-                    <!--            <tr colspan="2">-->
-                    <td><h3>Выберите тип воды</h3></td>
-                    <td>
-                        <select name="TypeWater">
-                            <option th:each="r : ${T(ru.systemairac.calculator.myEnum.TypeWater).values()}"
-                                    th:value="${r}" th:text="${r.getTxt()}"></option>
-                        </select>
-                    </td>
-                </tr>
-                <!--                TODO Разобраться как при выборе фазности менять Вольтаж и т.д. скорее всего script-->
-                <tr>
-                    <td><h3>Выберите фазность сети</h3></td>
-                    <td>
-                        <select th:field="${techDataDto.phase}">
-                            <option th:value=1 th:text="1"></option>
-                            <option th:value=3 th:text="3"></option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Вольтаж</td>
-                    <td th:if="${techDataDto.phase == 1}" th:text="220" th:value="${techDataDto.voltage}">
-                    <td th:if="${techDataDto.phase == 3}" th:text="380" th:value="${techDataDto.voltage}">
-                </tr>
+                <td th:if="${techDataDto.humidifierType}==${T(ru.systemairac.calculator.myEnum.HumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${T(ru.systemairac.calculator.myEnum.TypeCylinder).DISMOUNTABLE_CYLINDER}">
+                    </tr>
+                    <tr colspan="2" th:if="${techDataDto.humidifierType}==${T(ru.systemairac.calculator.myEnum.HumidifierType).HEATING_ELEMENT.getTxt()}">
+                        <!--            <tr colspan="2">-->
+                        <td><h3>Выберите тип воды</h3></td>
+                        <td>
+                            <select name="TypeWater">
+                                <option th:each="r : ${T(ru.systemairac.calculator.myEnum.TypeWater).values()}"
+                                        th:value="${r}" th:text="${r.getTxt()}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <!--                TODO Разобраться как при выборе фазности менять Вольтаж и т.д. скорее всего script-->
+                    <tr>
+                        <td><h3>Выберите фазность сети</h3></td>
+                        <td>
+                            <select th:field="${techDataDto.phase}">
+                                <option th:value=1 th:text="1"></option>
+                                <option th:value=3 th:text="3"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Вольтаж</td>
+                        <td th:if="${techDataDto.phase == 1}" th:text="220" th:value="${techDataDto.voltage}">
+                        <td th:if="${techDataDto.phase == 3}" th:text="380" th:value="${techDataDto.voltage}">
+                    </tr>
             </table>
             <button type="submit">Расчет</button>
         </form>
     </div>
     <!--  part-3  -->
     <div id="part-3" class="box">
-        <h1  id="part3-head">
-            <span class="bg_circle" style="background: rgb(122, 214, 211);">3</span>
-            Выбор увлажнителя
-        </h1>
+        <h1  id="part3-head"> Выбор увлажнителя</h1>
         <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
         <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover">
             <tr>
@@ -167,7 +156,7 @@
                 <!--                    <input type="radio" th:field="${humidifier}" th:value="${humidifier}" class="custom-control-input">-->
                 <!--                </td>-->
                 <td th:text="${humidifier.articleNumber}">Articul</td>
-                <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
+                <td th:text="'???'">10</td>
                 <td th:text="${humidifier.maxVaporOutput}">10</td>
                 <td th:text="${humidifier.electricPower}">11.1</td>
                 <td th:text="${humidifier.phase} +'~' +  ${humidifier.voltage}">1~220</td>
@@ -181,11 +170,7 @@
 
         <div>
             <div id="part-4" class="box">
-
-                <h1  id="part4-head">
-                    <span class="bg_circle" style="background: rgb(122, 214, 211);">4</span>
-                    Выбор опций увлажнителя
-                </h1>
+                <h1  id="part4-head" style="padding-top: 18px;"> Выбор опций увлажнителя</h1>
             </div>
         </div>
     </div>

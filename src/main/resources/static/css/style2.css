@@ -205,17 +205,3 @@
 .footer button {
     color: inherit;
 }
-
-.bg_circle {
-    width: 64px;
-    height: 64px;
-    display: inline-table;
-    border-radius: 50%;
-    text-align: center;
-    padding: 3px 2px 1px 2px;
-    margin-bottom: 0px;
-    margin-right: 3px;
-    color: #FFFFFF;
-    font-weight:Bold;
-    background:#858585;  /* #44AFE5;  */
-}
