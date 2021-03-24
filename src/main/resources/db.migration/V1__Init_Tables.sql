@@ -1,9 +1,9 @@
-# DROP SCHEMA systemairac;
-# CREATE SCHEMA systemairac
-#     DEFAULT CHARACTER SET utf8mb4
-#     COLLATE utf8mb4_general_ci;
+DROP SCHEMA systemairac;
+CREATE SCHEMA systemairac
+    DEFAULT CHARACTER SET utf8mb4
+    COLLATE utf8mb4_general_ci;
 
-# USE systemairac;
+USE systemairac;
 
 # TODO: BIGINT/INT
 
@@ -12,7 +12,7 @@ create table tbl_users (
    id              BIGINT,
    name            VARCHAR(255) UNIQUE NOT NULL ,
    password        VARCHAR(255) not null,
-   fullName        VARCHAR(255),
+   full_name        VARCHAR(255),
    name_company     VARCHAR(255),
    address_company  VARCHAR(255),
    post            VARCHAR(255),
@@ -36,11 +36,24 @@ CREATE TABLE tbl_users_roles (
     CONSTRAINT fk__tbl_users_roles__tbl_roles FOREIGN KEY (role_id) REFERENCES tbl_roles (id)
 );
 
+DROP TABLE IF EXISTS tbl_unit_types CASCADE;
+CREATE TABLE tbl_unit_types (
+    id SMALLINT,
+    table_name VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+INSERT INTO tbl_unit_types (id, table_name)
+    VALUES (1, 'tbl_humidifiers');
+
 drop table if exists tbl_units cascade;
 create table tbl_units (
     id bigint,
-    type varchar(255) UNIQUE NOT NULL ,
-    primary key(id)
+    type SMALLINT,
+    id_in_subtable BIGINT,
+    primary key(id),
+    CONSTRAINT fk__tbl_units__tbl_unit_types
+        FOREIGN KEY (type) REFERENCES tbl_unit_types (id)
 );
 
 # TODO: если у нас Unit / Calculation -- OneToOne, то они должны быть слиты в единую таблицу!!
@@ -127,7 +140,7 @@ create table tbl_humidifiers (
     id BIGINT,
     brand_id BIGINT NOT NULL ,
     article_number varchar (255) unique NOT NULL ,
-    humidifier_type varchar (255),
+    humidifier_type TINYINT,
     electric_power DECIMAL(6, 2),
     capacity DECIMAL(6, 2),
     phase SMALLINT,
