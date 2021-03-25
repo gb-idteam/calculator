@@ -1,10 +1,10 @@
-package ru.systemairac.calculator.myEnum;
+package ru.systemairac.calculator.myenum;
 
-public enum TableName {
-    HUMIDIFIER("tbl_humidifiers"), DEHUMIDIFIER("tbl_dehumidifiers");
+public enum EnumHumidifierType {
+    HEATING_ELEMENT("Тэновый"), ELECTRODE("Электродный");
     private final String txt;
 
-    TableName(String txt) {
+    EnumHumidifierType(String txt) {
         this.txt= txt;
     }
 
@@ -12,8 +12,8 @@ public enum TableName {
         return txt;
     }
 
-    public static TableName getTypeByTxt(String txt) {
-        for (TableName env : values()) {
+    public static EnumHumidifierType getTypeByTxt(String txt) {
+        for (EnumHumidifierType env : values()) {
             if (env.getTxt().equals(txt)) {
                 return env;
             }

@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.systemairac.calculator.myEnum.RoleName;
+import ru.systemairac.calculator.myenum.RoleName;
 import ru.systemairac.calculator.service.UserService;
 
 @Configuration

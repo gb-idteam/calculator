@@ -24,6 +24,10 @@ public class Unit {
     @OneToOne(cascade = CascadeType.PERSIST)
     private UnitType type;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "calculation_id")
+    private Calculation calculation;
+
     @Column
     private Long idSubTable;
 

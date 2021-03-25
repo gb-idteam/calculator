@@ -1,3 +1,8 @@
+DROP SCHEMA if exists systemairac;
+CREATE SCHEMA systemairac
+    DEFAULT CHARACTER SET utf8mb4
+    COLLATE utf8mb4_general_ci;
+
 CREATE TABLE brand_seq (next_val BIGINT) engine = InnoDB;
 
 INSERT INTO brand_seq
@@ -116,8 +121,6 @@ CREATE TABLE unit_types_seq (next_val BIGINT) engine = InnoDB;
 INSERT INTO unit_types_seq
 VALUES (1);
 
-INSERT INTO unit_types_seq
-VALUES (1);
 
 CREATE TABLE units (
      id BIGINT NOT NULL

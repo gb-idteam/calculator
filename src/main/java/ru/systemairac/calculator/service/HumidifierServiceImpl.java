@@ -2,8 +2,8 @@ package ru.systemairac.calculator.service;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.myEnum.EnumHumidifierType;
-import ru.systemairac.calculator.myEnum.TypeMontage;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
+import ru.systemairac.calculator.myenum.TypeMontage;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

@@ -76,14 +76,14 @@
                 <tr>
                     <td colspan="2">
                         <select name="typeMontage">
-                            <option th:each="r : ${T(ru.systemairac.calculator.myEnum.TypeMontage).values()}"
+                            <option th:each="r : ${T(ru.systemairac.calculator.myenum.TypeMontage).values()}"
                                     th:value="${r}" th:text="${r.getTxt()}"></option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.myEnum.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
+                        <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.myenum.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
                             <tr>
                                 <td>Длина</td>
                                 <td>Ширина</td>
@@ -103,21 +103,21 @@
                 <tr>
                     <td>
                         <select name="humidifierType">
-                            <option th:each="r : ${T(ru.systemairac.calculator.myEnum.HumidifierType).values()}"
+                            <option th:each="r : ${T(ru.systemairac.calculator.myenum.EnumHumidifierType).values()}"
                                     th:value="${r}" th:text="${r.getTxt()}"></option>
                         </select>
                     </td>
-                    <td th:text="${T(ru.systemairac.calculator.myEnum.TypeCylinder).DISMOUNTABLE_CYLINDER.getTxt()}"></td>
+                    <td th:text="${T(ru.systemairac.calculator.myenum.TypeCylinder).DISMOUNTABLE_CYLINDER.getTxt()}"></td>
                 </tr>
                 <tr>
-                    <td th:if="${techDataDto.humidifierType}==${T(ru.systemairac.calculator.myEnum.HumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${T(ru.systemairac.calculator.myEnum.TypeCylinder).DISMOUNTABLE_CYLINDER}">
+                    <td th:if="${techDataDto.enumHumidifierType}==${T(ru.systemairac.calculator.myenum.EnumHumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${T(ru.systemairac.calculator.myenum.TypeCylinder).DISMOUNTABLE_CYLINDER}">
                 </tr>
-                <tr colspan="2" th:if="${techDataDto.humidifierType}==${T(ru.systemairac.calculator.myEnum.HumidifierType).HEATING_ELEMENT.getTxt()}">
+                <tr colspan="2" th:if="${techDataDto.enumHumidifierType}==${T(ru.systemairac.calculator.myenum.EnumHumidifierType).HEATING_ELEMENT.getTxt()}">
                     <!--            <tr colspan="2">-->
                     <td><h3>Выберите тип воды</h3></td>
                     <td>
                         <select name="TypeWater">
-                            <option th:each="r : ${T(ru.systemairac.calculator.myEnum.TypeWater).values()}"
+                            <option th:each="r : ${T(ru.systemairac.calculator.myenum.TypeWater).values()}"
                                     th:value="${r}" th:text="${r.getTxt()}"></option>
                         </select>
                     </td>

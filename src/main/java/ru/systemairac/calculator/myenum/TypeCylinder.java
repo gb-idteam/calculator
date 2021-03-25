@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.myEnum;
+package ru.systemairac.calculator.myenum;
 
 public enum TypeCylinder {
     DISMOUNTABLE_CYLINDER("Разборный цилиндр"), MOUNTABLE_CYLINDER("Неразборный цилиндр");

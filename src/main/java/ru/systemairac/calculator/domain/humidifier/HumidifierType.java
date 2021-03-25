@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.systemairac.calculator.myEnum.EnumHumidifierType;
-import ru.systemairac.calculator.myEnum.TableName;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
 
 import javax.persistence.*;
 

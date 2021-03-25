@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.systemairac.calculator.myEnum.EnumHumidifierType;
-import ru.systemairac.calculator.myEnum.TypeMontage;
-import ru.systemairac.calculator.myEnum.TypeCylinder;
-import ru.systemairac.calculator.myEnum.TypeWater;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
+import ru.systemairac.calculator.myenum.TypeMontage;
+import ru.systemairac.calculator.myenum.TypeCylinder;
+import ru.systemairac.calculator.myenum.TypeWater;
 
 @Data
 @Builder

@@ -9,9 +9,7 @@ import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.service.CalculationService;
 import ru.systemairac.calculator.service.UserService;
-import ru.systemairac.calculator.dto.UserDto;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +26,6 @@ public class MainController {
         this.userService = userService;
         this.calculationService = calculationService;
     }
-
-
 
     @RequestMapping({"","/"})
     public String index(Model model){

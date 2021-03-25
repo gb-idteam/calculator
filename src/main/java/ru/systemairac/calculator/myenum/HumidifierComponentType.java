@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.myEnum;
+package ru.systemairac.calculator.myenum;
 
 public enum HumidifierComponentType {
     CYLINDER_CASING,

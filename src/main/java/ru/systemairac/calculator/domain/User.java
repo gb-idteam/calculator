@@ -1,8 +1,6 @@
 package ru.systemairac.calculator.domain;
 
 import lombok.*;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
-import ru.systemairac.calculator.myEnum.RoleName;
 
 import javax.persistence.*;
 import java.util.List;

@@ -2,7 +2,7 @@ package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.*;
 import ru.systemairac.calculator.domain.Brand;
-import ru.systemairac.calculator.myEnum.TableName;
+import ru.systemairac.calculator.myenum.TableName;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
