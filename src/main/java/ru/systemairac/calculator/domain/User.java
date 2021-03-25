@@ -1,7 +1,8 @@
 package ru.systemairac.calculator.domain;
 
 import lombok.*;
-import ru.systemairac.calculator.myEnum.Role;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
+import ru.systemairac.calculator.myEnum.RoleName;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tbl_users")
+@Table(name = "users")
 public class User {
     private static final String SEQ_NAME = "user_seq";
     @Id
@@ -20,8 +21,13 @@ public class User {
     private Long id;
     private String name;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private final Role role = Role.USER;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 
     private String fullName;
     private String nameCompany;

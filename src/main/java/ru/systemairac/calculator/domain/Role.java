@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
+import ru.systemairac.calculator.myEnum.RoleName;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,21 +14,21 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "calculations")
-public class Calculation {
-    private static final String SEQ_NAME = "calculation_seq";
+@Table(name = "roles")
+public class Role {
+    private static final String SEQ_NAME = "roles_seq";
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Unit> unit;
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "project_id")
-    private Project project;
-
-    @UpdateTimestamp
-    private LocalDateTime date;
+    @Enumerated(EnumType.STRING)
+    private RoleName role;
 }

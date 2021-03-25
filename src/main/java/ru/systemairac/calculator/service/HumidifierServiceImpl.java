@@ -2,7 +2,7 @@ package ru.systemairac.calculator.service;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.myEnum.HumidifierType;
+import ru.systemairac.calculator.myEnum.EnumHumidifierType;
 import ru.systemairac.calculator.myEnum.TypeMontage;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import java.util.List;
 public class HumidifierServiceImpl implements HumidifierService {
 
     @Override
-    public List<HumidifierDto> findHumidifiers(Double power, int phase, HumidifierType humidifierType, TypeMontage typeMontage) {
+    public List<HumidifierDto> findHumidifiers(Double power, int phase, EnumHumidifierType humidifierType, TypeMontage typeMontage) {
         return Arrays.asList(HumidifierDto.builder()
                         .id(2L)
                         .articleNumber("123")

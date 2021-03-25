@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tbl_humidifier_components")
+@Table(name = "humidifier_components")
 public class HumidifierComponent {
 
     private static final String SEQ_NAME = "humidifier_component_seq";

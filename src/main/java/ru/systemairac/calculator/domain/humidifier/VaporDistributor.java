@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tbl_vapor_distributors")
+@Table(name = "vapor_distributors")
 public class VaporDistributor {
 
     private static final String SEQ_NAME = "vapor_distributor_seq";

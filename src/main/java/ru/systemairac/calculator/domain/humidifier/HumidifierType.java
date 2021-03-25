@@ -1,9 +1,11 @@
-package ru.systemairac.calculator.domain;
+package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.systemairac.calculator.myEnum.EnumHumidifierType;
+import ru.systemairac.calculator.myEnum.TableName;
 
 import javax.persistence.*;
 
@@ -12,16 +14,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "brands")
-public class Brand {
-
-    private static final String SEQ_NAME = "brand_seq";
-
+@Table(name = "humidifier_types")
+public class HumidifierType {
+    private static final String SEQ_NAME = "unit_types_seq";
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
 
-    @Column(unique = true)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private EnumHumidifierType tableName;
+
 }

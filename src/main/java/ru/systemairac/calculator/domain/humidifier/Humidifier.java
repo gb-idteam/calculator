@@ -2,8 +2,7 @@ package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.*;
 import ru.systemairac.calculator.domain.Brand;
-import ru.systemairac.calculator.domain.UnitType;
-import ru.systemairac.calculator.myEnum.HumidifierType;
+import ru.systemairac.calculator.myEnum.TableName;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,9 +11,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "tbl_humidifiers")
+@Table(name = "humidifiers")
 public class Humidifier {
 
     private static final String SEQ_NAME = "humidifier_seq";
@@ -30,7 +28,8 @@ public class Humidifier {
     /**
      * Тип установки, для того, чтобы таблица Calculation знала к какой таблице обращаться
      */
-    private UnitType type = UnitType.HUMIDIFIER;
+    @Transient
+    private TableName type = TableName.HUMIDIFIER;
     /**
      * Номер артикуля. Должен быть уникален.
      */
@@ -46,37 +45,43 @@ public class Humidifier {
     /**
      * Тип увлажнителя: ТЭНовый или электродный.
      */
-
+    @OneToOne(cascade = CascadeType.PERSIST)
     private HumidifierType humidifierType;
 
     /**
      * Максимальная потребляемая электрическая мощность, в кВт.
      */
+    @Column
     private float electricPower;
 
     /**
      * Максимальная производительность увлажнителя, в кг воды в час (кг/ч)
      */
+    @Column
     private float capacity;
 
     /**
      * Число фаз (1 или 3).
      */
+    @Column
     private int phase;
 
     /**
      * Рабочее напряжение, в В.
      */
+    @Column
     private int voltage;
 
     /**
      * Количество цилиндров в увлажнителе.
      */
+    @Column
     private int numberOfCylinders;
 
     /**
      * Диаметр паропровода, в мм.
      */
+    @Column
     private int vaporPipeDiameter;
 
 
@@ -97,5 +102,6 @@ public class Humidifier {
             inverseJoinColumns = @JoinColumn(name = "humidifierComponent_id"))
     private List<HumidifierComponent> humidifierComponents;
 
+    @Column
     private BigDecimal price;
 }

@@ -1,10 +1,10 @@
 package ru.systemairac.calculator.myEnum;
 
-public enum HumidifierType {
+public enum EnumHumidifierType {
     HEATING_ELEMENT("Тэновый"), ELECTRODE("Электродный");
     private final String txt;
 
-    HumidifierType(String txt) {
+    EnumHumidifierType(String txt) {
         this.txt= txt;
     }
 
@@ -12,8 +12,8 @@ public enum HumidifierType {
         return txt;
     }
 
-    public static HumidifierType getTypeByTxt(String txt) {
-        for (HumidifierType env : values()) {
+    public static EnumHumidifierType getTypeByTxt(String txt) {
+        for (EnumHumidifierType env : values()) {
             if (env.getTxt().equals(txt)) {
                 return env;
             }

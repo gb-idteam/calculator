@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.systemairac.calculator.myEnum.Role;
+import ru.systemairac.calculator.myEnum.RoleName;
 import ru.systemairac.calculator.service.UserService;
 
 @Configuration
@@ -58,8 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/calculator").hasAnyAuthority(Role.USER.name())
-                .antMatchers("/adminForm").hasAnyAuthority(Role.ADMIN.name())
+                .antMatchers("/calculator").hasAnyAuthority(RoleName.USER.name())
+                .antMatchers("/adminForm").hasAnyAuthority(RoleName.ADMIN.name())
                 .anyRequest().permitAll()
                 .and ()
                 .formLogin()

@@ -18,7 +18,7 @@ public class CalculationServiceImpl implements CalculationService {
     @Override
     public List<HumidifierDto> getHumidifiers(TechDataDto techDataDto) {
         return humidifierService.findHumidifiers(techDataDto.getCalcCapacity(), techDataDto.getPhase(),
-                techDataDto.getHumidifierType(),techDataDto.getTypeMontage());
+                techDataDto.getEnumHumidifierType(),techDataDto.getTypeMontage());
     }
 
     @Override

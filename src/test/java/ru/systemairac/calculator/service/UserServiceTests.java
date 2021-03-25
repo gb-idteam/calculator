@@ -182,7 +182,7 @@ public class UserServiceTests {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toArray(String[]::new);
-        String[] rolesExpected = new String[] {user.getRole().name()};
+        String[] rolesExpected = new String[] {user.getRoles().toString()};
         assertArrayEquals(rolesExpected, rolesActual);
     }
 

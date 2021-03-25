@@ -1,5 +1,5 @@
 package ru.systemairac.calculator.myEnum;
 
-public enum Role {
+public enum RoleName {
     USER,ADMIN
 }
