@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "unit_types")
+@Table(name = "unit_type")
 public class UnitType {
     private static final String SEQ_NAME = "unit_types_seq";
     @Id

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "humidifier_types")
+@Table(name = "humidifier_type")
 public class HumidifierType {
     private static final String SEQ_NAME = "unit_types_seq";
     @Id

@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "humidifiers")
+@Table(name = "humidifier")
 public class Humidifier {
 
     private static final String SEQ_NAME = "humidifier_seq";

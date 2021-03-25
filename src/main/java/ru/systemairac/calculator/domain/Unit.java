@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "units")
+@Table(name = "unit")
 public class Unit {
     private static final String SEQ_NAME = "unit_seq";
     @Id
