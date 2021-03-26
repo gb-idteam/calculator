@@ -9,7 +9,7 @@ on:
     - master
     - development
   pull_request:
-  workflow_run:
+  workflow_dispatch:
   
 
 jobs:
