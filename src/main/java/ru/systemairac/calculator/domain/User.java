@@ -17,10 +17,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
-    private String name;
+
+    @Column(unique = true)
+    private String email;
+
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -32,7 +35,6 @@ public class User {
     private String addressCompany;
     private String post;
     private Long phone;
-    private String email;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Project> projects;
