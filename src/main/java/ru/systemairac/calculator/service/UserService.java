@@ -4,11 +4,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 
+import java.util.Optional;
+
 public interface UserService extends UserDetailsService {
     boolean save(UserDto userDto);
-    User findByName(String name);
+    Optional<User> findByEmail(String email);
     void delete(Long id);
     void save(User user);
-    User getById(Long id);
-    UserDto findById(Long id);
+    Optional<User> getById(Long id);
+    Optional<UserDto> getDtoById(Long id);
 }

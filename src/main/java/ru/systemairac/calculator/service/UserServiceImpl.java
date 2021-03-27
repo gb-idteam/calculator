@@ -1,51 +1,68 @@
 package ru.systemairac.calculator.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.systemairac.calculator.domain.Role;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.mapper.UserMapper;
+import ru.systemairac.calculator.myenum.RoleName;
+import ru.systemairac.calculator.repository.RoleRepository;
 import ru.systemairac.calculator.repository.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper = UserMapper.MAPPER;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private List<Role> roles;
+
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         init();
     }
 
-    private void init(){
-        List<User> users = new ArrayList<>();
-        users.add(User.builder()
-                        .nameCompany("Test1")
-                        .addressCompany("QWERTY")
-                        .email("test@mail.ru")
-                        .fullName("TEST")
-                        .name("teat1")
-                        .password("pass")
-                        .build());
-        users.add(User.builder()
-                .nameCompany("Test2")
-                .addressCompany("QWERTY2")
-                .email("test2@mail.ru")
-                .fullName("TEST2")
-                .build());
-        userRepository.saveAll(users);
+    private void init() {
+        roles = new ArrayList<>();
+        roleRepository.findAll().forEach(roles::add);
+        if (roles.size() == 0) {
+            // initialize roles
+            short id = 1;
+            for (RoleName roleName : RoleName.values()) {
+                roleRepository.save(new Role(id++, roleName.name()));
+            }
+        } else {
+            // TODO: verify roles in db
+        }
+//        List<User> users = new ArrayList<>();
+//        users.add(User.builder()
+//                        .nameCompany("Test1")
+//                        .addressCompany("QWERTY")
+//                        .email("test@mail.ru")
+//                        .fullName("TEST")
+//                        .build());
+//        users.add(User.builder()
+//                .nameCompany("Test2")
+//                .addressCompany("QWERTY2")
+//                .email("test2@mail.ru")
+//                .fullName("TEST2")
+//                .build());
+//        userRepository.saveAll(users);
     }
 
     @Override
@@ -54,28 +71,26 @@ public class UserServiceImpl implements UserService {
         if(!Objects.equals(userDto.getPassword(), userDto.getMatchingPassword())){
             throw new RuntimeException ("Password is not equal");
         }
-        User user = User.builder()
-                .name(userDto.getName())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .email(userDto.getEmail())
-                .build();
-        userRepository.save(user);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(mapper.toUser(userDto));
+        userDto.setPassword(userDto.getMatchingPassword());
         return true;
     }
 
     @Override
-    public User getById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public Optional<User> getById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public User findByName(String name) {
-        return userRepository.findFirstByName(name);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findFirstByEmail(email);
     }
 
     @Override
-    public UserDto findById(Long id) {
-        return mapper.fromUser(userRepository.getOne (id));
+    public Optional<UserDto> getDtoById(Long id) {
+        Optional<User> u = getById(id);
+        return u.map(mapper::fromUser);
     }
 
     @Override
@@ -89,18 +104,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findFirstByName(username);
-        if(user == null){
-            throw new UsernameNotFoundException ("User not found with name: " + username);
-        }
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findFirstByEmail(email).orElseThrow( () ->
+                new UsernameNotFoundException("User not found with email: " + email)
+        );
 
-        List<GrantedAuthority> roles = new ArrayList<> ();
-        roles.add(new SimpleGrantedAuthority (user.getRoles().toString()));
+        List<GrantedAuthority> authorityList =
+            user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getName(),
+                user.getEmail(),
                 user.getPassword(),
-                roles);
+                authorityList);
     }
 }

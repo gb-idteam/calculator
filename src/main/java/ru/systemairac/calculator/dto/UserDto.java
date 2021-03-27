@@ -13,12 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    private String name;
     private String password;
     private String fullName;
     private String nameCompany;
     private String addressCompany;
-    private String post;
+    private String position;
     private Long phone;
     private String email;
     private String matchingPassword;
