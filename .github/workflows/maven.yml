@@ -3,15 +3,19 @@
 
 name: Java CI with Maven
 
-on:
+on: 
   push:
+    branches:
+    - master
+    - development
   pull_request:
+  workflow_dispatch:
+  
 
-jobs:
-  build:
-
+jobs:  
+  compile:
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -19,5 +23,20 @@ jobs:
       with:
         java-version: 11
         architecture: x64
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    - name: Compile
+      run: mvn -B compile --file pom.xml
+      
+  test: 
+    runs-on: ubuntu-latest
+    needs: compile
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: mvn -B test --file pom.xml
+  
