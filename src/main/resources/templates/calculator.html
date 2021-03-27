@@ -102,7 +102,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <select name="humidifierType">
+                        <select name="EnumHumidifierType">
                             <option th:each="r : ${T(ru.systemairac.calculator.myenum.EnumHumidifierType).values()}"
                                     th:value="${r}" th:text="${r.getTxt()}"></option>
                         </select>

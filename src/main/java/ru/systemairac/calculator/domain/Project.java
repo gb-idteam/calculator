@@ -23,11 +23,10 @@ public class Project {
 
     private String address;
     private String title;
-    @OneToMany(mappedBy = "project",cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<Calculation> calculation;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id")
     private User user;
 
 }

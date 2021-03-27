@@ -1,6 +1,8 @@
 package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.myenum.TableName;
 
@@ -9,10 +11,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "humidifier")
+
 public class Humidifier {
 
     private static final String SEQ_NAME = "humidifier_seq";
@@ -45,20 +49,20 @@ public class Humidifier {
     /**
      * Тип увлажнителя: ТЭНовый или электродный.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private HumidifierType humidifierType;
 
     /**
      * Максимальная потребляемая электрическая мощность, в кВт.
      */
     @Column
-    private float electricPower;
+    private double electricPower;
 
     /**
      * Максимальная производительность увлажнителя, в кг воды в час (кг/ч)
      */
     @Column
-    private float capacity;
+    private double capacity;
 
     /**
      * Число фаз (1 или 3).
@@ -88,6 +92,7 @@ public class Humidifier {
     /**
      * Парораспределители, подходящие для данной модели.
      */
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(
             name = "humidifiers_vaporDistributors",
@@ -95,6 +100,7 @@ public class Humidifier {
             inverseJoinColumns = @JoinColumn(name = "vaporDistributor_id"))
     private List<VaporDistributor> vaporDistributors;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(
             name = "humidifiers_humidifierComponents",

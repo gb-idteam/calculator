@@ -27,7 +27,6 @@ public class Calculation {
     private List<Unit> unit;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "project_id")
     private Project project;
 
     @UpdateTimestamp

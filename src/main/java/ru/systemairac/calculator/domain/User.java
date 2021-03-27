@@ -34,7 +34,7 @@ public class User {
     private Long phone;
     private String email;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects;
 
 

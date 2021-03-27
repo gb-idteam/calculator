@@ -1,9 +1,15 @@
 package ru.systemairac.calculator.service;
 
 import org.springframework.stereotype.Service;
+import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.HumidifierType;
 import ru.systemairac.calculator.dto.HumidifierDto;
+import ru.systemairac.calculator.mapper.HumidifierMapper;
+import ru.systemairac.calculator.mapper.UserMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TypeMontage;
+import ru.systemairac.calculator.repository.HumidifierRepository;
+import ru.systemairac.calculator.repository.HumidifierTypeRepository;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -12,30 +18,54 @@ import java.util.List;
 @Service
 public class HumidifierServiceImpl implements HumidifierService {
 
-    @Override
-    public List<HumidifierDto> findHumidifiers(Double power, int phase, EnumHumidifierType humidifierType, TypeMontage typeMontage) {
-        return Arrays.asList(HumidifierDto.builder()
-                        .id(2L)
+    private final HumidifierRepository humidifierRepository;
+    private final HumidifierTypeRepository humidifierRepositoryType;
+    private final HumidifierMapper mapper = HumidifierMapper.MAPPER;
+
+    public HumidifierServiceImpl(HumidifierRepository humidifierRepository, HumidifierTypeRepository humidifierRepositoryType) {
+        this.humidifierRepository = humidifierRepository;
+        this.humidifierRepositoryType = humidifierRepositoryType;
+        init();
+    }
+
+    public void init(){
+        HumidifierType type1 = new HumidifierType(null,EnumHumidifierType.ELECTRODE);
+        HumidifierType type2 = new HumidifierType(null,EnumHumidifierType.HEATING_ELEMENT);
+        List<Humidifier> humidifiers = Arrays.asList(Humidifier.builder()
+                        .id(1L)
                         .articleNumber("123")
                         .electricPower(7)
-                        .maxVaporOutput(25)
+                        .capacity(25)
+                        .humidifierType(type1)
                         .phase(3)
                         .vaporPipeDiameter(25)
                         .numberOfCylinders(1)
                         .voltage(380)
                         .price(BigDecimal.valueOf(1500))
                         .build(),
-                HumidifierDto.builder()
-                        .id(1L)
+                Humidifier.builder()
+                        .id(2L)
                         .articleNumber("1")
                         .electricPower(5)
-                        .maxVaporOutput(20)
+                        .humidifierType(type2)
+                        .capacity(20)
                         .phase(3)
                         .vaporPipeDiameter(25)
                         .numberOfCylinders(1)
                         .voltage(380)
                         .price(BigDecimal.valueOf(1000))
                         .build());
+        humidifierRepository.saveAll(humidifiers);
+    }
+    @Override
+    public List<Humidifier> findHumidifiers(double power, EnumHumidifierType humidifierType, int phase) {
+        return humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierType_TypeLikeAndPhaseOrderByCapacity(power,humidifierType,phase);
+    }
+
+    @Override
+    public List<HumidifierDto> findDtoHumidifiers(double power, int phase, EnumHumidifierType humidifierType) {
+        List<Humidifier> humidifiers = humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierType_TypeLikeAndPhaseOrderByCapacity(power,humidifierType,phase);
+        return mapper.fromHouseList(humidifiers);
     }
 
     @Override
@@ -60,6 +90,21 @@ public class HumidifierServiceImpl implements HumidifierService {
 
     @Override
     public void save(HumidifierDto humidifierDto) {
+    }
+
+    @Override
+    public void save(Humidifier humidifier) {
+        humidifierRepository.save(humidifier);
+    }
+
+    @Override
+    public void save(HumidifierType humidifierType) {
+        humidifierRepositoryType.save(humidifierType);
+    }
+
+    @Override
+    public void saveAll(List<Humidifier> humidifier) {
+        humidifierRepository.saveAll(humidifier);
     }
 
     @Override

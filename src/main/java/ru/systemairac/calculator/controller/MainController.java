@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.service.CalculationService;
 import ru.systemairac.calculator.service.UserService;
 

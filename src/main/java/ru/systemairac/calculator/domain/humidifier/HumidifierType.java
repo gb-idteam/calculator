@@ -22,6 +22,6 @@ public class HumidifierType {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private EnumHumidifierType tableName;
+    private EnumHumidifierType type;
 
 }
