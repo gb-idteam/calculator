@@ -115,7 +115,7 @@ public class UserServiceTests {
         User user = userService.findByEmail(userDto.getEmail()).orElseThrow();
 
         assertEquals(userDto.getEmail(), user.getEmail());
-        assertTrue(BCrypt.checkpw(userDto.getPassword(), user.getPassword()));
+        assertTrue(BCrypt.checkpw(userDto.getMatchingPassword(), user.getPassword()));
         assertEquals(userDto.getEmail(), user.getEmail());
     }
 
