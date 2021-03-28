@@ -1,5 +1,9 @@
 package ru.systemairac.calculator.service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierType;
@@ -8,7 +12,9 @@ import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.mapper.UserMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TypeMontage;
+import ru.systemairac.calculator.repository.HumidifierFilter;
 import ru.systemairac.calculator.repository.HumidifierRepository;
+import ru.systemairac.calculator.repository.HumidifierSpecification;
 import ru.systemairac.calculator.repository.HumidifierTypeRepository;
 
 import java.math.BigDecimal;
@@ -17,6 +23,8 @@ import java.util.List;
 
 @Service
 public class HumidifierServiceImpl implements HumidifierService {
+
+    private static final int NUMBER_OF_RESULTS = 3;
 
     private final HumidifierRepository humidifierRepository;
     private final HumidifierTypeRepository humidifierRepositoryType;
@@ -59,12 +67,18 @@ public class HumidifierServiceImpl implements HumidifierService {
     }
     @Override
     public List<Humidifier> findHumidifiers(double power, EnumHumidifierType humidifierType, int phase) {
-        return humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierType_TypeLikeAndPhaseOrderByCapacity(power,humidifierType,phase);
+        return humidifierRepository.findAll(
+                new HumidifierSpecification(new HumidifierFilter(power, phase, humidifierType)),
+                PageRequest.of(0, NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
+        ).toList();
     }
 
     @Override
     public List<HumidifierDto> findDtoHumidifiers(double power, int phase, EnumHumidifierType humidifierType) {
-        List<Humidifier> humidifiers = humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierType_TypeLikeAndPhaseOrderByCapacity(power,humidifierType,phase);
+        List<Humidifier> humidifiers = humidifierRepository.findAll(
+                new HumidifierSpecification(new HumidifierFilter(power, phase, humidifierType)),
+                PageRequest.of(0,NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
+        ).toList();
         return mapper.fromHouseList(humidifiers);
     }
 
