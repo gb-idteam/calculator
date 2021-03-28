@@ -79,7 +79,7 @@ public class HumidifierServiceImpl implements HumidifierService {
                 new HumidifierSpecification(new HumidifierFilter(power, phase, humidifierType)),
                 PageRequest.of(0,NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
         ).toList();
-        return mapper.fromHouseList(humidifiers);
+        return mapper.fromHumidifierList(humidifiers);
     }
 
     @Override
