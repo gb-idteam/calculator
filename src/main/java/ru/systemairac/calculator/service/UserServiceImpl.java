@@ -17,7 +17,6 @@ import ru.systemairac.calculator.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,6 +89,11 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDto> getDtoById(Long id) {
         Optional<User> u = getById(id);
         return u.map(mapper::fromUser);
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

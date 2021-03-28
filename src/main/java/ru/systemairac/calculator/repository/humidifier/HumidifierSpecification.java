@@ -1,10 +1,7 @@
-package ru.systemairac.calculator.repository;
+package ru.systemairac.calculator.repository.humidifier;
 
-import org.hibernate.query.criteria.internal.CriteriaQueryImpl;
 import org.springframework.data.jpa.domain.Specification;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.domain.humidifier.HumidifierType;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;

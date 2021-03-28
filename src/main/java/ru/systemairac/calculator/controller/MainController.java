@@ -17,31 +17,26 @@ import java.util.List;
 
 @Controller
 public class MainController {
-
+    private final ProjectService projectService;
     private final UserService userService;
     private final CalculationService calculationService;
-    private final ProjectService projectService;
     private ProjectDto projectDto = new ProjectDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
     private TechDataDto techDataDto = new TechDataDto();
 
-    public MainController(
-            UserService userService,
-            CalculationService calculationService,
-            ProjectService projectService
-    ) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService) {
+        this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
-        this.projectService = projectService;
     }
 
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
         model.addAttribute("projectDto", projectDto);
-        if (projects!=null) {
+        if (projects.isEmpty()) {
             projects = projectService.findByUser(
-                    userService.findByEmail( principal.getName() ).orElseThrow() // вообще говоря, ненахождение юзера
+                    userService.getByEmail( principal.getName() ) // вообще говоря, ненахождение юзера
             );                                                                   // случиться не должно
         }
         model.addAttribute("projects", projects);
@@ -50,9 +45,9 @@ public class MainController {
         return "calculator";
     }
 
-
     @PostMapping("/calc")
-    public String calcAndGetHumidifier(TechDataDto techDataDto){
+    public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
+        this.projectDto = projectDto;
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
         return "redirect:/systemair-ac/";

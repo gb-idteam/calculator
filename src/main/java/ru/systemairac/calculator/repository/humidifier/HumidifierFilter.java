@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.repository;
+package ru.systemairac.calculator.repository.humidifier;
 
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 

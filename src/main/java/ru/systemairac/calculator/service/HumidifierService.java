@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface HumidifierService {
 
-    List<Humidifier> findHumidifiers(double power, EnumHumidifierType humidifierType, int phase);
+    List<Humidifier> findHumidifiers(double capacity, EnumHumidifierType humidifierType, int phase);
 
     List<HumidifierDto> findDtoHumidifiers(double power, int phase, EnumHumidifierType humidifierType);
 
@@ -22,11 +22,7 @@ public interface HumidifierService {
 
     void save(Humidifier humidifier);
 
-    void save(HumidifierType humidifierType);
-
     void saveAll(List<Humidifier> humidifier);
 
     void deleteById(Long id);
-
-    List<HumidifierDto> findHumidifiersNamed(double power, int phase, EnumHumidifierType enumHumidifierType);
 }

@@ -23,6 +23,11 @@ public class RegistrationController {
         return "registration";
     }
 
+    @RequestMapping("/systemair-ac/auth")
+    public String redirect() {
+        return "redirect:/systemair-ac/";
+    }
+
     @PostMapping("/register")
     @PreAuthorize("permitAll()")
     public String registerButtonClick(UserDto userDto) {
