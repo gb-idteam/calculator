@@ -1,6 +1,5 @@
 package ru.systemairac.calculator.service;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierType;
@@ -9,11 +8,11 @@ import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.mapper.UserMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TypeMontage;
+import ru.systemairac.calculator.repository.HumidifierFilter;
 import ru.systemairac.calculator.repository.HumidifierRepository;
+import ru.systemairac.calculator.repository.HumidifierSpecification;
 import ru.systemairac.calculator.repository.HumidifierTypeRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -21,13 +20,11 @@ import java.util.List;
 @Service
 public class HumidifierServiceImpl implements HumidifierService {
 
+    private static final int NUMBER_OF_RESULTS = 3;
+
     private final HumidifierRepository humidifierRepository;
-    private static final int LIMIT = 3;
     private final HumidifierTypeRepository humidifierRepositoryType;
     private final HumidifierMapper mapper = HumidifierMapper.MAPPER;
-
-    @PersistenceContext
-    private EntityManager em;
 
     public HumidifierServiceImpl(HumidifierRepository humidifierRepository, HumidifierTypeRepository humidifierRepositoryType) {
         this.humidifierRepository = humidifierRepository;
@@ -65,22 +62,19 @@ public class HumidifierServiceImpl implements HumidifierService {
         humidifierRepository.saveAll(humidifiers);
     }
     @Override
-    public List<HumidifierDto> findHumidifiersNamed(double power,  int phase,EnumHumidifierType humidifierType) {
-        return mapper.fromHumidifierList(em.createNamedQuery("findRequiredHumidifiers",Humidifier.class)
-                .setParameter("capacity",power)
-                .setParameter("phase",phase)
-                .setParameter("humidifierType",humidifierType)
-                .setMaxResults(LIMIT).getResultList());
-    }
-
-    @Override
     public List<Humidifier> findHumidifiers(double power, EnumHumidifierType humidifierType, int phase) {
-        return humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierTypeEqualsAndPhaseOrderByCapacity(power,humidifierType,phase);
+        return humidifierRepository.findAll(
+                new HumidifierSpecification(new HumidifierFilter(power, phase, humidifierType)),
+                PageRequest.of(0, NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
+        ).toList();
     }
 
     @Override
     public List<HumidifierDto> findDtoHumidifiers(double power, int phase, EnumHumidifierType humidifierType) {
-        List<Humidifier> humidifiers = humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierTypeEqualsAndPhaseOrderByCapacity(power,humidifierType,phase);
+        List<Humidifier> humidifiers = humidifierRepository.findAll(
+                new HumidifierSpecification(new HumidifierFilter(power, phase, humidifierType)),
+                PageRequest.of(0,NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
+        ).toList();
         return mapper.fromHumidifierList(humidifiers);
     }
 
