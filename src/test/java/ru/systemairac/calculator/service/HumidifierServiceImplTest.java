@@ -37,10 +37,10 @@ class HumidifierServiceImplTest {
     private static Humidifier humidifier5 = new Humidifier();
     private static Humidifier humidifier6 = new Humidifier();
     private static Humidifier humidifier7 = new Humidifier();
-    private HumidifierType type1 = new HumidifierType(null,EnumHumidifierType.ELECTRODE);
-    private HumidifierType type2 = new HumidifierType(null,EnumHumidifierType.HEATING_ELEMENT);
+    private EnumHumidifierType type1 = EnumHumidifierType.ELECTRODE;
+    private EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
 
-    private static Humidifier generateHumidifier(HumidifierType type, double capacity, int phase) {
+    private static Humidifier generateHumidifier(EnumHumidifierType type, double capacity, int phase) {
         Humidifier humidifier =Humidifier.builder().
                 humidifierType(type).
                 type(TableName.HUMIDIFIER).

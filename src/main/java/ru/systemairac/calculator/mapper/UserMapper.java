@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 
-@Mapper//(uses = {ProjectMapper.class})
+@Mapper(uses = {ProjectMapper.class})
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 

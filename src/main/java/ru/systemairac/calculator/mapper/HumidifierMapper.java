@@ -16,8 +16,8 @@ public interface HumidifierMapper {
     HumidifierMapper MAPPER = Mappers.getMapper(HumidifierMapper.class);
 
     Humidifier toHumidifier(HumidifierDto dto);
-    List<Humidifier> toHouseList(List<HumidifierDto> houses);
+    List<Humidifier> toHumidifierList(List<HumidifierDto> humidifiers);
     @InheritInverseConfiguration
     HumidifierDto fromHumidifier(Humidifier humidifier);
-    List<HumidifierDto> fromHouseList(List<Humidifier> houses);
+    List<HumidifierDto> fromHumidifierList(List<Humidifier> humidifiers);
 }

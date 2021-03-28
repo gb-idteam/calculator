@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TableName;
 
 import javax.persistence.*;
@@ -16,7 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "humidifier")
-
+@NamedQueries(
+        @NamedQuery(name = "findRequiredHumidifiers", query="SELECT h FROM Humidifier h WHERE " +
+                "h.capacity>=:capacity AND h.phase=:phase AND h.humidifierType = :humidifierType ORDER BY h.capacity ASC")
+)
 public class Humidifier {
 
     private static final String SEQ_NAME = "humidifier_seq";
@@ -49,8 +53,8 @@ public class Humidifier {
     /**
      * Тип увлажнителя: ТЭНовый или электродный.
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private HumidifierType humidifierType;
+    @Enumerated(EnumType.STRING)
+    private EnumHumidifierType humidifierType;
 
     /**
      * Максимальная потребляемая электрическая мощность, в кВт.

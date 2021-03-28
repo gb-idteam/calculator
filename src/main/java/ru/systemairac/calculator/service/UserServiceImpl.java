@@ -49,20 +49,20 @@ public class UserServiceImpl implements UserService {
         } else {
             // TODO: verify roles in db
         }
-//        List<User> users = new ArrayList<>();
-//        users.add(User.builder()
-//                        .nameCompany("Test1")
-//                        .addressCompany("QWERTY")
-//                        .email("test@mail.ru")
-//                        .fullName("TEST")
-//                        .build());
-//        users.add(User.builder()
-//                .nameCompany("Test2")
-//                .addressCompany("QWERTY2")
-//                .email("test2@mail.ru")
-//                .fullName("TEST2")
-//                .build());
-//        userRepository.saveAll(users);
+        List<User> users = new ArrayList<>();
+        users.add(User.builder()
+                        .nameCompany("Test1")
+                        .addressCompany("QWERTY")
+                        .email("test@mail.ru")
+                        .fullName("TEST")
+                        .build());
+        users.add(User.builder()
+                .nameCompany("Test2")
+                .addressCompany("QWERTY2")
+                .email("test2@mail.ru")
+                .fullName("TEST2")
+                .build());
+        userRepository.saveAll(users);
     }
 
     @Override
