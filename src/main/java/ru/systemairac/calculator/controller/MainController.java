@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.service.CalculationService;
+import ru.systemairac.calculator.service.ProjectService;
 import ru.systemairac.calculator.service.UserService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,29 +20,42 @@ public class MainController {
 
     private final UserService userService;
     private final CalculationService calculationService;
+    private final ProjectService projectService;
     private ProjectDto projectDto = new ProjectDto();
+    private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
     private TechDataDto techDataDto = new TechDataDto();
 
-    public MainController(UserService userService, CalculationService calculationService) {
+    public MainController(UserService userService, CalculationService calculationService, ProjectService projectService) {
         this.userService = userService;
         this.calculationService = calculationService;
+        this.projectService = projectService;
     }
 
     @RequestMapping({"","/"})
-    public String index(Model model){
+    public String index(Model model, Principal principal){
         model.addAttribute("projectDto", projectDto);
+        this.projects = projects!=null ? projects : projectService.findByUser(userService.findByEmail(principal.getName()).orElse(null));
+        model.addAttribute("projects", projects);
         model.addAttribute("himidifiers", humidifiers);
         model.addAttribute("techDataDto", techDataDto);
         return "calculator";
     }
 
+
     @PostMapping("/calc")
-    public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
-        this.projectDto = projectDto;
+    public String calcAndGetHumidifier(TechDataDto techDataDto){
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        return "redirect:/systemair-ac";
+        return "redirect:/systemair-ac/";
+    }
+
+    @PostMapping("/clear")
+    public String clear(){
+            this.humidifiers.clear();
+            this.techDataDto = new TechDataDto();
+            this.projectDto = new ProjectDto();
+            return "redirect:/systemair-ac/";
     }
 
     @RequestMapping("/login")

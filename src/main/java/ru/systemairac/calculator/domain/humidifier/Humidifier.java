@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TableName;
 
 import javax.persistence.*;
@@ -49,8 +50,8 @@ public class Humidifier {
     /**
      * Тип увлажнителя: ТЭНовый или электродный.
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private HumidifierType humidifierType;
+    @Enumerated(EnumType.STRING)
+    private EnumHumidifierType humidifierType;
 
     /**
      * Максимальная потребляемая электрическая мощность, в кВт.

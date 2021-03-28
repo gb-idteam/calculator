@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public class HumidifierDto {
     private Long id;
     private String articleNumber;
-    private float electricPower;
-    private float maxVaporOutput;
+    private double electricPower;
+    private double capacity;
     private int phase;
     private int voltage;
     private int numberOfCylinders;
