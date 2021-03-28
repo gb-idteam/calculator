@@ -26,7 +26,11 @@ public class MainController {
     private List<HumidifierDto> humidifiers = new ArrayList<>();
     private TechDataDto techDataDto = new TechDataDto();
 
-    public MainController(UserService userService, CalculationService calculationService, ProjectService projectService) {
+    public MainController(
+            UserService userService,
+            CalculationService calculationService,
+            ProjectService projectService
+    ) {
         this.userService = userService;
         this.calculationService = calculationService;
         this.projectService = projectService;
@@ -35,7 +39,12 @@ public class MainController {
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
         model.addAttribute("projectDto", projectDto);
-        this.projects = projects!=null ? projects : projectService.findByUser(userService.findByEmail(principal.getName()).orElse(null));
+        if (projects.isEmpty()) {
+            projects = projectService.findByUser(
+                    userService.findByEmail( principal.getName() ).orElseThrow() // вообще говоря, ненахождение юзера
+            );                                                                   // случиться не должно
+
+        }
         model.addAttribute("projects", projects);
         model.addAttribute("himidifiers", humidifiers);
         model.addAttribute("techDataDto", techDataDto);
