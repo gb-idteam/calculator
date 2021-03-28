@@ -12,6 +12,8 @@ import ru.systemairac.calculator.myenum.TypeMontage;
 import ru.systemairac.calculator.repository.HumidifierRepository;
 import ru.systemairac.calculator.repository.HumidifierTypeRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +22,12 @@ import java.util.List;
 public class HumidifierServiceImpl implements HumidifierService {
 
     private final HumidifierRepository humidifierRepository;
+    private static final int LIMIT = 3;
     private final HumidifierTypeRepository humidifierRepositoryType;
     private final HumidifierMapper mapper = HumidifierMapper.MAPPER;
+
+    @PersistenceContext
+    private EntityManager em;
 
     public HumidifierServiceImpl(HumidifierRepository humidifierRepository, HumidifierTypeRepository humidifierRepositoryType) {
         this.humidifierRepository = humidifierRepository;
@@ -58,6 +64,15 @@ public class HumidifierServiceImpl implements HumidifierService {
                         .build());
         humidifierRepository.saveAll(humidifiers);
     }
+    @Override
+    public List<HumidifierDto> findHumidifiersNamed(double power,  int phase,EnumHumidifierType humidifierType) {
+        return mapper.fromHumidifierList(em.createNamedQuery("findRequiredHumidifiers",Humidifier.class)
+                .setParameter("capacity",power)
+                .setParameter("phase",phase)
+                .setParameter("humidifierType",humidifierType)
+                .setMaxResults(LIMIT).getResultList());
+    }
+
     @Override
     public List<Humidifier> findHumidifiers(double power, EnumHumidifierType humidifierType, int phase) {
         return humidifierRepository.findDistinctFirst3ByCapacityGreaterThanEqualAndHumidifierTypeEqualsAndPhaseOrderByCapacity(power,humidifierType,phase);

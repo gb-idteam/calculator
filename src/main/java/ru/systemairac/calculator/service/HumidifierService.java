@@ -24,8 +24,9 @@ public interface HumidifierService {
 
     void save(HumidifierType humidifierType);
 
-
     void saveAll(List<Humidifier> humidifier);
 
     void deleteById(Long id);
+
+    List<HumidifierDto> findHumidifiersNamed(double power, int phase, EnumHumidifierType enumHumidifierType);
 }

@@ -39,11 +39,10 @@ public class MainController {
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
         model.addAttribute("projectDto", projectDto);
-        if (projects.isEmpty()) {
+        if (projects!=null) {
             projects = projectService.findByUser(
                     userService.findByEmail( principal.getName() ).orElseThrow() // вообще говоря, ненахождение юзера
             );                                                                   // случиться не должно
-
         }
         model.addAttribute("projects", projects);
         model.addAttribute("himidifiers", humidifiers);

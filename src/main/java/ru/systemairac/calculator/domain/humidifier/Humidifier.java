@@ -17,7 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "humidifier")
-
+@NamedQueries(
+        @NamedQuery(name = "findRequiredHumidifiers", query="SELECT h FROM Humidifier h WHERE " +
+                "h.capacity>=:capacity AND h.phase=:phase AND h.humidifierType = :humidifierType ORDER BY h.capacity ASC")
+)
 public class Humidifier {
 
     private static final String SEQ_NAME = "humidifier_seq";
