@@ -24,6 +24,7 @@ public class Project {
     private String address;
     private String title;
     @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "project_id")
     private List<Calculation> calculation;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

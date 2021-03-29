@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 
 </head>
-<body style="height: 100%" id="body-tag">
+<body style="height: 100%" id="body-tag" >
 
 <div id="DivLogoPrint">
     <img id="logoPrint" src="statico/img/logo.png" height="80px">
@@ -23,7 +23,7 @@
             <span class="bg_circle" style="background: rgb(122, 214, 211);">1</span>
             Заполнение информации об объекте
         </h1>
-        <form th:action="@{#}" th:object="${projectDto}" method="post">
+        <form th:action="@{/systemair-ac/calculator/saveProject}" th:object="${projectDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
                 <tr th:if="${projects.size() > 0}">
                     <td>Выбор существующего проекта</td>
@@ -34,14 +34,14 @@
                 <tr>
                     <td>Название проекта</td>
                     <td>
-                        <input type="number"th:field="*{title}"/>
+                        <input type="text"th:field="*{title}"/>
                     </td>
                 </tr>
                 <tr>
                 <tr>
                     <td>Адрес проекта</td>
                     <td>
-                        <input type="number"th:field="*{address}"/>
+                        <input type="text"th:field="*{address}"/>
                     </td>
                 </tr>
                 </tr>
@@ -172,7 +172,7 @@
             </tr>
             <tr th:each="humidifier : ${himidifiers}">
                 <td>
-                    <input type="radio" th:value="${humidifier}" style="width: 50px;">
+                    <input type="radio" th:value="${humidifier}" style="width: 50px;" th:action="@{/systemair-ac/calculator/selectHumidifier}">
                 </td>
                 <td th:text="${humidifier.articleNumber}">Articul</td>
                 <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>

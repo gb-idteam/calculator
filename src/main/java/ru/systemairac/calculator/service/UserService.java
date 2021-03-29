@@ -2,6 +2,7 @@ package ru.systemairac.calculator.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.systemairac.calculator.domain.User;
+import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.UserDto;
 
 import java.util.Optional;

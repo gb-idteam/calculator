@@ -11,7 +11,7 @@
 	<groupId>ru.systemair-ac</groupId>
 	<artifactId>calculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>calculator</name>
+	<name>systemair-ac/calculator</name>
 	<description>Calculator project</description>
 	<properties>
 		<java.version>11</java.version>

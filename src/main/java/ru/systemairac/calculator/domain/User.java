@@ -37,6 +37,7 @@ public class User {
     private Long phone;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Project> projects;
 
 
