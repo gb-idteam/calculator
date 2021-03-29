@@ -3,6 +3,7 @@ package ru.systemairac.calculator.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.dto.UserDto;
@@ -31,6 +32,12 @@ public class RegistrationController {
         return "redirect:/systemair-ac/calculator";
     }
 
+    //Решить проблему с переадресацией после LogIn
+    @PostMapping({"/auth"})
+    public String redirect(){
+        return "redirect:/systemair-ac/calculator";
+    }
+
     @PostMapping("/register")
     @PreAuthorize("permitAll()")
     public String registerButtonClick(UserDto userDto) {
@@ -41,6 +48,18 @@ public class RegistrationController {
             // пока так?
             return "";
         }
+        return "login";
+    }
+
+    @RequestMapping("/login")
+    @PreAuthorize("permitAll()")
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping("/login-error")
+    public String loginError(Model model){
+        model.addAttribute("loginError", true);
         return "login";
     }
 }
