@@ -22,6 +22,9 @@ public class TechData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private User user;
+
     private int airFlow;
 
     private double tempIn;
