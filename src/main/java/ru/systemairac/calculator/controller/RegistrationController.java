@@ -27,10 +27,6 @@ public class RegistrationController {
     }
 
     //Решить проблему с переадресацией после LogIn
-    @PostMapping({"/auth"})
-    public String redirect(){
-        return "redirect:/systemair-ac/calculator";
-    }
 
     @PostMapping("/register")
     @PreAuthorize("permitAll()")

@@ -16,7 +16,6 @@ import ru.systemairac.calculator.myenum.TypeWater;
 public class TechDataDto {
     private int airFlow;
     private double tempIn;
-    private double tempOut;
     private double humIn;
     private double humOut;
     private EnumHumidifierType enumHumidifierType;

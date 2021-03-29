@@ -28,7 +28,12 @@ public class MainController {
     private List<HumidifierComponentDto> options = new ArrayList<>();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
-    private TechDataDto techDataDto = new TechDataDto();
+    private TechDataDto techDataDto = TechDataDto.builder().
+            airFlow(2000).
+            tempIn(20).
+            humIn(1).
+            humOut(60).
+            build();
 
     public MainController(ProjectService projectService, UserService userService, CalculationService calculationService) {
         this.projectService = projectService;
@@ -39,7 +44,7 @@ public class MainController {
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
         model.addAttribute("projectDto", projectDto);
-        if (projects.isEmpty() && principal!=null) {
+        if (principal!=null) {
             projects = projectService.findByUser(
                     userService.getByEmail( principal.getName() )
             );

@@ -10,6 +10,21 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 
 </head>
+<script>
+    function changeListener(radio) {
+        var radioId = radio.name.substring(radio.name.lastIndexOf(':'));
+
+        for (var i = 0; radio.form.elements.length > i; i++) {
+            var element = radio.form.elements[i];
+
+            if (element.name.substring(element.name.lastIndexOf(':')) == radioId) {
+                element.checked = false;
+            }
+        }
+        elem.setAttribute("options",radio.value());
+        radio.checked = true;
+    }
+</script>
 <body style="height: 100%" id="body-tag" >
 
 <div id="DivLogoPrint">
@@ -28,7 +43,9 @@
                 <tr th:if="${projects.size() > 0}">
                     <td>Выбор существующего проекта</td>
                     <td>
-                        <option th:each="r : ${projects}" th:value="${r}" th:text="${r.title}" onchange=""></option>
+                        <select name="projectDto">
+                            <option th:each="r : ${projects}" th:value="${r}" th:text="${r.title}" th:action="change"></option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -172,7 +189,7 @@
             </tr>
             <tr th:each="humidifier : ${himidifiers}">
                 <td>
-                    <input type="radio" th:value="${humidifier}" style="width: 50px;" th:action="@{/systemair-ac/calculator/selectHumidifier}">
+                    <input type="radio" th:value="${humidifier}" style="width: 50px;" onchange="changeListener(this);">
                 </td>
                 <td th:text="${humidifier.articleNumber}">Articul</td>
                 <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
