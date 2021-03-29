@@ -26,7 +26,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class UserServiceTests {
+public class UserServiceTest {
 
     @Autowired
     private UserService userService;

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
+
 import java.math.BigDecimal;
 
 @Data
@@ -12,12 +14,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class HumidifierDto {
     private Long id;
+    private String brand;
     private String articleNumber;
-    private double electricPower;
-    private double capacity;
-    private int phase;
-    private int voltage;
-    private int numberOfCylinders;
-    private int vaporPipeDiameter;
+    private Double electricPower;
+    private Double capacity;
+    private Integer phase;
+    private Integer voltage;
+    private Integer numberOfCylinders;
+    private Integer vaporPipeDiameter;
     private BigDecimal price;
+
+    private EnumHumidifierType humidifierType;
 }
