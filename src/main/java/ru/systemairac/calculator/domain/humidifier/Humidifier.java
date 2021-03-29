@@ -30,7 +30,7 @@ public class Humidifier {
     private Long id;
 
     /**
-     * Тип установки, для того, чтобы таблица Calculation знала к какой таблице обращаться
+     * Тип установки, для того, чтобы таблица Calculation знала, к какой таблице обращаться.
      */
     @Transient
     private TableName type = TableName.HUMIDIFIER;
@@ -56,37 +56,37 @@ public class Humidifier {
      * Максимальная потребляемая электрическая мощность, в кВт.
      */
     @Column
-    private double electricPower;
+    private Double electricPower;
 
     /**
      * Максимальная производительность увлажнителя, в кг воды в час (кг/ч)
      */
     @Column
-    private double capacity;
+    private Double capacity;
 
     /**
      * Число фаз (1 или 3).
      */
     @Column
-    private int phase;
+    private Integer phase;
 
     /**
      * Рабочее напряжение, в В.
      */
     @Column
-    private int voltage;
+    private Integer voltage;
 
     /**
      * Количество цилиндров в увлажнителе.
      */
     @Column
-    private int numberOfCylinders;
+    private Integer numberOfCylinders;
 
     /**
      * Диаметр паропровода, в мм.
      */
     @Column
-    private int vaporPipeDiameter;
+    private Integer vaporPipeDiameter;
 
 
     /**
