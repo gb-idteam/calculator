@@ -266,11 +266,8 @@ public class HumidifierServiceTest {
         service.saveAll(list);
 
         final double CAPACITY = random.nextDouble() * 120;
-//        System.out.println("CAPACITY = " + CAPACITY);
         final int PHASE = random.nextInt(2) * 2 + 1;
-//        System.out.println("PHASE = " + PHASE);
         final EnumHumidifierType TYPE = EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)];
-//        System.out.println("TYPE = " + TYPE);
 
         list.forEach(System.out::println);
 
@@ -282,12 +279,10 @@ public class HumidifierServiceTest {
                 ).sorted(Comparator.comparingDouble(Humidifier::getCapacity))
                 .limit(3)
                 .toArray(Humidifier[]::new);
-//        System.out.println("expected = " + Arrays.toString(expected));
         Humidifier[] actual =
                 service.findHumidifiers(CAPACITY, TYPE, PHASE)
                         .toArray(new Humidifier[0]);
         assertEquals(expected.length, actual.length);
-//        System.out.println("actual = " + Arrays.toString(actual));
         for (int i = 0; i < expected.length; i++) {
             checkHumidifierFieldsEqual(expected[i], actual[i]);
         }
