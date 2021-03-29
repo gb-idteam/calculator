@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class HumidifierDto {
     private Long id;
-    private String brand;
     private String articleNumber;
     private Double electricPower;
     private Double capacity;

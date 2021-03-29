@@ -86,7 +86,7 @@ public class HumidifierServiceTest {
         return HumidifierDto.builder()
                 .id(null)
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
-                .brand(null) // TODO: пока без бренда
+//                .brand(null) // TODO: пока без бренда
                 .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
                 .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
                 .capacity(random.nextDouble() * 120) // от 0 до 120
