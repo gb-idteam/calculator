@@ -27,12 +27,6 @@ public class RegistrationController {
     }
 
     //Решить проблему с переадресацией после LogIn
-    @RequestMapping({"","/"})
-    public String index(){
-        return "redirect:/systemair-ac/calculator";
-    }
-
-    //Решить проблему с переадресацией после LogIn
     @PostMapping({"/auth"})
     public String redirect(){
         return "redirect:/systemair-ac/calculator";
