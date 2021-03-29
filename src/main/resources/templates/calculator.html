@@ -47,9 +47,9 @@
                 </tr>
             </table>
             <button type="submit">Сохранить</button>
-            <form th:action="@{clear}" method="post">
-                <button type="submit">Сброс</button>
-            </form>
+        </form>
+        <form th:action="@{/systemair-ac/calculator/clear}" method="post">
+            <button type="submit">Сброс</button>
         </form>
     </div>
     <!--  part-2  -->
@@ -59,7 +59,7 @@
             <span class="bg_circle" style="background: rgb(122, 214, 211);">2</span>
             Ввод технических данных
         </h1>
-        <form th:action="@{calc}" th:object="${techDataDto}" method="post">
+        <form th:action="@{/systemair-ac/calculator/calc}" th:object="${techDataDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
                 <tr>
                     <td>Расход воздуха</td>
@@ -171,10 +171,9 @@
                 <td>Цена</td>
             </tr>
             <tr th:each="humidifier : ${himidifiers}">
-                <td></td>
-                <!--                <td>-->
-                <!--                    <input type="radio" th:field="${humidifier}" th:value="${humidifier}" class="custom-control-input">-->
-                <!--                </td>-->
+                <td>
+                    <input type="radio" th:value="${humidifier}" style="width: 50px;">
+                </td>
                 <td th:text="${humidifier.articleNumber}">Articul</td>
                 <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
                 <td th:text="${humidifier.capacity}">10</td>

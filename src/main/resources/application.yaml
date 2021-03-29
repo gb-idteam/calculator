@@ -4,7 +4,7 @@ server:
   hostname: localhost
 spring:
   application:
-    name: calculator
+    name: systemair-ac
   jpa:
     hibernate:
       ddl-auto: create-drop

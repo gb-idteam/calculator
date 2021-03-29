@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 public class RegistrationController {
 
@@ -23,9 +25,10 @@ public class RegistrationController {
         return "registration";
     }
 
-    @RequestMapping("/systemair-ac/auth")
-    public String redirect() {
-        return "redirect:/systemair-ac/";
+    //Решить проблему с переадресацией после LogIn
+    @RequestMapping({"","/"})
+    public String index(){
+        return "redirect:/systemair-ac/calculator";
     }
 
     @PostMapping("/register")

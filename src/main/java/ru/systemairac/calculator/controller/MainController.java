@@ -14,7 +14,7 @@ import ru.systemairac.calculator.service.UserService;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-
+@RequestMapping("/calculator")
 @Controller
 public class MainController {
     private final ProjectService projectService;
@@ -34,7 +34,7 @@ public class MainController {
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
         model.addAttribute("projectDto", projectDto);
-        if (projects.isEmpty()) {
+        if (projects.isEmpty() && principal!=null) {
             projects = projectService.findByUser(
                     userService.getByEmail( principal.getName() ) // вообще говоря, ненахождение юзера
             );                                                                   // случиться не должно
@@ -48,9 +48,10 @@ public class MainController {
     @PostMapping("/calc")
     public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
         this.projectDto = projectDto;
+        humidifiers.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        return "redirect:/systemair-ac/";
+        return "redirect:/systemair-ac/calculator";
     }
 
     @PostMapping("/clear")
@@ -58,7 +59,7 @@ public class MainController {
             this.humidifiers.clear();
             this.techDataDto = new TechDataDto();
             this.projectDto = new ProjectDto();
-            return "redirect:/systemair-ac/";
+            return "redirect:/systemair-ac/calculator";
     }
 
     @RequestMapping("/login")
