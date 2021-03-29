@@ -2,6 +2,7 @@ package ru.systemairac.calculator.mapper;
 
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.dto.ProjectDto;
@@ -10,7 +11,10 @@ import java.util.List;
 @Mapper
 public interface ProjectMapper {
     ProjectMapper MAPPER = Mappers.getMapper(ProjectMapper.class);
-    Project toHumidifier(ProjectDto dto);
+
+    @Mapping(target = "user.email", source = "user")
+    @Mapping(target = "id", source = "projectId")
+    Project toProject(ProjectDto dto);
     List<Project> toProjectList(List<ProjectDto> projects);
 
     @InheritInverseConfiguration

@@ -23,7 +23,7 @@
             <span class="bg_circle" style="background: rgb(122, 214, 211);">1</span>
             Заполнение информации об объекте
         </h1>
-        <form th:action="@{#}" th:object="${projectDto}" method="post">
+        <form th:action="@{/systemair-ac/calculator/saveProjectInfo}" th:object="${projectDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
                 <tr th:if="${projects.size() > 0}">
                     <td>Выбор существующего проекта</td>
@@ -34,16 +34,15 @@
                 <tr>
                     <td>Название проекта</td>
                     <td>
-                        <input type="number"th:field="*{title}"/>
+                        <input type="text" th:field="*{title}"/>
                     </td>
                 </tr>
                 <tr>
                 <tr>
                     <td>Адрес проекта</td>
                     <td>
-                        <input type="number"th:field="*{address}"/>
+                        <input type="text" th:field="*{address}"/>
                     </td>
-                </tr>
                 </tr>
             </table>
             <button type="submit">Сохранить</button>

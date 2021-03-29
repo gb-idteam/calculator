@@ -9,7 +9,8 @@ import java.util.List;
 
 
 public interface ProjectService {
-    Project save(ProjectDto userDto);
+    Project save(ProjectDto projectDto);
+    Project update(ProjectDto projectDto);
     List<ProjectDto> findByUser(User user);
     void delete(Long id);
 }

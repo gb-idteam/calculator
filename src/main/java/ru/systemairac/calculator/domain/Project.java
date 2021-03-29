@@ -26,7 +26,7 @@ public class Project {
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Calculation> calculation;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private User user;
 
 }
