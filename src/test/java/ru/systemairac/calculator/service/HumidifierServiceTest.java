@@ -258,7 +258,7 @@ public class HumidifierServiceTest {
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
     }
 
-    @RepeatedTest(250)
+    @RepeatedTest(100)
     public void findSuitableHumidifiersRandom() {
         final int MAX_NUMBER_OF_ELEMENTS = 250;
         List<Humidifier> list = fakeListOfGoodHumidifiers(random.nextInt(MAX_NUMBER_OF_ELEMENTS));
