@@ -24,6 +24,7 @@ public class Calculation {
     private Long id;
 
     @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "calculation_id")
     private List<Unit> unit;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

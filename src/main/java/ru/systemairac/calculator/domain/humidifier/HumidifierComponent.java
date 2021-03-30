@@ -7,6 +7,7 @@ import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -32,5 +33,8 @@ public class HumidifierComponent {
     private HumidifierComponentType type;
 
     private boolean optional;
+
+    @Column
+    private BigDecimal price;
 
 }

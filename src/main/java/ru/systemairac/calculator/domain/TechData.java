@@ -29,8 +29,6 @@ public class TechData {
 
     private double tempIn;
 
-    private double tempOut;
-
     private double humIn;
 
     private double humOut;

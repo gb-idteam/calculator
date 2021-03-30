@@ -1,6 +1,5 @@
 package ru.systemairac.calculator.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,11 +52,13 @@ public class UserServiceImpl implements UserService {
                         .nameCompany("Test1")
                         .addressCompany("QWERTY")
                         .email("test@mail.ru")
+                        .password(passwordEncoder.encode("123"))
                         .fullName("TEST")
                         .build());
         users.add(User.builder()
                 .nameCompany("Test2")
                 .addressCompany("QWERTY2")
+                .password(passwordEncoder.encode("123"))
                 .email("test2@mail.ru")
                 .fullName("TEST2")
                 .build());
