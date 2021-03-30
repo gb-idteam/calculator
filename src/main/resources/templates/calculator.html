@@ -11,18 +11,13 @@
 
 </head>
 <script>
-    function changeListener(radio) {
-        var radioId = radio.name.substring(radio.name.lastIndexOf(':'));
-
-        for (var i = 0; radio.form.elements.length > i; i++) {
-            var element = radio.form.elements[i];
-
-            if (element.name.substring(element.name.lastIndexOf(':')) == radioId) {
-                element.checked = false;
-            }
+    common.onclick = function(e){
+        if(e.target.name == "radioHumidifier"){
+            // this.elements.namedItem("part4").setAttribute("selectedHumidifier",e.value());
+            this.elements.inputTest.innerText = "testClick"
+            this.elements.inputTest.outerHTML = "testClick"
+            this.elements.inputTest.value().innerText = "testClick"
         }
-        elem.setAttribute("options",radio.value());
-        radio.checked = true;
     }
 </script>
 <body style="height: 100%" id="body-tag" >
@@ -31,9 +26,9 @@
     <img id="logoPrint" src="statico/img/logo.png" height="80px">
     <a href="http://www.systemair-ac.ru/" id="logoLink"></a>
 </div>
-<div class="frame content">
+<div name="common" id="common" class="frame content">
     <!-- part-1 -->
-    <div id="part-1" class="box">
+    <div id="part1" class="box">
         <h1  id="part1-head">
             <span class="bg_circle" style="background: rgb(122, 214, 211);">1</span>
             Заполнение информации об объекте
@@ -70,7 +65,7 @@
         </form>
     </div>
     <!--  part-2  -->
-    <div id="part-2" class="box">
+    <div id="part2" class="box">
 
         <h1  id="part2-head">
             <span class="bg_circle" style="background: rgb(122, 214, 211);">2</span>
@@ -168,7 +163,7 @@
         </form>
     </div>
     <!--  part-3  -->
-    <div id="part-3" class="box">
+    <div id="part3" class="box">
         <h1  id="part3-head">
             <span class="bg_circle" style="background: rgb(122, 214, 211);">3</span>
             Выбор увлажнителя
@@ -189,7 +184,7 @@
             </tr>
             <tr th:each="humidifier : ${himidifiers}">
                 <td>
-                    <input type="radio" th:value="${humidifier}" style="width: 50px;" onchange="changeListener(this);">
+                    <input type="radio" id="radioHumidifier" name="radioHumidifier" th:value="${humidifier}" style="width: 50px;">
                 </td>
                 <td th:text="${humidifier.articleNumber}">Articul</td>
                 <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
@@ -205,12 +200,15 @@
         <!--  part-4  -->
 
         <div>
-            <div id="part-4" class="box">
-
+            <div id="part4" class="box">
                 <h1  id="part4-head">
                     <span class="bg_circle" style="background: rgb(122, 214, 211);">4</span>
                     Выбор опций увлажнителя
                 </h1>
+                <input type="text" value="100" name="inputTest" id="inputTest"/>
+                <table border="1" th:if="${selectedHumidifier!= null}" class="table table-hover">
+
+                </table>
             </div>
         </div>
     </div>
