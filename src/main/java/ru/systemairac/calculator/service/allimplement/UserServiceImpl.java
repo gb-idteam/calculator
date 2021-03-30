@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +13,7 @@ import ru.systemairac.calculator.mapper.UserMapper;
 import ru.systemairac.calculator.myenum.RoleName;
 import ru.systemairac.calculator.repository.RoleRepository;
 import ru.systemairac.calculator.repository.UserRepository;
+import ru.systemairac.calculator.service.allinterface.UserService;
 
 import javax.transaction.Transactional;
 import java.util.*;

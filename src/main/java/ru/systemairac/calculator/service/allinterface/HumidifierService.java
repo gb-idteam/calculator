@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allinterface;
 
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierType;

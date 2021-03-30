@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.Calculation;
@@ -7,6 +7,9 @@ import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.mapper.ProjectMapper;
 import ru.systemairac.calculator.repository.ProjectRepository;
+import ru.systemairac.calculator.service.allinterface.CalculationService;
+import ru.systemairac.calculator.service.allinterface.ProjectService;
+import ru.systemairac.calculator.service.allinterface.UserService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

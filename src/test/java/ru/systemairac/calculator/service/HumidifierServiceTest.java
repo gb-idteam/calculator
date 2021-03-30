@@ -14,6 +14,7 @@ import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TableName;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
+import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

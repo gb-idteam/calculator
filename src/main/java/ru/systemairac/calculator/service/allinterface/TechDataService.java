@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allinterface;
 
 import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.domain.User;

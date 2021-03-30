@@ -2,7 +2,6 @@ package ru.systemairac.calculator.service;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import ru.systemairac.calculator.domain.Role;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.repository.UserRepository;
+import ru.systemairac.calculator.service.allinterface.UserService;
 
 import java.util.ArrayList;
 import java.util.Locale;

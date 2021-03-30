@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.TechData;
@@ -7,6 +7,7 @@ import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.mapper.TechDataMapper;
 import ru.systemairac.calculator.repository.TechDataRepository;
 import ru.systemairac.calculator.repository.UserRepository;
+import ru.systemairac.calculator.service.allinterface.TechDataService;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,8 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
+import ru.systemairac.calculator.service.allinterface.HumidifierComponentService;
 
 import java.util.List;
 

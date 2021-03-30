@@ -1,8 +1,11 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.service.Point;
+import ru.systemairac.calculator.service.allinterface.CalculationService;
+import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
 import java.util.List;
 

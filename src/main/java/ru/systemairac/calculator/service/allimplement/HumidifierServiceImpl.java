@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -10,6 +10,7 @@ import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.repository.humidifier.HumidifierFilter;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierSpecification;
+import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

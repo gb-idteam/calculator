@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allinterface;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.systemairac.calculator.domain.User;

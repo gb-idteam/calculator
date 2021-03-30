@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
-import ru.systemairac.calculator.service.HumidifierComponentService;
+import ru.systemairac.calculator.service.allinterface.HumidifierComponentService;
 
 import java.util.List;
 

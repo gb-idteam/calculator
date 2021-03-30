@@ -12,8 +12,6 @@ import java.util.List;
 public interface ProjectMapper {
     ProjectMapper MAPPER = Mappers.getMapper(ProjectMapper.class);
 
-    @Mapping(target = "user.email", source = "user")
-    @Mapping(target = "id", source = "projectId")
     Project toProject(ProjectDto dto);
     List<Project> toProjectList(List<ProjectDto> projects);
 

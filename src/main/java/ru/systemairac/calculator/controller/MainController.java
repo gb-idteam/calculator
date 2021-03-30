@@ -10,9 +10,9 @@ import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
-import ru.systemairac.calculator.service.CalculationService;
-import ru.systemairac.calculator.service.ProjectService;
-import ru.systemairac.calculator.service.UserService;
+import ru.systemairac.calculator.service.allinterface.CalculationService;
+import ru.systemairac.calculator.service.allinterface.ProjectService;
+import ru.systemairac.calculator.service.allinterface.UserService;
 
 import java.math.BigDecimal;
 import java.security.Principal;

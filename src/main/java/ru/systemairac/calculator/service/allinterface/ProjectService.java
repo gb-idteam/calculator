@@ -1,4 +1,4 @@
-package ru.systemairac.calculator.service;
+package ru.systemairac.calculator.service.allinterface;
 
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.Project;
