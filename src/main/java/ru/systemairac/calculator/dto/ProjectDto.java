@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class ProjectDto {
     private String address;
     private String title;
+    private String user;
+    private Long projectId;
 }

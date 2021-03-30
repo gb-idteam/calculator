@@ -27,7 +27,7 @@ public class Project {
     @JoinColumn(name = "project_id")
     private List<Calculation> calculation;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private User user;
 
 }
