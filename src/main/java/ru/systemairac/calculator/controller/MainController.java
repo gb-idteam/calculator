@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
@@ -66,7 +67,7 @@ public class MainController {
     }
 
     @PostMapping("/selectHumidifier")
-    public String selectHumidifier(Model model, HumidifierDto humidifierDto){
+    public String selectHumidifier(Model model, HumidifierDto humidifierDto, @RequestParam(name = "radioHumidifier") int id){
             this.options.add(new HumidifierComponentDto(1L,"art", HumidifierComponentType.CYLINDER_CASING,true,new BigDecimal(10)));
             model.addAttribute("options", options);
         return "redirect:/systemair-ac/calculator";

@@ -8,18 +8,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="statico/js/script.js"></script>
 </head>
-<script>
-    common.onclick = function(e){
-        if(e.target.name == "radioHumidifier"){
-            // this.elements.namedItem("part4").setAttribute("selectedHumidifier",e.value());
-            this.elements.inputTest.innerText = "testClick"
-            this.elements.inputTest.outerHTML = "testClick"
-            this.elements.inputTest.value().innerText = "testClick"
-        }
-    }
-</script>
+
 <body style="height: 100%" id="body-tag" >
 
 <div id="DivLogoPrint">
@@ -167,7 +159,9 @@
             Выбор увлажнителя
         </h1>
         <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
+        <form th:action="@{/systemair-ac/calculator/selectHumidifier}">
         <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover">
+            <thead>
             <tr>
                 <td>№</td>
                 <td>Артикул</td>
@@ -180,9 +174,11 @@
                 <td>Диаметр парораспределителя</td>
                 <td>Цена</td>
             </tr>
+            </thead>
+            <tbody id="data">
             <tr th:each="humidifier : ${himidifiers}">
                 <td>
-                    <input type="radio" id="radioHumidifier" name="radioHumidifier" th:value="${humidifier}" style="width: 50px;">
+                    <input type="radio" name="radioHumidifier" th:value="${humidifier.id}" method="post"  style="width: 50px;">
                 </td>
                 <td th:text="${humidifier.articleNumber}">Articul</td>
                 <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
@@ -193,7 +189,9 @@
                 <td th:text="${humidifier.vaporPipeDiameter}"></td>
                 <td th:text="${humidifier.price}"></td>
             </tr>
+            </tbody>
         </table>
+        </form>
 
         <!--  part-4  -->
 
@@ -203,6 +201,7 @@
                     <span class="bg_circle" style="background: rgb(122, 214, 211);">4</span>
                     Выбор опций увлажнителя
                 </h1>
+                <label>Передаем id выбранного увлажнителя</label>
                 <input type="text" value="100" name="inputTest" id="inputTest"/>
                 <table border="1" th:if="${selectedHumidifier!= null}" class="table table-hover">
 
