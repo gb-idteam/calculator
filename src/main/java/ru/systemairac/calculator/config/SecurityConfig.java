@@ -64,12 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/calculator").authenticated()
-                .antMatchers("/adminForm").hasAnyAuthority(RoleName.ADMIN.name())
+                .antMatchers("calculator").authenticated()
+                .antMatchers("adminForm").hasAnyAuthority(RoleName.ADMIN.name())
                 .anyRequest().permitAll()
                 .and ()
                 .formLogin()
-                    .loginPage("/systemair-ac/login")
+                    .loginPage("/login")
                     .loginProcessingUrl("/auth")
                     .failureUrl("/login-error")
                     .permitAll()

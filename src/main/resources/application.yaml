@@ -2,6 +2,8 @@
 server:
   port: ${PORT:8080}
   hostname: localhost
+  servlet:
+    context-path: /systemair-ac
 spring:
   application:
     name: systemair-ac
@@ -19,8 +21,6 @@ spring:
     password:
     driverClassName: org.h2.Driver
   mvc:
-    servlet:
-      path: /systemair-ac
     static-path-pattern: statico/**
 #  datasource:
 #     name: 'systemairac'

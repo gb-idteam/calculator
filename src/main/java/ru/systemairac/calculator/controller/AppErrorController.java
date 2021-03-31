@@ -19,15 +19,9 @@ public class AppErrorController implements ErrorController {
             Integer statusCode = Integer.valueOf(status.toString());
             String message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE).toString();
             model.addAttribute("message", message);
-
-            if(statusCode == HttpStatus.NOT_FOUND.value()) {
-                return "error-404";
-            }
-            else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "error-500";
-            }
+            model.addAttribute("status", statusCode);
+            return "myError";
         }
-
         return "error";
     }
 

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/calculator")
+@RequestMapping("calculator")
 @Controller
 public class MainController {
     private final ProjectService projectService;
@@ -64,14 +64,14 @@ public class MainController {
     @PostMapping("/saveProject")
     public String saveProject(ProjectDto projectDto, Principal principal){
         this.projectDto = projectService.addProject(projectDto, principal.getName());
-        return "redirect:/systemair-ac/calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/selectHumidifier")
     public String selectHumidifier(Model model, HumidifierDto humidifierDto, @RequestParam(name = "radioHumidifier") int id){
             this.options.add(new HumidifierComponentDto(1L,"art", HumidifierComponentType.CYLINDER_CASING,true,new BigDecimal(10)));
             model.addAttribute("options", options);
-        return "redirect:/systemair-ac/calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/calc")
@@ -80,7 +80,7 @@ public class MainController {
         humidifiers.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        return "redirect:/systemair-ac/calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/clear")
@@ -88,6 +88,6 @@ public class MainController {
             this.humidifiers.clear();
             this.techDataDto = new TechDataDto();
             this.projectDto = new ProjectDto();
-            return "redirect:/systemair-ac/calculator";
+            return "redirect:/calculator";
     }
 }

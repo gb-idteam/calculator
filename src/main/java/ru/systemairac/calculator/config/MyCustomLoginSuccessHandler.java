@@ -18,10 +18,10 @@ public class MyCustomLoginSuccessHandler extends SavedRequestAwareAuthentication
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session != null) {
-            String redirectUrl = (String) session.getAttribute("/calculation");
+            String redirectUrl = (String) session.getAttribute("calculation");
             if (redirectUrl != null) {
                 // we do not forget to clean this attribute from session
-                session.removeAttribute("/calculation");
+                session.removeAttribute("calculation");
                 // then we redirect
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             } else {
