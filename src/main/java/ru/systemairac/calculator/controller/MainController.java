@@ -36,6 +36,7 @@ public class MainController {
             airFlow(500).
             tempIn(20).
             humIn(1).
+            phase(1).
             humOut(60).
             build();
     public MainController(ProjectService projectService, UserService userService, CalculationService calculationService) {

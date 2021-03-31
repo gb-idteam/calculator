@@ -53,10 +53,10 @@ public class HumidifierServiceImpl implements HumidifierService {
                 1,380,new BigDecimal(1500)));
         humidifiers.add(generateHumidifier("1234",5,29,type2,1,25,
                 1,220,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier("12",7,50,type1,1,25,
+        humidifiers.add(generateHumidifier("12",7,50,type1,3,25,
                 1,380,new BigDecimal(1500)));
         humidifiers.add(generateHumidifier("1",5,15,type2,3,25,
-                1,220,new BigDecimal(1000)));
+                1,380,new BigDecimal(1000)));
         humidifiers.add(generateHumidifier("2",20,15,type1,1,25,
                 1,220,new BigDecimal(1000)));
         humidifiers.add(generateHumidifier("3",50,15,type2,1,25,

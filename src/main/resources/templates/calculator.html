@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="statico/js/script.js"></script>
 </head>
@@ -120,9 +121,6 @@
                     </td>
                     <td th:text="${T(ru.systemairac.calculator.myenum.TypeCylinder).DISMOUNTABLE_CYLINDER.getTxt()}"></td>
                 </tr>
-                <tr>
-                    <td th:if="${techDataDto.enumHumidifierType}==${T(ru.systemairac.calculator.myenum.EnumHumidifierType).HEATING_ELEMENT.getTxt()}" th:text="${T(ru.systemairac.calculator.myenum.TypeCylinder).DISMOUNTABLE_CYLINDER}">
-                </tr>
                 <tr colspan="2" th:if="${techDataDto.enumHumidifierType}==${T(ru.systemairac.calculator.myenum.EnumHumidifierType).HEATING_ELEMENT.getTxt()}">
                     <!--            <tr colspan="2">-->
                     <td><h3>Выберите тип воды</h3></td>
@@ -135,18 +133,19 @@
                 </tr>
                 <!--                TODO Разобраться как при выборе фазности менять Вольтаж и т.д. скорее всего script-->
                 <tr>
-                    <td><h3>Выберите фазность сети</h3></td>
+                    <td>Выберите вольтаж сети</td>
                     <td>
-                        <select th:field="${techDataDto.phase}">
-                            <option th:value=1 th:text="1"></option>
-                            <option th:value=3 th:text="3"></option>
+                        <select th:field="${techDataDto.voltage}" name="voltage" id="voltage">
+                            <option th:value=220 th:text="220"></option>
+                            <option th:value=380 th:text="380"></option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td>Вольтаж</td>
-                    <td th:if="${techDataDto.phase == 1}" th:text="220" th:value="${techDataDto.voltage}">
-                    <td th:if="${techDataDto.phase == 3}" th:text="380" th:value="${techDataDto.voltage}">
+                    <td>Фазность: </td>
+                    <td>
+                        <input th:field="${techDataDto.phase}" name="field_phase" id="field_phase" style="width: 50px;"/>
+                    </td>
                 </tr>
             </table>
             <button type="submit">Расчет</button>
@@ -160,37 +159,37 @@
         </h1>
         <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
         <form th:action="@{/systemair-ac/calculator/selectHumidifier}">
-        <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover">
-            <thead>
-            <tr>
-                <td>№</td>
-                <td>Артикул</td>
-                <!--                <td>Вид</td> TODO картинка -->
-                <td>Расчетная мощность</td>
-                <td>Мощность</td>
-                <td>Потребление</td>
-                <td>Вольтаж</td>
-                <td>Количество цилиндров</td>
-                <td>Диаметр парораспределителя</td>
-                <td>Цена</td>
-            </tr>
-            </thead>
-            <tbody id="data">
-            <tr th:each="humidifier : ${himidifiers}">
-                <td>
-                    <input type="radio" name="radioHumidifier" th:value="${humidifier.id}" method="post"  style="width: 50px;">
-                </td>
-                <td th:text="${humidifier.articleNumber}">Articul</td>
-                <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
-                <td th:text="${humidifier.capacity}">10</td>
-                <td th:text="${humidifier.electricPower}">11.1</td>
-                <td th:text="${humidifier.phase} +'~' +  ${humidifier.voltage}">1~220</td>
-                <td th:text="${humidifier.numberOfCylinders}"></td>
-                <td th:text="${humidifier.vaporPipeDiameter}"></td>
-                <td th:text="${humidifier.price}"></td>
-            </tr>
-            </tbody>
-        </table>
+            <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover">
+                <thead>
+                <tr>
+                    <td>№</td>
+                    <td>Артикул</td>
+                    <!--                <td>Вид</td> TODO картинка -->
+                    <td>Расчетная мощность</td>
+                    <td>Мощность</td>
+                    <td>Потребление</td>
+                    <td>Вольтаж</td>
+                    <td>Количество цилиндров</td>
+                    <td>Диаметр парораспределителя</td>
+                    <td>Цена</td>
+                </tr>
+                </thead>
+                <tbody id="data">
+                <tr th:each="humidifier : ${himidifiers}">
+                    <td>
+                        <input type="radio" name="radioHumidifier" th:value="${humidifier.id}" method="post"  style="width: 50px;">
+                    </td>
+                    <td th:text="${humidifier.articleNumber}">Articul</td>
+                    <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
+                    <td th:text="${humidifier.capacity}">10</td>
+                    <td th:text="${humidifier.electricPower}">11.1</td>
+                    <td th:text="${humidifier.phase} +'~' +  ${humidifier.voltage}">1~220</td>
+                    <td th:text="${humidifier.numberOfCylinders}"></td>
+                    <td th:text="${humidifier.vaporPipeDiameter}"></td>
+                    <td th:text="${humidifier.price}"></td>
+                </tr>
+                </tbody>
+            </table>
         </form>
 
         <!--  part-4  -->
