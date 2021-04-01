@@ -30,9 +30,9 @@ public class HumidifierServiceImpl implements HumidifierService {
         init();
     }
 
-    private Humidifier generateHumidifier(String articul,double elPower,double capacity, EnumHumidifierType type, int phase, int vaporPipeDiameter,int numberOfCylinders,int voltage, BigDecimal price) {
+    private Humidifier generateHumidifier(String article,double elPower,double capacity, EnumHumidifierType type, int phase, int vaporPipeDiameter,int numberOfCylinders,int voltage, BigDecimal price) {
         Humidifier humidifier =Humidifier.builder()
-                .articleNumber(articul)
+                .articleNumber(article)
                 .electricPower(elPower)
                 .capacity(capacity)
                 .humidifierType(type)
@@ -78,6 +78,16 @@ public class HumidifierServiceImpl implements HumidifierService {
                 PageRequest.of(0,NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
         ).toList();
         return mapper.fromHumidifierList(humidifiers);
+    }
+
+    @Override
+    public Humidifier findHumidifierById(Long id) {
+        return humidifierRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Humidifier> findHumidifiersByIds(List<Long> ids) {
+        return humidifierRepository.findAllById(ids);
     }
 
     @Override

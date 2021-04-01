@@ -9,6 +9,7 @@ import ru.systemairac.calculator.myenum.TypeMontage;
 import java.util.List;
 
 public interface HumidifierService {
+    List<Humidifier> findHumidifiersByIds(List<Long> ids);
 
     List<Humidifier> findHumidifiers(double capacity, EnumHumidifierType humidifierType, int phase);
 
@@ -25,4 +26,6 @@ public interface HumidifierService {
     void saveAll(List<Humidifier> humidifier);
 
     void deleteById(Long id);
+
+    Humidifier findHumidifierById(Long id);
 }
