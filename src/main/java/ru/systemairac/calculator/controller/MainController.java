@@ -10,6 +10,7 @@ import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
 import ru.systemairac.calculator.service.allinterface.ProjectService;
@@ -18,7 +19,9 @@ import ru.systemairac.calculator.service.allinterface.UserService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("calculator")
@@ -28,9 +31,9 @@ public class MainController {
     private final UserService userService;
     private final CalculationService calculationService;
     private ProjectDto projectDto = new ProjectDto();
-    private List<HumidifierComponentDto> options = new ArrayList<>();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
+    private HashMap<Long, List<HumidifierComponentDto>> options = new HashMap<>();
     // Для тестирования
     private TechDataDto techDataDto = TechDataDto.builder().
             airFlow(500).
@@ -53,24 +56,25 @@ public class MainController {
                     userService.getByEmail( principal.getName() )
             );
         }
+        //Для теста
+        {
+            List<HumidifierComponentDto> list = new ArrayList<>();
+            list.add(new HumidifierComponentDto(1L, "art1", HumidifierComponentType.CYLINDER_CASING, true, new BigDecimal(150)));
+            list.add(new HumidifierComponentDto(2L, "art2", HumidifierComponentType.LEAK_SENSOR, true, new BigDecimal(150)));
+            options.put(2L, list);
+        }
         model.addAttribute("projects", projects);
         model.addAttribute("projectDto", projectDto);
         model.addAttribute("himidifiers", humidifiers);
-        model.addAttribute("selectedHumidifier", new HumidifierDto());
+        model.addAttribute("idSelectHumidifier", 2L);
         model.addAttribute("techDataDto", techDataDto);
+        model.addAttribute("options", options);
         return "calculator";
     }
 
     @PostMapping("/saveProject")
     public String saveProject(ProjectDto projectDto, Principal principal){
         this.projectDto = projectService.addProject(projectDto, principal.getName());
-        return "redirect:/calculator";
-    }
-
-    @PostMapping("/selectHumidifier")
-    public String selectHumidifier(Model model, HumidifierDto humidifierDto, @RequestParam(name = "radioHumidifier") int id){
-            this.options.add(new HumidifierComponentDto(1L,"art", HumidifierComponentType.CYLINDER_CASING,true,new BigDecimal(10)));
-            model.addAttribute("options", options);
         return "redirect:/calculator";
     }
 

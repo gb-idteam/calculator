@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="statico/css/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="statico/css/mycheckbox.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
@@ -131,7 +132,6 @@
                         </select>
                     </td>
                 </tr>
-                <!--                TODO Разобраться как при выборе фазности менять Вольтаж и т.д. скорее всего script-->
                 <tr>
                     <td>Выберите вольтаж сети</td>
                     <td>
@@ -154,7 +154,7 @@
     <!--  part-3  -->
     <div id="part3" class="box">
         <h1  id="part3-head">
-            <span class="bg_circle" style="background: rgb(122, 214, 211);">3</span>
+            <span class="bg_circle" style="background: rgb(122,214,211);">3</span>
             Выбор увлажнителя
         </h1>
         <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
@@ -201,14 +201,33 @@
                     Выбор опций увлажнителя
                 </h1>
                 <label>Передаем id выбранного увлажнителя</label>
-                <input type="text" value="100" name="inputTest" id="inputTest"/>
-                <table border="1" th:if="${selectedHumidifier!= null}" class="table table-hover">
-
+                <input type="text" value="100" name="inputTest" id="inputTest" th:value="${idSelectHumidifier}"/>
+                <table id="table_option" border="1" th:if="${idSelectHumidifier!= null}" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <td>№</td>
+                        <td>Артикул</td>
+                        <td>Название</td>
+                        <!--                <td>Вид</td> TODO картинка -->
+                        <td>Цена</td>
+                    </tr>
+                    </thead>
+                    <tr th:each ="instance : ${options.get(idSelectHumidifier)}">
+                        <td>
+                            <label class="container">
+                                <input type="checkbox" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                        <!--/*@thymesVar id="articleNumber" type="String"*/-->
+                        <td th:text="${instance.articleNumber}">арт</td>
+                        <td th:text="${instance.type.getTxt()}">тип</td>
+                        <td th:text="${instance.price}">0</td>
+                    </tr>
                 </table>
             </div>
         </div>
     </div>
-
 </div>
 </div>
 </body>

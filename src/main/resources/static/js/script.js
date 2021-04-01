@@ -1,7 +1,8 @@
 $(document).ready(function(){
     $('input:radio[name=radioHumidifier]').change(function(){
         var id = $(this).val();
-        $("input[name=inputTest]").val(id);
+        let idSelectHumidifier = func.bind(user);
+        $("#table_option").attr("idSelectHumidifier",id);
     });
 });
 $(document).ready(function(){
