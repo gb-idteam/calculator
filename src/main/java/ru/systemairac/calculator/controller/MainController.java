@@ -10,6 +10,7 @@ import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
 import ru.systemairac.calculator.service.allinterface.HumidifierComponentService;

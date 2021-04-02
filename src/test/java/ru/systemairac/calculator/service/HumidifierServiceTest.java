@@ -49,7 +49,6 @@ public class HumidifierServiceTest {
     @BeforeEach
     void cleanTable() {
         repository.deleteAll();
-        repository.flush();
     }
 
     private Humidifier fakeGoodHumidifier() {
