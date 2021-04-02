@@ -20,6 +20,4 @@ public class HumidifierComponentDto {
     private HumidifierComponentType type;
     private boolean optional;
     private BigDecimal price;
-
-
 }

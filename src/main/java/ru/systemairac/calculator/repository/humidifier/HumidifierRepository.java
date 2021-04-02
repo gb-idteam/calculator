@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface HumidifierRepository extends JpaRepository<Humidifier, Long>, JpaSpecificationExecutor<Humidifier> {
     List<Humidifier> findAllById(Iterable<Long> ids);
-
+    List<Humidifier> findAllByIdIn(List<Long> ids);
     Humidifier findHumidifierById(Long id);
 }
 

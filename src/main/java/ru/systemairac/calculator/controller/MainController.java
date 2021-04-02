@@ -5,19 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.HumidifierComponentType;
-import ru.systemairac.calculator.service.allinterface.CalculationService;
-import ru.systemairac.calculator.service.allinterface.HumidifierComponentService;
-import ru.systemairac.calculator.service.allinterface.ProjectService;
-import ru.systemairac.calculator.service.allinterface.UserService;
+import ru.systemairac.calculator.service.allinterface.*;
 
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +26,7 @@ public class MainController {
     private final UserService userService;
     private final CalculationService calculationService;
     private final HumidifierComponentService humidifierComponentService;
-
+    private final HumidifierService humidifierService;
     private ProjectDto projectDto = new ProjectDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
@@ -46,18 +41,23 @@ public class MainController {
             humOut(60).
             build();
 
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, HumidifierComponentService humidifierComponentService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
         this.humidifierComponentService = humidifierComponentService;
-        //Для теста
-        {
-            List<HumidifierComponentDto> list = new ArrayList<>();
-            list.add(new HumidifierComponentDto(1L, "art1", HumidifierComponentType.CYLINDER_CASING, true, new BigDecimal(150)));
-            list.add(new HumidifierComponentDto(2L, "art2", HumidifierComponentType.LEAK_SENSOR, true, new BigDecimal(150)));
-            options.put(2L, list);
-        }
+        this.humidifierService = humidifierService;
+        init();
+    }
+
+    public void init() {
+        Humidifier humidifier1 = humidifierService.findHumidifierById(1L);
+        Humidifier humidifier3 = humidifierService.findHumidifierById(3L);
+        List<HumidifierComponent> options = humidifierComponentService.getAllComponent();
+        humidifier1.setHumidifierComponents(options);
+        humidifier3.setHumidifierComponents(options);
+        humidifierService.save(humidifier1);
+        humidifierService.save(humidifier3);
     }
 
     @RequestMapping({"","/"})

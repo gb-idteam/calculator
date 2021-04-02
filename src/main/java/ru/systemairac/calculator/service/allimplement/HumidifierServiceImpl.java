@@ -4,14 +4,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
+import ru.systemairac.calculator.myenum.HumidifierComponentType;
+import ru.systemairac.calculator.repository.HumidifierComponentRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierFilter;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierSpecification;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,20 +24,21 @@ import java.util.List;
 public class HumidifierServiceImpl implements HumidifierService {
 
     private static final int NUMBER_OF_RESULTS = 3;
-
     private final HumidifierRepository humidifierRepository;
 
     private final HumidifierMapper mapper = HumidifierMapper.MAPPER;
+    private final HumidifierComponentRepository humidifierComponentRepository;
 
-    public HumidifierServiceImpl(HumidifierRepository humidifierRepository) {
+    public HumidifierServiceImpl(HumidifierRepository humidifierRepository, HumidifierComponentRepository humidifierComponentRepository) {
         this.humidifierRepository = humidifierRepository;
+        this.humidifierComponentRepository = humidifierComponentRepository;
         init();
     }
 
-    private Humidifier generateHumidifier(Long id, String articul,double elPower,double capacity, EnumHumidifierType type, int phase, int vaporPipeDiameter,int numberOfCylinders,int voltage, BigDecimal price) {
-        Humidifier humidifier =Humidifier.builder()
+    private Humidifier generateHumidifier(Long id, String article,double elPower,double capacity, EnumHumidifierType type, int phase, int vaporPipeDiameter,int numberOfCylinders,int voltage, BigDecimal price) {
+        Humidifier humidifier = Humidifier.builder()
                 .id(id)
-                .articleNumber(articul)
+                .articleNumber(article)
                 .electricPower(elPower)
                 .capacity(capacity)
                 .humidifierType(type)

@@ -23,7 +23,7 @@ public class TechDataDto {
     private TypeWater typeWater;
     private TypeCylinder typeCylinder;
     private int voltage;
-    private int phase;
+    private int phase=1;
     private int length;
     private int width;
     private double calcCapacity;
