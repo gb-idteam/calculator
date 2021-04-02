@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="statico/css/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="statico/css/mycheckbox.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="statico/js/script.js"></script>
 </head>
 
 <body style="height: 100%" id="body-tag" >
@@ -49,16 +49,16 @@
                     </td>
                 </tr>
             </table>
-            <button type="submit">Сохранить</button>
+            <button id="btn-save" type="submit">Сохранить</button>
         </form>
         <form th:action="@{calculator/clear}" method="post">
-            <button type="submit">Сброс</button>
+            <button id="btn-clear" type="submit">Сброс</button>
         </form>
     </div>
     <!--  part-2  -->
     <div id="part2" class="box">
 
-        <h1  id="part2-head">
+        <h1 id="part2-head">
             <span class="bg_circle" style="background: rgb(122, 214, 211);">2</span>
             Ввод технических данных
         </h1>
@@ -66,15 +66,15 @@
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
                 <tr>
                     <td>Расход воздуха</td>
-                    <td><input type="number"th:field="*{airFlow}"/></td>
+                    <td><input type="number" th:field="*{airFlow}"/></td>
                 </tr>
                 <tr>
                     <td>Температура на входе</td>
-                    <td><input type="number"th:field="*{tempIn}"/></td>
+                    <td><input type="number" th:field="*{tempIn}"/></td>
                 </tr>
                 <tr>
                     <td>Влажность на входе</td>
-                    <td><input type="number"th:field="*{humIn}"/></td>
+                    <td><input type="number" th:field="*{humIn}"/></td>
                 </tr>
                 <tr th:border="2">
                     <td>Влажность на выходе </td>
@@ -131,7 +131,6 @@
                         </select>
                     </td>
                 </tr>
-                <!--                TODO Разобраться как при выборе фазности менять Вольтаж и т.д. скорее всего script-->
                 <tr>
                     <td>Выберите вольтаж сети</td>
                     <td>
@@ -154,11 +153,11 @@
     <!--  part-3  -->
     <div id="part3" class="box">
         <h1  id="part3-head">
-            <span class="bg_circle" style="background: rgb(122, 214, 211);">3</span>
+            <span class="bg_circle" style="background: rgb(122,214,211);">3</span>
             Выбор увлажнителя
         </h1>
         <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
-        <form th:action="@{/systemair-ac/calculator/selectHumidifier}">
+        <form th:action="@{calculator/selectHumidifier}" method="post">
             <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover">
                 <thead>
                 <tr>
@@ -177,7 +176,7 @@
                 <tbody id="data">
                 <tr th:each="humidifier : ${himidifiers}">
                     <td>
-                        <input type="radio" name="radioHumidifier" th:value="${humidifier.id}" method="post"  style="width: 50px;">
+                        <input name="idSelectHumidifier" type="radio" th:value="${humidifier.id}" style="width: 50px;">
                     </td>
                     <td th:text="${humidifier.articleNumber}">Articul</td>
                     <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
@@ -190,6 +189,7 @@
                 </tr>
                 </tbody>
             </table>
+            <button type="submit">Выбрать</button>
         </form>
 
         <!--  part-4  -->
@@ -202,17 +202,36 @@
                 </h1>
                 <label>Передаем id выбранного увлажнителя</label>
                 <input type="text" value="100" name="inputTest" id="inputTest"/>
-                <table border="1" th:if="${selectedHumidifier!= null}" class="table table-hover">
-
+                <table id="table_option" border="1" className = "table_option" class="table table-hover-option">
+                    <thead id="thead_option">
+                    <tr>
+                        <td>№</td>
+                        <td>Артикул</td>
+                        <td>Название</td>
+                        <!--                <td>Вид</td> TODO картинка -->
+                        <td>Цена</td>
+                    </tr>
+                    </thead>
+                    <tr className="tr_option" id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
+                        <td>
+                            <label class="container">
+                                <input type="checkbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                        <td th:text="${instance.articleNumber}">арт</td>
+                        <td th:text="${instance.type.getTxt()}">тип</td>
+                        <td th:text="${instance.price}">0</td>
+                    </tr>
                 </table>
             </div>
         </div>
     </div>
-
 </div>
 </div>
 </body>
 <!-- Optional JavaScript -->
+<script type="text/javascript" src="statico/js/script.js"></script>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

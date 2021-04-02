@@ -26,7 +26,6 @@ class TechDataMapperTest {
                 .humIn(random.nextInt(100))
                 .humOut(random.nextInt(100))
                 .tempIn(random.nextInt(80) - 40)
-                .phase(random.nextInt(2) + 1)
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
                 .typeCylinder(TypeCylinder.values()[random.nextInt(TypeCylinder.values().length)])
                 .typeWater(TypeWater.values()[random.nextInt(TypeWater.values().length)])
@@ -72,7 +71,6 @@ class TechDataMapperTest {
         assertEquals(techDataDto.getHumOut(), techData.getHumOut());
         assertEquals(techDataDto.getLength(), techData.getLength());
         assertEquals(techDataDto.getEnumHumidifierType(), techData.getEnumHumidifierType());
-        assertEquals(techDataDto.getPhase(), techData.getPhase());
         assertEquals(techDataDto.getTempIn(), techData.getTempIn());
         assertEquals(techDataDto.getTypeCylinder(), techData.getTypeCylinder());
         assertEquals(techDataDto.getTypeMontage(), techData.getTypeMontage());

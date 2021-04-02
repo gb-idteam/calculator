@@ -30,9 +30,10 @@ public class HumidifierServiceImpl implements HumidifierService {
         init();
     }
 
-    private Humidifier generateHumidifier(String article,double elPower,double capacity, EnumHumidifierType type, int phase, int vaporPipeDiameter,int numberOfCylinders,int voltage, BigDecimal price) {
+    private Humidifier generateHumidifier(Long id, String articul,double elPower,double capacity, EnumHumidifierType type, int phase, int vaporPipeDiameter,int numberOfCylinders,int voltage, BigDecimal price) {
         Humidifier humidifier =Humidifier.builder()
-                .articleNumber(article)
+                .id(id)
+                .articleNumber(articul)
                 .electricPower(elPower)
                 .capacity(capacity)
                 .humidifierType(type)
@@ -49,17 +50,17 @@ public class HumidifierServiceImpl implements HumidifierService {
         EnumHumidifierType type1 = EnumHumidifierType.ELECTRODE;
         EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
         List<Humidifier> humidifiers = new ArrayList<>();
-        humidifiers.add(generateHumidifier("123",7,25,type1,3,25,
+        humidifiers.add(generateHumidifier(1L,"123",7,25,type1,3,25,
                 1,380,new BigDecimal(1500)));
-        humidifiers.add(generateHumidifier("1234",5,29,type2,1,25,
+        humidifiers.add(generateHumidifier(2L,"1234",5,29,type2,1,25,
                 1,220,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier("12",7,50,type1,3,25,
+        humidifiers.add(generateHumidifier(3L,"12",7,50,type1,3,25,
                 1,380,new BigDecimal(1500)));
-        humidifiers.add(generateHumidifier("1",5,15,type2,3,25,
+        humidifiers.add(generateHumidifier(4L,"1",5,15,type2,3,25,
                 1,380,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier("2",20,15,type1,1,25,
+        humidifiers.add(generateHumidifier(5L,"2",20,15,type1,1,25,
                 1,220,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier("3",50,15,type2,1,25,
+        humidifiers.add(generateHumidifier(6L,"3",50,15,type2,1,25,
                 1,220,new BigDecimal(1000)));
         humidifierRepository.saveAll(humidifiers);
     }
