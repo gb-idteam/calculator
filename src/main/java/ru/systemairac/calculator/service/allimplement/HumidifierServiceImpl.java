@@ -82,6 +82,16 @@ public class HumidifierServiceImpl implements HumidifierService {
     }
 
     @Override
+    public Humidifier findHumidifierById(Long id) {
+        return humidifierRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Humidifier> findHumidifiersByIds(List<Long> ids) {
+        return humidifierRepository.findAllById(ids);
+    }
+
+    @Override
     public HumidifierDto findById(Long id) {
         return mapper.fromHumidifier(humidifierRepository.findById(id).orElse(null));
     }

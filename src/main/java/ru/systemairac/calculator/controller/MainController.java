@@ -10,9 +10,9 @@ import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
+import ru.systemairac.calculator.service.allinterface.HumidifierComponentService;
 import ru.systemairac.calculator.service.allinterface.ProjectService;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
@@ -29,6 +29,8 @@ public class MainController {
     private final ProjectService projectService;
     private final UserService userService;
     private final CalculationService calculationService;
+    private final HumidifierComponentService humidifierComponentService;
+
     private ProjectDto projectDto = new ProjectDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
@@ -43,11 +45,11 @@ public class MainController {
             humOut(60).
             build();
 
-
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, HumidifierComponentService humidifierComponentService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
+        this.humidifierComponentService = humidifierComponentService;
         //Для теста
         {
             List<HumidifierComponentDto> list = new ArrayList<>();
@@ -91,11 +93,10 @@ public class MainController {
     public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
         this.projectDto = projectDto;
         humidifiers.clear();
+        options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        /**
-         *  TODO место для получения map options
-         */
+        this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
         return "redirect:/calculator";
     }
 
