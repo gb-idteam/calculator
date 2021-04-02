@@ -10,6 +10,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    border-radius: 0.25em;
 }
 
 /* Hide the browser's default checkbox */
@@ -17,6 +18,7 @@
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    border-color: #b3d7ff;
 }
 
 /* Create a custom checkbox */
@@ -27,11 +29,13 @@
     height: 25px;
     width: 25px;
     background-color: #eee;
+
 }
 
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
     background-color: #ccc;
+
 }
 
 /* When the checkbox is checked, add a blue background */
@@ -63,3 +67,19 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+/*input[type=checkbox] {*/
+/*    display: none;*/
+/*}*/
+/*.checkbox label:before {*/
+/*    border-radius: 3px;*/
+/*}*/
+
+/*input[type=checkbox]:checked + label:before {*/
+/*    content: "\2713";*/
+/*    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);*/
+/*    font-size: 15px;*/
+/*    color: #f3f3f3;*/
+/*    text-align: center;*/
+/*    line-height: 15px;*/
+/*}*/
