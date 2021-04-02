@@ -18,6 +18,7 @@ import ru.systemairac.calculator.service.allinterface.UserService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @PreAuthorize("isAuthenticated()")
@@ -94,7 +95,7 @@ public class MainController {
         humidifiers.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        /**
+        /*
          *  TODO место для получения map options
          */
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);

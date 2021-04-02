@@ -11,9 +11,9 @@ import java.util.List;
 public interface HumidifierComponentService {
     List<HumidifierComponent> getAllComponent();
 
-    HashMap<String, List<HumidifierComponentDto>> getAllComponentByHumidifiers(List<HumidifierDto> humidifiers);
+    HashMap<Long, List<HumidifierComponentDto>> getAllComponentByHumidifiers(List<HumidifierDto> humidifiers);
 
-    HashMap<String, List<HumidifierComponentDto>> findByHumidifier(HumidifierDto humidifierDto);
+    HashMap<Long, List<HumidifierComponentDto>> findByHumidifier(HumidifierDto humidifierDto);
 
     HumidifierComponent findById(Long id);
 

@@ -34,20 +34,20 @@ public class HumidifierComponentServiceImpl implements HumidifierComponentServic
     }
 
     @Override
-    public HashMap<String, List<HumidifierComponentDto>> getAllComponentByHumidifiers(List<HumidifierDto> humidifiers) {
+    public HashMap<Long, List<HumidifierComponentDto>> getAllComponentByHumidifiers(List<HumidifierDto> humidifiers) {
         List<Long> ids = humidifiers.stream().map(HumidifierDto::getId).collect(Collectors.toList());
         List<Humidifier> humidifierList = humidifierRepository.findAllById(ids);
-        HashMap<String , List<HumidifierComponentDto>> componentMap = new HashMap<>();
-        humidifierList.forEach(humidifier -> componentMap.put(humidifier.getArticleNumber(), mapper.fromHumidifierComponentList(humidifier.getHumidifierComponents())));
+        HashMap<Long , List<HumidifierComponentDto>> componentMap = new HashMap<>();
+        humidifierList.forEach(humidifier -> componentMap.put(humidifier.getId(), mapper.fromHumidifierComponentList(humidifier.getHumidifierComponents())));
         return componentMap;
     }
 
     @Override
-    public HashMap<String, List<HumidifierComponentDto>> findByHumidifier(HumidifierDto humidifierDto) {
+    public HashMap<Long, List<HumidifierComponentDto>> findByHumidifier(HumidifierDto humidifierDto) {
         Humidifier humidifier = humidifierRepository.findHumidifierById(humidifierDto.getId());
-        HashMap<String,List<HumidifierComponentDto>> componentMap = new HashMap<>();
+        HashMap<Long, List<HumidifierComponentDto>> componentMap = new HashMap<>();
         if(humidifier != null){
-            componentMap.put(humidifier.getArticleNumber(), mapper.fromHumidifierComponentList(humidifier.getHumidifierComponents()));
+            componentMap.put(humidifier.getId(), mapper.fromHumidifierComponentList(humidifier.getHumidifierComponents()));
         }
         return componentMap;
     }
