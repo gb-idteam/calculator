@@ -43,6 +43,6 @@ public class VaporDistributorServiceImpl implements VaporDistributorService {
 
     private VaporDistributor mapDistributorsByIds(Long id, Integer diameter, int width) {
         // TODO проверить на сколько меньше, чем ширина
-        return vaporDistributorRepository.findDistinctFirstDiameterAndLengthLessThan(diameter,width - 50);
+        return vaporDistributorRepository.findFirstByDiameterAndLeAndLengthLessThan(diameter,width - 50);
     }
 }
