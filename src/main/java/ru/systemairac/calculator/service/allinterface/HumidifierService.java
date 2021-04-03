@@ -6,6 +6,7 @@ import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TypeMontage;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface HumidifierService {
@@ -28,4 +29,6 @@ public interface HumidifierService {
     void deleteById(Long id);
 
     Humidifier findHumidifierById(Long id);
+
+    HashMap<Long, Integer> getAllDiameters(List<Humidifier> humidifiers);
 }

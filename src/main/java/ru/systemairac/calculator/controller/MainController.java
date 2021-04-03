@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
-import ru.systemairac.calculator.dto.HumidifierComponentDto;
-import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.dto.ProjectDto;
-import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
+import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.service.allinterface.*;
 
 import java.security.Principal;
@@ -97,6 +95,8 @@ public class MainController {
         options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
+        HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
+        distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
         return "redirect:/calculator";
     }

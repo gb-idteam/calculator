@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
+import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
@@ -18,7 +19,9 @@ import ru.systemairac.calculator.service.allinterface.HumidifierService;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HumidifierServiceImpl implements HumidifierService {
@@ -89,6 +92,13 @@ public class HumidifierServiceImpl implements HumidifierService {
     @Override
     public Humidifier findHumidifierById(Long id) {
         return humidifierRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public HashMap<Long, Integer> getAllDiameters(List<Humidifier> humidifierList) {
+        HashMap<Long , Integer> diametersMap = new HashMap<>();
+        humidifierList.forEach(humidifier -> diametersMap.put(humidifier.getId(),humidifier.getVaporPipeDiameter()));
+        return diametersMap;
     }
 
     @Override
