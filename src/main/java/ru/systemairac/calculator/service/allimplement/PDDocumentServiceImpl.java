@@ -7,6 +7,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
@@ -15,13 +16,16 @@ import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 import java.io.File;
 import java.io.IOException;
 
+@Service
 public class PDDocumentServiceImpl implements PDDocumentService {
 
     private static final float fontSizeSmall = 10;
     private static final float fontSizeNormal = 12;
     private static final float fontSizeBig = 14;
 
-    private static final String PATH_TO_FONT_FILE = "src/main/resources/arial.ttf";
+    private static final float marginBetweenTables = 20;
+
+    private static final String PATH_TO_FONT_FILE = "src/main/resources/arial.ttf"; // TODO: путь к файлу шрифта
 
 
     // TODO: refactor
@@ -84,7 +88,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         table.draw();
 
-        yPosition -= table.getHeaderAndDataHeight() + 20;
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
         table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, drawContent);
 
         row = table.createRow(12);
@@ -126,7 +130,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         cell.setAlign(HorizontalAlignment.CENTER);
 
         table.draw();
-        yPosition -= table.getHeaderAndDataHeight() + 20;
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         String name = "Распыление";
         String[][] data = {
@@ -140,7 +144,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         table = new BaseTable( yPositionLeft, yStartNewPage, bottomMargin, tableWidth / 2f, margin, mainDocument, myPage, false, true);
 
         drawTable(table, font, name, data);
-        yPositionLeft -= table.getHeaderAndDataHeight() + 20;
+        yPositionLeft -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         name = "Информация по увлажнению";
         data = new String[][]{
@@ -153,7 +157,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         table = new BaseTable( yPositionRight, yStartNewPage, bottomMargin, tableWidth / 2f, margin + table.getWidth(), mainDocument, myPage, false, true);
 
         drawTable(table, font, name, data);
-        yPositionRight -= table.getHeaderAndDataHeight() + 20;
+        yPositionRight -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         name = "Подбор увлажнителя";
         data = new String[][]{
@@ -165,7 +169,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         table = new BaseTable( yPositionLeft, yStartNewPage, bottomMargin, tableWidth / 2f, margin, mainDocument, myPage, false, true);
 
         drawTable(table, font, name, data);
-        yPositionLeft -= table.getHeaderAndDataHeight() + 20;
+        yPositionLeft -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         yPosition = Math.min(yPositionLeft, yPositionRight);
 
@@ -178,32 +182,18 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
 
         drawTable(table, font, name, data, new float[]{40f, 60f});
-        yPosition -= table.getHeaderAndDataHeight() + 20;
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         contentStream.close();
         return mainDocument;
     }
 
     private static void drawTable(BaseTable table, PDFont font, String name, String[][] data) throws IOException {
-
-        Row<PDPage> row;
-        Cell<PDPage> cell;
-        row = table.createRow(12);
-        cell = row.createCell(100, name);
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
+        float[] columnWidth = new float[data.length];
         for (int i = 0; i < data.length; i++) {
-            row = table.createRow(0);
-            for (int j = 0; j < data[i].length; j++) {
-                cell = row.createCell(100f / data[i].length, data[i][j]);
-                cell.setFont(font);
-                cell.setFontSize(fontSizeNormal);
-                cell.setValign(VerticalAlignment.MIDDLE);
-            }
+            columnWidth[i] = 100f / data[i].length;
         }
-
-        table.draw();
+        drawTable(table, font, name, data, columnWidth);
     }
 
     private static void drawTable(BaseTable table, PDFont font, String name, String[][] data, float[] columnWidth) throws IOException {
@@ -226,6 +216,8 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         table.draw();
     }
+
+
 
 }
 
