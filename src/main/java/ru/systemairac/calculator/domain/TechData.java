@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.TypeCylinder;
 import ru.systemairac.calculator.myenum.TypeMontage;
 import ru.systemairac.calculator.myenum.TypeWater;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +21,7 @@ import javax.persistence.*;
 @Table(name = "tech_data")
 public class TechData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -39,12 +41,6 @@ public class TechData {
     @Enumerated(EnumType.STRING)
     private TypeMontage typeMontage;
 
-    @Enumerated(EnumType.STRING)
-    private TypeWater typeWater;
-
-    @Enumerated(EnumType.STRING)
-    private TypeCylinder typeCylinder;
-
     private int voltage;
 
     private int phase;
@@ -54,4 +50,7 @@ public class TechData {
     private int width;
 
     private double calcCapacity;
+
+    @UpdateTimestamp
+    private LocalDateTime date;
 }

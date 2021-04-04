@@ -17,15 +17,13 @@ import java.util.List;
 @Entity
 @Table(name = "calculation")
 public class Calculation {
-    private static final String SEQ_NAME = "calculation_seq";
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "calculation_id")
-    private List<Unit> unit;
+    private List<TechData> techData;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Project project;

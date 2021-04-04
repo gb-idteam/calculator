@@ -18,11 +18,8 @@ import java.math.BigDecimal;
 @Table(name = "humidifier_component")
 public class HumidifierComponent {
 
-    private static final String SEQ_NAME = "humidifier_component_seq";
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

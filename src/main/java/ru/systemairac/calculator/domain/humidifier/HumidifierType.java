@@ -15,10 +15,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "humidifier_type")
 public class HumidifierType {
-    private static final String SEQ_NAME = "unit_types_seq";
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)

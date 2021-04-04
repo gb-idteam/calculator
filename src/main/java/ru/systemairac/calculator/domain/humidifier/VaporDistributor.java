@@ -15,11 +15,8 @@ import java.math.BigDecimal;
 @Table(name = "vapor_distributor")
 public class VaporDistributor {
 
-    private static final String SEQ_NAME = "vapor_distributor_seq";
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

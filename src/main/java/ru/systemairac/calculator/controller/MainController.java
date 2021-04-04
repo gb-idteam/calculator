@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.*;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.service.allinterface.*;
 
 import java.security.Principal;
@@ -28,6 +28,7 @@ public class MainController {
     private ProjectDto projectDto = new ProjectDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
+    HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
     private HashMap<Long, List<HumidifierComponentDto>> options = new HashMap<>();
     private Long idSelectHumidifier;
     // Для тестирования
@@ -35,7 +36,7 @@ public class MainController {
             airFlow(500).
             tempIn(20).
             humIn(1).
-            phase(1).
+            voltage(EnumVoltageType.ONE).
             humOut(60).
             build();
 
@@ -91,12 +92,11 @@ public class MainController {
     @PostMapping("/calc")
     public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
         this.projectDto = projectDto;
-        humidifiers.clear();
-        options.clear();
+        this.humidifiers.clear();
+        this.options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
-        humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
-        distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
+        this.humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
+        this.distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
         return "redirect:/calculator";
     }

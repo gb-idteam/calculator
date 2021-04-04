@@ -6,26 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "project")
-public class Project {
+@Table(name = "estimate")
+public class Estimate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String address;
-    private String title;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "project_id")
-    private List<Calculation> calculation;
-
-    @ManyToOne
-    private User user;
 
 }

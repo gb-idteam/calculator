@@ -12,10 +12,9 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 public class User {
-    private static final String SEQ_NAME = "user_seq";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
