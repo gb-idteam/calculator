@@ -158,7 +158,7 @@
         </h1>
         <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
         <form th:action="@{calculator/selectHumidifier}" method="post">
-            <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover">
+            <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover" id = "table_humidifier">
                 <thead>
                 <tr>
                     <td>№</td>
@@ -215,15 +215,20 @@
                     <tr className="tr_option" id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
                         <td>
                             <label class="container">
-                                <input type="checkbox">
+                                <input type="checkbox" name="selectedOptions">
                                 <span class="checkmark"></span>
                             </label>
                         </td>
                         <td th:text="${instance.articleNumber}">арт</td>
                         <td th:text="${instance.type.getTxt()}">тип</td>
-                        <td th:text="${instance.price}">0</td>
+                        <td class="option_price" th:text="${instance.price}">0</td>
                     </tr>
                 </table>
+                <div>
+                    <h3 id="Summary" text="Сумма: ">
+                    </h3>
+                </div>
+
             </div>
         </div>
     </div>
