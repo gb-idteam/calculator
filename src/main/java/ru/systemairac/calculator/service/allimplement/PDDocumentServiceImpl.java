@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
     // TODO: refactor
     @Override
-    public PDDocument toPDDocument(User user, ProjectDto projectDto, TechDataDto techDataDto) throws IOException {
+    public PDDocument toPDDocument(UserDto userDto, ProjectDto projectDto, TechDataDto techDataDto) throws IOException {
 
         PDPage myPage = new PDPage(PDRectangle.A4);
         PDDocument mainDocument = new PDDocument();
@@ -70,19 +71,19 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         cell.setFontSize(fontSizeNormal);
         cell.setAlign(HorizontalAlignment.CENTER);
         row = table.createRow(12);
-        cell = row.createCell(100, "Компания: " + user.getNameCompany());
+        cell = row.createCell(100, "Компания: " + userDto.getNameCompany());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
         row = table.createRow(12);
-        cell = row.createCell(100, "Имя: " + user.getFullName());
+        cell = row.createCell(100, "Имя: " + userDto.getFullName());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
         row = table.createRow(12);
-        cell = row.createCell(100, "Телефон: " + user.getPhone());
+        cell = row.createCell(100, "Телефон: " + userDto.getPhone());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
         row = table.createRow(12);
-        cell = row.createCell(100, "email: " + user.getEmail());
+        cell = row.createCell(100, "email: " + userDto.getEmail());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
 
