@@ -56,4 +56,21 @@ public class FileServiceImpl implements FileService {
 
         return name;
     }
+
+    @Override
+    public boolean fileExists(String fileName) {
+        return Files.exists(getPath(fileName)); // позже заменить на fileRepository.findByName(fileName).isPresent()
+    }
+
+    @Override
+    public boolean fileBelongsToUser(String fileName, String username) {
+        return true; // пока заглушка
+//
+//        if (!fileExists(fileName)) {
+//            throw new RuntimeException("Попытались проверить владельца для несуществующего файла \'" + fileName + "\'");
+//        }
+//        FileEntity fileEntity = fileRepository.findByName(fileName).orElseThrow();
+//        Project project = fileEntity.getProject();
+//        return project.getUser().getEmail().equals(username);
+    }
 }
