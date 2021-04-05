@@ -6,12 +6,12 @@ import ru.systemairac.calculator.myenum.EnumVoltageType;
 public class HumidifierFilter {
 
     private Double minimalCapacity;
-    private EnumVoltageType voltageType;
+    private EnumVoltageType voltage;
     private EnumHumidifierType type;
 
-    public HumidifierFilter(Double minimalCapacity, EnumVoltageType voltageType, EnumHumidifierType type) {
+    public HumidifierFilter(Double minimalCapacity, EnumVoltageType voltage, EnumHumidifierType type) {
         this.minimalCapacity = minimalCapacity;
-        this.voltageType = voltageType;
+        this.voltage = voltage;
         this.type = type;
     }
 
@@ -19,8 +19,8 @@ public class HumidifierFilter {
         return minimalCapacity;
     }
 
-    public EnumVoltageType getVoltageType() {
-        return voltageType;
+    public EnumVoltageType getVoltage() {
+        return voltage;
     }
 
     public EnumHumidifierType getType() {

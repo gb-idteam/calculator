@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "estimate")
 public class Estimate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 

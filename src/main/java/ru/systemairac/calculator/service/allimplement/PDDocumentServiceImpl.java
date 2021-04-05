@@ -162,8 +162,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         name = "Подбор увлажнителя";
         data = new String[][]{
                 {"Тип увлажнения", techDataDto.getEnumHumidifierType().getTxt()},
-                {"Электропитание", techDataDto.getPhase() + " фаз" + (techDataDto.getPhase() == 1 ? "а" : "ы") + ", " +
-                        techDataDto.getVoltage() + "V"}
+                {"Электропитание", techDataDto.getVoltage().getTxt() + "V"}
         };
 
         table = new BaseTable( yPositionLeft, yStartNewPage, bottomMargin, tableWidth / 2f, margin, mainDocument, myPage, false, true);

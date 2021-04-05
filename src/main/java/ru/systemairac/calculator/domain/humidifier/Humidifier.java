@@ -23,7 +23,7 @@ public class Humidifier {
      * Идентификатор в таблице.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * Номер артикуля. Должен быть уникален.

@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.Mapper;
 import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.TypeCylinder;
-import ru.systemairac.calculator.myenum.TypeMontage;
-import ru.systemairac.calculator.myenum.TypeWater;
+import ru.systemairac.calculator.myenum.*;
 
 import java.util.Random;
 
@@ -27,9 +24,7 @@ class TechDataMapperTest {
                 .humOut(random.nextInt(100))
                 .tempIn(random.nextInt(80) - 40)
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
-                .typeCylinder(TypeCylinder.values()[random.nextInt(TypeCylinder.values().length)])
-                .typeWater(TypeWater.values()[random.nextInt(TypeWater.values().length)])
-                .voltage(random.nextInt(500))
+                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
                 .width(random.nextInt(1000))
                 .length(random.nextInt(1000))
                 .build();
@@ -45,11 +40,8 @@ class TechDataMapperTest {
                 .humIn(random.nextInt(100))
                 .humOut(random.nextInt(100))
                 .tempIn(random.nextInt(80) - 40)
-                .phase(random.nextInt(2) + 1)
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
-                .typeCylinder(TypeCylinder.values()[random.nextInt(TypeCylinder.values().length)])
-                .typeWater(TypeWater.values()[random.nextInt(TypeWater.values().length)])
-                .voltage(random.nextInt(500))
+                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
                 .width(random.nextInt(1000))
                 .length(random.nextInt(1000))
                 .build();
@@ -72,9 +64,7 @@ class TechDataMapperTest {
         assertEquals(techDataDto.getLength(), techData.getLength());
         assertEquals(techDataDto.getEnumHumidifierType(), techData.getEnumHumidifierType());
         assertEquals(techDataDto.getTempIn(), techData.getTempIn());
-        assertEquals(techDataDto.getTypeCylinder(), techData.getTypeCylinder());
         assertEquals(techDataDto.getTypeMontage(), techData.getTypeMontage());
-        assertEquals(techDataDto.getTypeWater(), techData.getTypeWater());
         assertEquals(techDataDto.getVoltage(), techData.getVoltage());
         assertEquals(techDataDto.getWidth(), techData.getWidth());
     }

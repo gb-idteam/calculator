@@ -46,16 +46,6 @@ $(document).ready(function(){
         $('.input').prop('disabled', true);
     });
 });
-$(document).ready(function(){
-    $('#voltage').change(function() {
-        var voltage = $(this).val();
-        if (voltage==="220") {
-            $('#field_phase').val(1);
-        } else {
-            $('#field_phase').val(3);
-        }
-    });
-});
 
 function calcSummaryOption() {
     var table = document.getElementById("table_option");

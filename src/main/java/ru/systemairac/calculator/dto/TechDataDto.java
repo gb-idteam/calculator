@@ -17,8 +17,6 @@ public class TechDataDto {
     private double humOut;
     private EnumHumidifierType enumHumidifierType;
     private TypeMontage typeMontage;
-    private TypeWater typeWater;
-    private TypeCylinder typeCylinder;
     private EnumVoltageType voltage;
     private int length;
     private int width;

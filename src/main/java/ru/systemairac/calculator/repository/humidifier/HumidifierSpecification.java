@@ -24,8 +24,8 @@ public final class HumidifierSpecification implements Specification<Humidifier> 
             predicates.add(cb.ge(root.get("capacity"), filter.getMinimalCapacity()));
         }
 
-        if (filter.getPhasicity() != null) {
-            predicates.add(cb.equal(root.get("phase"), filter.getPhasicity()));
+        if (filter.getVoltage() != null) {
+            predicates.add(cb.equal(root.get("voltage"), filter.getVoltage()));
         }
 
         if (filter.getType() != null) {

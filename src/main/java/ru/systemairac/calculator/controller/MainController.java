@@ -28,7 +28,7 @@ public class MainController {
     private ProjectDto projectDto = new ProjectDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
-    HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
+    private HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
     private HashMap<Long, List<HumidifierComponentDto>> options = new HashMap<>();
     private Long idSelectHumidifier;
     // Для тестирования
@@ -106,6 +106,9 @@ public class MainController {
             this.humidifiers.clear();
             this.techDataDto = new TechDataDto();
             this.projectDto = new ProjectDto();
+            this.humidifiers = new ArrayList<>();
+            this.options = new HashMap<>();
+            this.distributors = new HashMap<>();
             return "redirect:/calculator";
     }
 }
