@@ -13,18 +13,28 @@ $(document).ready(function(){
         $("#Summary").text(price);
     });
 });
-$(document).ready(function(){
-// Разблокировать на будущее для блокировки до внесения данных проекта
-    $('#btn-save').click(function(){
-        $('.input').prop('disabled', false);
-    });
-});
-$(document).ready(function(){
-// Разблокировать на будущее для блокировки до внесения данных проекта
-    $('#btn-clear').click(function(){
-        $('.input').prop('disabled', true);
-    });
-});
+
+//Пока не работает
+// $('form').submit(function(){
+//     // Если textarea пустое
+//     if(!$(this).find('textarea').val()){
+//         // отменяем отправку
+//         return false;
+//     }
+// });
+
+// $(document).ready(function(){
+// // Разблокировать на будущее для блокировки до внесения данных проекта
+//     $('#btn-save').click(function(){
+//         option ();
+//     });
+// });
+// $(document).ready(function(){
+// // Разблокировать на будущее для блокировки до внесения данных проекта
+//     $('#btn-clear').click(function(){
+//         option ();
+//     });
+// });
 
 function calcSummaryOption() {
     var table = document.getElementById("table_option");
@@ -53,3 +63,22 @@ function priceHumidifier() {
     }
     return 0;
 }
+
+
+function option () {
+    var title = document.getElementById('project_title'),
+        address = document.getElementById('project_address'),
+        text = document.querySelectorAll('input');
+    if(title.value==="" || address.value==="") {
+        text.forEach(function (e, i) {
+            if (e.id !== 'project_title' && e.id !== 'project_address')
+                e.disabled = 'disabled';
+        });
+    } else {
+        text.forEach(function (e, i) {
+                e.disabled = '';
+        });
+    }
+}
+// title.addEventListener('change', function () {option();});
+// address.addEventListener('change', function () {option();});

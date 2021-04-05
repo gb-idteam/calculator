@@ -70,11 +70,12 @@ public class MainController {
         }
         model.addAttribute("projects", projects);
         model.addAttribute("estimate", estimateDto);
-        model.addAttribute("projectDto", projectDto);
         model.addAttribute("himidifiers", humidifiers);
+        model.addAttribute("projectDto", projectDto);
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);
         model.addAttribute("techDataDto", techDataDto);
         model.addAttribute("options", options);
+        model.addAttribute("distributors", distributors);
         return "calculator";
     }
 
@@ -92,8 +93,7 @@ public class MainController {
     }
 
     @PostMapping("/calc")
-    public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
-        this.projectDto = projectDto;
+    public String calcAndGetHumidifier(TechDataDto techDataDto){
         this.humidifiers.clear();
         this.options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);

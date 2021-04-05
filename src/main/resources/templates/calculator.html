@@ -39,13 +39,13 @@
                 <tr>
                     <td>Название проекта</td>
                     <td>
-                        <input type="text" th:field="*{title}"/>
+                        <input id="project_title" type="text" th:field="*{title}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Адрес проекта</td>
                     <td>
-                        <input type="text" th:field="*{address}"/>
+                        <input id="project_address" type="text" th:field="*{address}"/>
                     </td>
                 </tr>
             </table>
@@ -66,19 +66,19 @@
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
                 <tr>
                     <td>Расход воздуха</td>
-                    <td><input type="number" th:field="*{airFlow}"/></td>
+                    <td><input type="number" th:field="*{airFlow}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
                 </tr>
                 <tr>
                     <td>Температура на входе</td>
-                    <td><input type="number" th:field="*{tempIn}"/></td>
+                    <td><input type="number" th:field="*{tempIn}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
                 </tr>
                 <tr>
                     <td>Влажность на входе</td>
-                    <td><input type="number" th:field="*{humIn}"/></td>
+                    <td><input type="number" th:field="*{humIn}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
                 </tr>
                 <tr th:border="2">
                     <td>Влажность на выходе </td>
-                    <td><input type="number" th:field="*{humOut}"/></td>
+                    <td><input type="number" th:field="*{humOut}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -101,8 +101,8 @@
                                 <td>Ширина</td>
                             </tr>
                             <tr>
-                                <td><input type="number" th:field="${techDataDto.length}"/></td>
-                                <td><input type="number" th:field="${techDataDto.width}"/></td>
+                                <td><input type="number" th:field="${techDataDto.length}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
+                                <td><input type="number" th:field="${techDataDto.width}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
                         </table>
                     </td>
                 </tr>
@@ -110,9 +110,6 @@
                     <td>
                         <h3>Выберите тип увлажнителя</h3>
                     </td>
-                    <td><h3>Тип цилиндра</h3></td>
-                </tr>
-                <tr>
                     <td>
                         <select name="EnumHumidifierType">
                             <option th:each="r : ${T(ru.systemairac.calculator.myenum.EnumHumidifierType).values()}"
@@ -130,7 +127,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="submit">Расчет</button>
+            <button th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}" type="submit">Расчет</button>
         </form>
     </div>
     <!--  part-3  -->
@@ -174,7 +171,7 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="submit">Выбрать</button>
+            <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null ? true: false}" type="submit">Выбрать</button>
         </form>
 
         <!--  part-4  -->
@@ -197,6 +194,17 @@
                         <td>Цена</td>
                     </tr>
                     </thead>
+                    <tr className="tr_distributor" id="tr_distributor" th:each ="instance : ${distributors.get(idSelectHumidifier)}">
+                        <td>
+                            <label class="container">
+                                <input type="checkbox" name="selectedOptions">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                        <td th:text="${instance.articleNumber}">арт</td>
+                        <td th:text="${instance.type.getTxt()}">тип</td>
+                        <td class="option_price" th:text="${instance.price}">0</td>
+                    </tr>
                     <tr className="tr_option" id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
                         <td>
                             <label class="container">
