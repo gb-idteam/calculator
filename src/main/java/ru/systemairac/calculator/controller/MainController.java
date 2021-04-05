@@ -26,6 +26,7 @@ public class MainController {
     private final HumidifierComponentService humidifierComponentService;
     private final HumidifierService humidifierService;
     private ProjectDto projectDto = new ProjectDto();
+    private EstimateDto estimateDto = new EstimateDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
     private HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
@@ -68,6 +69,7 @@ public class MainController {
             );
         }
         model.addAttribute("projects", projects);
+        model.addAttribute("estimate", estimateDto);
         model.addAttribute("projectDto", projectDto);
         model.addAttribute("himidifiers", humidifiers);
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);

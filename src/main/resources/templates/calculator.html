@@ -146,6 +146,7 @@
                 <tr>
                     <td>№</td>
                     <td>Артикул</td>
+                    <td>Модель</td>
                     <!--                <td>Вид</td> TODO картинка -->
                     <td>Расчетная мощность</td>
                     <td>Мощность</td>
@@ -208,10 +209,17 @@
                         <td class="option_price" th:text="${instance.price}">0</td>
                     </tr>
                 </table>
-                <div>
-                    <h3 id="Summary" text="Сумма: " name="sum">
-                    </h3>
-                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <h3>Сумма: </h3>
+                        </td>
+                        <td>
+                            <h3 id="Summary" th:text="${estimate.sum}" name="sum"></h3>
+                        </td>
+                    </tr>
+                </table>
+
 
             </div>
         </div>
