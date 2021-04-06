@@ -23,7 +23,7 @@ public class User {
     private String email;
 
     private String password;
-
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
