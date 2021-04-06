@@ -185,8 +185,8 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         name = "Результаты расчета увлажнения";
         data = new String[][]{
                 { "Тип увлажнения",
-                        String.format("1 x %s, %.1f kg/h, %sV %.2f kW",
-                                humidifierDto.getTitle(),
+                        String.format("1 x $1%s, $2%.1f kg/h, $3%sV $4%.2f kW",
+                                "(TITLE)",
                                 humidifierDto.getCapacity(),
                                 humidifierDto.getVoltage().getTxt(),
                                 humidifierDto.getElectricPower()
