@@ -52,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public ProjectDto addProject(ProjectDto projectDto, String email) {
-        User user = userService.getByEmail( email );
+        User user = userService.findByEmail( email ).orElseThrow();
         if(user == null){
             throw new RuntimeException("User not found. " + email);
         }

@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 
@@ -36,7 +37,8 @@ public class PDDocumentServiceImpl implements PDDocumentService {
             ProjectDto projectDto,
             TechDataDto techDataDto,
             HumidifierDto humidifierDto,
-            List<HumidifierComponentDto> humidifierComponentDtoList
+            List<HumidifierComponentDto> humidifierComponentDtoList,
+            VaporDistributorDto distributor
     ) throws IOException {
 
         PDPage myPage = new PDPage(PDRectangle.A4);
@@ -192,9 +194,9 @@ public class PDDocumentServiceImpl implements PDDocumentService {
                 },
                 { "Тип распыления",
                        String.format("%d %s*ø:%dmm L:%dmm",
-                               1, // число дисперсионных трубок
+                               humidifierDto.getNumberOfCylinders(), // число дисперсионных трубок
                                "Дисперсионная трубка", // разные данные для разных чисел
-                               25, // диаметр трубок
+                               humidifierDto.getVaporPipeDiameter(), // диаметр трубок
                                190 // длина трубок
                        )
                 } // нужно передавать в метод данные о компонентах

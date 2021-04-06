@@ -91,4 +91,9 @@ public class HumidifierComponentServiceImpl implements HumidifierComponentServic
     public void deleteById(Long id) {
 
     }
+
+    @Override
+    public List<HumidifierComponentDto> findAllByIds(List<Long> ids) {
+        return mapper.fromHumidifierComponentList(humidifierComponentRepository.findAllById(ids));
+    }
 }
