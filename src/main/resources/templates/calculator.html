@@ -209,7 +209,7 @@
                         <tr className="tr_option" id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
-                                    <input type="checkbox" name="selectedOptions" th:value="${instance.articleNumber}">
+                                    <input type="checkbox" name="selectedOptions" th:value="${instance.id}">
                                     <span class="checkmark"></span>
                                 </label>
                             </td>

@@ -7,10 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.dto.ProjectDto;
-import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.dto.UserDto;
+import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.myenum.TypeMontage;
@@ -80,8 +77,14 @@ class PDDocumentServiceTest {
                 .build();
 
         HumidifierDto humidifierDto = fakeGoodHumidifierDto();
+        VaporDistributorDto distributorDto  = VaporDistributorDto.builder()
+                .length(1000)
+                .articleNumber("sdfs")
+                .diameter(25)
+                .price(new BigDecimal(100))
+                .build();
 
-        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, humidifierDto, new ArrayList<>())) {
+        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, humidifierDto, new ArrayList<>(),distributorDto)) {
 //            document.save("123.pdf");
         }
     }

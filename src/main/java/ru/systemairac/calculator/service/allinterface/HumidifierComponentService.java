@@ -20,4 +20,6 @@ public interface HumidifierComponentService {
     void save(HumidifierComponent humidifierComponent);
 
     void deleteById(Long id);
+
+    List<HumidifierComponentDto> findAllByIds(List<Long> ids);
 }

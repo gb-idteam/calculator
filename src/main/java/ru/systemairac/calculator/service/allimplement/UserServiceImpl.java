@@ -94,8 +94,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserDto getByEmail(String email) {
+        return mapper.fromUser(userRepository.findByEmail(email));
     }
 
     @Override

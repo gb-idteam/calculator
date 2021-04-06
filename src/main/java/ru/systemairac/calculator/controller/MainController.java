@@ -1,5 +1,6 @@
 package ru.systemairac.calculator.controller;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,10 @@ import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.service.allinterface.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,14 +49,16 @@ public class MainController {
             voltage(EnumVoltageType.ONE).
             humOut(60).
             build();
+    private final PDDocumentService pdDocumentService;
 
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, PDDocumentService pdDocumentService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
         this.techDataService = techDataService;
         this.humidifierComponentService = humidifierComponentService;
         this.humidifierService = humidifierService;
+        this.pdDocumentService = pdDocumentService;
         init();
     }
 
@@ -71,7 +76,7 @@ public class MainController {
     public String index(Model model, Principal principal){
         if (principal!=null) {
             projects = projectService.findByUser(
-                    userService.getByEmail( principal.getName() )
+                    userService.findByEmail( principal.getName() ).orElseThrow()
             );
         }
         model.addAttribute("projects", projects);
@@ -90,7 +95,7 @@ public class MainController {
     public String saveProject(ProjectDto projectDto, Principal principal){
         //this.projectDto = projectService.addProject(projectDto, principal.getName());
         if (projectDto.getId()==null) {
-            this.projectDto = projectService.save(projectDto, userService.getByEmail(principal.getName()));
+            this.projectDto = projectService.save(projectDto, userService.findByEmail( principal.getName() ).orElseThrow());
             this.calculation = calculationService.save(new Calculation(), this.projectDto);
         }
         return "redirect:/calculator";
@@ -118,13 +123,16 @@ public class MainController {
     }
 
     @PostMapping("/resultEstimate")
-    public String resultEstimate(Long idSelectHumidifier,
-                                 Principal principal,
-                                 @RequestParam(value = "selectedOptions" , required = false) String[] artSelectedOptions,
-                                 @RequestParam(value = "distributor" , required = false) String artDistributor){
-        User user = userService.getByEmail( principal.getName() );
-        this.idSelectHumidifier = idSelectHumidifier;
-        // TODO Сохранение результата в файл
+    public String resultEstimate(Principal principal,
+                                 @RequestParam(value = "selectedOptions" , required = false) Long[] idSelectedOptions,
+                                 @RequestParam(value = "distributor" , required = false) String artDistributor) throws IOException {
+        PDDocument document = pdDocumentService.toPDDocument(userService.getByEmail(principal.getName()),
+                projectDto,
+                techDataDto,
+                humidifierService.findById(this.idSelectHumidifier),
+                humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions)),
+                distributors.get(this.idSelectHumidifier)); //TODO исправить когду будет возможность выбора вентиляторного распределителя
+        document.save("result.pdf");
         return "redirect:/calculator";
     }
 
