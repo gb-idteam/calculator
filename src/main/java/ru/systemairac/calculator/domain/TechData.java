@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.TypeCylinder;
-import ru.systemairac.calculator.myenum.TypeMontage;
-import ru.systemairac.calculator.myenum.TypeWater;
+import org.hibernate.annotations.UpdateTimestamp;
+import ru.systemairac.calculator.myenum.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -22,8 +21,8 @@ public class TechData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Calculation calculation;
 
     private int airFlow;
 
@@ -40,18 +39,14 @@ public class TechData {
     private TypeMontage typeMontage;
 
     @Enumerated(EnumType.STRING)
-    private TypeWater typeWater;
-
-    @Enumerated(EnumType.STRING)
-    private TypeCylinder typeCylinder;
-
-    private int voltage;
-
-    private int phase;
+    private EnumVoltageType voltage;
 
     private int length;
 
     private int width;
 
     private double calcCapacity;
+
+    @UpdateTimestamp
+    private LocalDateTime date;
 }

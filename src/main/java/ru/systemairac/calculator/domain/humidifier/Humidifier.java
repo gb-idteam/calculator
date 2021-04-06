@@ -5,7 +5,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.TableName;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,26 +19,23 @@ import java.util.List;
 @Table(name = "humidifier")
 public class Humidifier {
 
-    private static final String SEQ_NAME = "humidifier_seq";
-
     /**
      * Идентификатор в таблице.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    /**
-     * Тип установки, для того, чтобы таблица Calculation знала, к какой таблице обращаться.
-     */
-    @Transient
-    private TableName type = TableName.HUMIDIFIER;
     /**
      * Номер артикуля. Должен быть уникален.
      */
     @Column(unique = true)
     private String articleNumber;
+
+    /**
+     * Модель увлажнителя
+     */
+    @Column
+    private String title;
 
     /**
      * Бренд увлажнителя.
@@ -65,16 +62,10 @@ public class Humidifier {
     private Double capacity;
 
     /**
-     * Число фаз (1 или 3).
+     * Тип сети (1~220 или 3~380).
      */
-    @Column
-    private Integer phase;
-
-    /**
-     * Рабочее напряжение, в В.
-     */
-    @Column
-    private Integer voltage;
+    @Enumerated(EnumType.STRING)
+    private EnumVoltageType voltage;
 
     /**
      * Количество цилиндров в увлажнителе.

@@ -2,6 +2,7 @@ package ru.systemairac.calculator.service.allinterface;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import ru.systemairac.calculator.domain.User;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.*;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ public interface PDDocumentService {
                             ProjectDto projectDto,
                             TechDataDto techDataDto,
                             HumidifierDto humidifierDto,
-                            List<HumidifierComponentDto> humidifierComponentDtoList
+                            List<HumidifierComponentDto> humidifierComponentDtoList,
+                            VaporDistributorDto distributor
     ) throws IOException;
 }

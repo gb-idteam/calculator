@@ -16,10 +16,9 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 public class Role {
-    private static final String SEQ_NAME = "roles_seq";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     @Column(unique = true)

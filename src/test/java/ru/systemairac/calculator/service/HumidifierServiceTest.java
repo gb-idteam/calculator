@@ -12,7 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.TableName;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
@@ -34,7 +34,6 @@ public class HumidifierServiceTest {
 
     private static Faker faker;
     private static Random random;
-    private static Integer[] possibleVoltages;
 
     private static EnumHumidifierType type1 = EnumHumidifierType.ELECTRODE;
     private static EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
@@ -43,7 +42,6 @@ public class HumidifierServiceTest {
     public static void init() {
         faker = new Faker(new Locale("ru"), new RandomService());
         random = new Random();
-        possibleVoltages = new Integer[]{220, 380};
     }
 
     @BeforeEach
@@ -56,14 +54,12 @@ public class HumidifierServiceTest {
         price = price.setScale(2, RoundingMode.FLOOR); // TODO: а как это происходит в БД?
         return Humidifier.builder()
                 .id(null)
-                .type(TableName.HUMIDIFIER)
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
                 .brand(null) // TODO: пока без бренда
                 .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
                 .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
                 .capacity(random.nextDouble() * 120) // от 0 до 120
-                .phase(random.nextInt(2) * 2 + 1) // 1 или 3
-                .voltage(possibleVoltages[random.nextInt(possibleVoltages.length)]) // из списка
+                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
                 .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
                 .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
                 .vaporDistributors(null) // TODO: пока без парораспределителей
@@ -90,8 +86,7 @@ public class HumidifierServiceTest {
                 .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
                 .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
                 .capacity(random.nextDouble() * 120) // от 0 до 120
-                .phase(random.nextInt(2) * 2 + 1) // 1 или 3
-                .voltage(possibleVoltages[random.nextInt(possibleVoltages.length)]) // из списка
+                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
                 .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
                 .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
                 .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
@@ -140,9 +135,9 @@ public class HumidifierServiceTest {
             humidifier.setCapacity((i + 1) * 3d);
 
             if (i % 2 == 0) // 0, 2, 4, ...
-                humidifier.setPhase(1);
+                humidifier.setVoltage(EnumVoltageType.ONE_PHASE_220V);
             else // 1, 3, 5, ...
-                humidifier.setPhase(3);
+                humidifier.setVoltage(EnumVoltageType.THREE_PHASE_380V);
 
             if (i % 3 == 0) // 0, 3, 6, 9, ...
                 humidifier.setHumidifierType(EnumHumidifierType.ELECTRODE);
@@ -153,7 +148,7 @@ public class HumidifierServiceTest {
 
         // ищем для производительности = 15, фазности = 3, электродный
         final double CAPACITY = 15;
-        final int PHASE = 3;
+        final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
@@ -168,9 +163,9 @@ public class HumidifierServiceTest {
             humidifier.setCapacity((double) (i % 2 == 0 ? i : i * 3));
 
             if (i % 3 == 0) // 0, 3, 6, 9, ...
-                humidifier.setPhase(3);
+                humidifier.setVoltage(EnumVoltageType.THREE_PHASE_380V);
             else // 1, 2, 4, 5, 7, 8, ...
-                humidifier.setPhase(1);
+                humidifier.setVoltage(EnumVoltageType.ONE_PHASE_220V);
 
             if (i % 3 == 0)
                 humidifier.setHumidifierType(EnumHumidifierType.ELECTRODE);
@@ -181,13 +176,13 @@ public class HumidifierServiceTest {
 
         // ищем для производительности = 1, фазности = 3, электродный
         final double CAPACITY = 1;
-        final int PHASE = 1;
+        final EnumVoltageType PHASE = EnumVoltageType.ONE_PHASE_220V;
         final EnumHumidifierType TYPE = EnumHumidifierType.HEATING_ELEMENT;
 
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
     }
 
-    private void checkHumidifiersFromService(List<Humidifier> list, double CAPACITY, int PHASE, EnumHumidifierType TYPE) {
+    private void checkHumidifiersFromService(List<Humidifier> list, double CAPACITY, EnumVoltageType PHASE, EnumHumidifierType TYPE) {
         Humidifier[] expected = getSuitableHumidifiers(list, CAPACITY, PHASE, TYPE);
         Humidifier[] actual =
                 service.findHumidifiers(CAPACITY, TYPE, PHASE)
@@ -203,7 +198,7 @@ public class HumidifierServiceTest {
         int NUMBER = 3;
         Humidifier[] arr = fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
         for (int i = 0; i < NUMBER; i++) {
-            arr[i].setPhase(3);
+            arr[i].setVoltage(EnumVoltageType.THREE_PHASE_380V);
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
         }
         final double CAPACITY = 123;
@@ -213,7 +208,7 @@ public class HumidifierServiceTest {
         service.saveAll(Arrays.asList(arr));
 
         // ищем для производительности = 123, фазности = 3, электродный
-        final int PHASE = 3;
+        final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
         checkHumidifiersFromService(Arrays.asList(arr), CAPACITY, PHASE, TYPE);
@@ -224,8 +219,9 @@ public class HumidifierServiceTest {
         int NUMBER = 4;
         Humidifier[] arr = fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
         for (int i = 0; i < NUMBER; i++) {
-            arr[i].setPhase(3);
+            final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
+            arr[i].setVoltage(PHASE);
         }
         final double CAPACITY = 123;
         arr[0].setCapacity(CAPACITY);
@@ -235,7 +231,7 @@ public class HumidifierServiceTest {
         service.saveAll(Arrays.asList(arr));
 
         // ищем для производительности = 123, фазности = 3, электродный
-        final int PHASE = 3;
+        final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
         List<Humidifier> actual = service.findHumidifiers(CAPACITY, TYPE, PHASE);
@@ -252,7 +248,7 @@ public class HumidifierServiceTest {
 
         // ищем для производительности = 50, фазности = 1, ТЭН
         final double CAPACITY = 50;
-        final int PHASE = 1;
+        final EnumVoltageType PHASE = EnumVoltageType.ONE_PHASE_220V;
         final EnumHumidifierType TYPE = EnumHumidifierType.HEATING_ELEMENT;
 
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
@@ -266,14 +262,14 @@ public class HumidifierServiceTest {
         service.saveAll(list);
 
         final double CAPACITY = random.nextDouble() * 120;
-        final int PHASE = random.nextInt(2) * 2 + 1;
+        final EnumVoltageType PHASE = EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)];
         final EnumHumidifierType TYPE = EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)];
 
         list.forEach(System.out::println);
 
         Humidifier[] expected = list.stream()
                 .filter(h -> h.getCapacity() >= CAPACITY
-                        && h.getPhase() == PHASE
+                        && h.getVoltage() == PHASE
                         && h.getHumidifierType() == TYPE
 
                 ).sorted(Comparator.comparingDouble(Humidifier::getCapacity))
@@ -303,10 +299,10 @@ public class HumidifierServiceTest {
         }
     }
 
-    private Humidifier[] getSuitableHumidifiers(List<Humidifier> list, double capacity, int phase, EnumHumidifierType type) {
+    private Humidifier[] getSuitableHumidifiers(List<Humidifier> list, double capacity, EnumVoltageType voltageType, EnumHumidifierType type) {
         return list.stream()
                 .filter(h -> h.getCapacity() >= capacity
-                        && h.getPhase() == phase
+                        && h.getVoltage() == voltageType
                         && h.getHumidifierType() == type
                 ).sorted(Comparator.comparingDouble(Humidifier::getCapacity))
                 .limit(3)
@@ -318,7 +314,7 @@ public class HumidifierServiceTest {
         assertEquals(expected.getArticleNumber(), actual.getArticleNumber());
         assertEquals(expected.getElectricPower(), actual.getElectricPower());
         assertEquals(expected.getCapacity(), actual.getCapacity());
-        assertEquals(expected.getPhase(), actual.getPhase());
+        assertEquals(expected.getVoltage(), actual.getVoltage());
         assertEquals(expected.getVoltage(), actual.getVoltage());
         assertEquals(expected.getNumberOfCylinders(), actual.getNumberOfCylinders());
         assertEquals(expected.getVaporPipeDiameter(), actual.getVaporPipeDiameter());

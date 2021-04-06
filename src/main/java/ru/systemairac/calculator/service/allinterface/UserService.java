@@ -14,5 +14,5 @@ public interface UserService extends UserDetailsService {
     void save(User user);
     Optional<User> getById(Long id);
     Optional<UserDto> getDtoById(Long id);
-    User getByEmail(String name);
+    UserDto getByEmail(String email);
 }

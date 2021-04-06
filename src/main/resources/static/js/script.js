@@ -1,61 +1,40 @@
-var idSelectHumidifier;
 $(document).ready(function(){
     $('input:radio[name=idSelectHumidifier]').change(function(){
-        idSelectHumidifier = $(this).val();
-        var price = priceHumidifier(idSelectHumidifier) + calcSummaryOption();
-        $("#Summary").text("Сумма: " + price);
-
+        var idSelectHumidifier = $(this).val();
+        var price = priceHumidifier() + calcSummaryOption();
+        $("#Summary").text(price);
         //Для теста
-
         $("#inputTest").val(idSelectHumidifier);
-        //Попытки вытянуть опции без кнопки
-        // $("#thead_option").after('' +
-        //     '<tr className="tr_option" id="tr_option" th:each="instance : ${options.get(' + id + ')}"> ' +
-        //         '<td> ' +
-        //             '<label className="container"> ' +
-        //             '<input type="checkbox" checked="checked"> ' +
-        //             '<span className="checkmark"></span> ' +
-        //             '</label>' +
-        //         '</td> ' +
-        //         '<td th:text="${instance.articleNumber}">арт</td> ' +
-        //         '<td th:text="${instance.type.getTxt()}">тип</td> ' +
-        //         '<td th:text="${instance.price}">0</td> ' +
-        //     '</tr>');
-        // $("#tr_option").val(id);
-        // $("#table_option").val(id);
-        // $(document.createAttribute("idSelectHumidifier",id));
-        // $("#tr_option").attr("idSelectHumidifier",id);
-        // $("#table_option").attr("idSelectHumidifier",id);
     });
 });
 $(document).ready(function(){
     $('input:checkbox[name=selectedOptions]').change(function() {
-        var price = priceHumidifier(idSelectHumidifier) + calcSummaryOption();
-        $("#Summary").text("Сумма: " + price);
+        var price = priceHumidifier() + calcSummaryOption();
+        $("#Summary").text(price);
     });
 });
-$(document).ready(function(){
-// Разблокировать на будущее для блокировки до внесения данных проекта
-    $('#btn-save').click(function(){
-        $('.input').prop('disabled', false);
-    });
-});
-$(document).ready(function(){
-// Разблокировать на будущее для блокировки до внесения данных проекта
-    $('#btn-clear').click(function(){
-        $('.input').prop('disabled', true);
-    });
-});
-$(document).ready(function(){
-    $('#voltage').change(function() {
-        var voltage = $(this).val();
-        if (voltage==="220") {
-            $('#field_phase').val(1);
-        } else {
-            $('#field_phase').val(3);
-        }
-    });
-});
+
+//Пока не работает
+// $('form').submit(function(){
+//     // Если textarea пустое
+//     if(!$(this).find('textarea').val()){
+//         // отменяем отправку
+//         return false;
+//     }
+// });
+
+// $(document).ready(function(){
+// // Разблокировать на будущее для блокировки до внесения данных проекта
+//     $('#btn-save').click(function(){
+//         option ();
+//     });
+// });
+// $(document).ready(function(){
+// // Разблокировать на будущее для блокировки до внесения данных проекта
+//     $('#btn-clear').click(function(){
+//         option ();
+//     });
+// });
 
 function calcSummaryOption() {
     var table = document.getElementById("table_option");
@@ -64,7 +43,7 @@ function calcSummaryOption() {
     var sum=0;
     for (var i = 1; i < table.rows.length; i++) {
         let row = table.rows[i];
-            if (row.cells.item(0).getElementsByTagName("input").selectedOptions.checked==true) {
+            if (row.cells.item(0).getElementsByTagName("input").selectedOptions.checked===true) {
                 sum = sum +
                     (Number(row.cells.item(lastCell).innerText) || 0);
             }
@@ -72,15 +51,34 @@ function calcSummaryOption() {
     return sum;
 }
 
-function priceHumidifier(idSelectHumidifier) {
+function priceHumidifier() {
     var table = document.getElementById("table_humidifier");
     let lastRow = table.rows[table.rows.length-1];
     let lastCell = lastRow.cells.length - 1;
     for (var i = 1; i < table.rows.length; i++) {
         let row = table.rows[i];
-        if (row.cells.item(0).getElementsByTagName("input").idSelectHumidifier.getAttribute("value")==idSelectHumidifier) {
+        if (row.cells.item(0).getElementsByTagName("input").idSelectHumidifier.checked===true) {
             return (Number(row.cells.item(lastCell).innerText) || 0);
         }
     }
     return 0;
 }
+
+
+function option () {
+    var title = document.getElementById('project_title'),
+        address = document.getElementById('project_address'),
+        text = document.querySelectorAll('input');
+    if(title.value==="" || address.value==="") {
+        text.forEach(function (e, i) {
+            if (e.id !== 'project_title' && e.id !== 'project_address')
+                e.disabled = 'disabled';
+        });
+    } else {
+        text.forEach(function (e, i) {
+                e.disabled = '';
+        });
+    }
+}
+// title.addEventListener('change', function () {option();});
+// address.addEventListener('change', function () {option();});

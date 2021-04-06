@@ -1,16 +1,17 @@
 package ru.systemairac.calculator.repository.humidifier;
 
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
 
 public class HumidifierFilter {
 
     private Double minimalCapacity;
-    private Integer phasicity;
+    private EnumVoltageType voltage;
     private EnumHumidifierType type;
 
-    public HumidifierFilter(Double minimalCapacity, Integer phasicity, EnumHumidifierType type) {
+    public HumidifierFilter(Double minimalCapacity, EnumVoltageType voltage, EnumHumidifierType type) {
         this.minimalCapacity = minimalCapacity;
-        this.phasicity = phasicity;
+        this.voltage = voltage;
         this.type = type;
     }
 
@@ -18,8 +19,8 @@ public class HumidifierFilter {
         return minimalCapacity;
     }
 
-    public Integer getPhasicity() {
-        return phasicity;
+    public EnumVoltageType getVoltage() {
+        return voltage;
     }
 
     public EnumHumidifierType getType() {

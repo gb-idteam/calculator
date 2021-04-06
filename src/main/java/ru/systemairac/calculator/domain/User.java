@@ -14,10 +14,9 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 public class User {
-    private static final String SEQ_NAME = "user_seq";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -42,7 +41,4 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Project> projects;
-
-
-
 }

@@ -1,10 +1,9 @@
-package ru.systemairac.calculator.domain.humidifier;
+package ru.systemairac.calculator.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
 
 import javax.persistence.*;
 
@@ -13,13 +12,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "humidifier_type")
-public class HumidifierType {
+@Table(name = "estimate")
+public class Estimate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private EnumHumidifierType type;
 
 }

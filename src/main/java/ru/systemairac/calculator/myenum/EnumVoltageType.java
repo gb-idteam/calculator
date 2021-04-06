@@ -1,10 +1,10 @@
 package ru.systemairac.calculator.myenum;
 
-public enum TypeCylinder {
-    DISMOUNTABLE_CYLINDER("Разборный цилиндр"), MOUNTABLE_CYLINDER("Неразборный цилиндр");
+public enum EnumVoltageType {
+    ONE_PHASE_220V("1~220"), THREE_PHASE_380V("3~380");
     private final String txt;
 
-    TypeCylinder(String txt) {
+    EnumVoltageType(String txt) {
         this.txt= txt;
     }
 
@@ -12,8 +12,8 @@ public enum TypeCylinder {
         return txt;
     }
 
-    public static TypeCylinder getTypeByTxt(String txt) {
-        for (TypeCylinder env : values()) {
+    public static EnumVoltageType getTypeByTxt(String txt) {
+        for (EnumVoltageType env : values()) {
             if (env.getTxt().equals(txt)) {
                 return env;
             }

@@ -1,18 +1,25 @@
 package ru.systemairac.calculator.controller;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.systemairac.calculator.domain.Calculation;
+import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.*;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.service.allinterface.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,11 +30,15 @@ public class MainController {
     private final ProjectService projectService;
     private final UserService userService;
     private final CalculationService calculationService;
+    private final TechDataService techDataService;
     private final HumidifierComponentService humidifierComponentService;
     private final HumidifierService humidifierService;
+    private Calculation calculation;
     private ProjectDto projectDto = new ProjectDto();
+    private EstimateDto estimateDto = new EstimateDto();
     private List<ProjectDto> projects = new ArrayList<>();
     private List<HumidifierDto> humidifiers = new ArrayList<>();
+    private HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
     private HashMap<Long, List<HumidifierComponentDto>> options = new HashMap<>();
     private Long idSelectHumidifier;
     // Для тестирования
@@ -35,16 +46,19 @@ public class MainController {
             airFlow(500).
             tempIn(20).
             humIn(1).
-            phase(1).
+            voltage(EnumVoltageType.ONE_PHASE_220V).
             humOut(60).
             build();
+    private final PDDocumentService pdDocumentService;
 
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, PDDocumentService pdDocumentService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
+        this.techDataService = techDataService;
         this.humidifierComponentService = humidifierComponentService;
         this.humidifierService = humidifierService;
+        this.pdDocumentService = pdDocumentService;
         init();
     }
 
@@ -60,24 +74,30 @@ public class MainController {
 
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
-        model.addAttribute("projectDto", projectDto);
         if (principal!=null) {
             projects = projectService.findByUser(
-                    userService.getByEmail( principal.getName() )
+                    userService.findByEmail( principal.getName() ).orElseThrow()
             );
         }
         model.addAttribute("projects", projects);
-        model.addAttribute("projectDto", projectDto);
+        model.addAttribute("estimate", estimateDto);
         model.addAttribute("himidifiers", humidifiers);
+        model.addAttribute("projectDto", projectDto);
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);
         model.addAttribute("techDataDto", techDataDto);
         model.addAttribute("options", options);
+        model.addAttribute("distributors", distributors);
         return "calculator";
     }
 
     @PostMapping("/saveProject")
+    @Transactional
     public String saveProject(ProjectDto projectDto, Principal principal){
-        this.projectDto = projectService.addProject(projectDto, principal.getName());
+        //this.projectDto = projectService.addProject(projectDto, principal.getName());
+        if (projectDto.getId()==null) {
+            this.projectDto = projectService.save(projectDto, userService.findByEmail( principal.getName() ).orElseThrow());
+            this.calculation = calculationService.save(new Calculation(), this.projectDto);
+        }
         return "redirect:/calculator";
     }
 
@@ -89,15 +109,30 @@ public class MainController {
     }
 
     @PostMapping("/calc")
-    public String calcAndGetHumidifier(ProjectDto projectDto, TechDataDto techDataDto){
-        this.projectDto = projectDto;
-        humidifiers.clear();
-        options.clear();
+    @Transactional
+    public String calcAndGetHumidifier(TechDataDto techDataDto){
+        this.humidifiers.clear();
+        this.options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
-        humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
-        HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
-        distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
+        //projectService.saveTechData(projectDto,techDataDto);
+        this.humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
+        this.distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
+        techDataService.save(techDataDto,this.calculation);
+        return "redirect:/calculator";
+    }
+
+    @PostMapping("/resultEstimate")
+    public String resultEstimate(Principal principal,
+                                 @RequestParam(value = "selectedOptions" , required = false) Long[] idSelectedOptions,
+                                 @RequestParam(value = "distributor" , required = false) String artDistributor) throws IOException {
+        PDDocument document = pdDocumentService.toPDDocument(userService.getByEmail(principal.getName()),
+                projectDto,
+                techDataDto,
+                humidifierService.findById(this.idSelectHumidifier),
+                humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions)),
+                distributors.get(this.idSelectHumidifier)); //TODO исправить когду будет возможность выбора вентиляторного распределителя
+        document.save("result.pdf");
         return "redirect:/calculator";
     }
 
@@ -105,7 +140,11 @@ public class MainController {
     public String clear(){
             this.humidifiers.clear();
             this.techDataDto = new TechDataDto();
+            this.calculation = null;
             this.projectDto = new ProjectDto();
+            this.humidifiers = new ArrayList<>();
+            this.options = new HashMap<>();
+            this.distributors = new HashMap<>();
             return "redirect:/calculator";
     }
 }

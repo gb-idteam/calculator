@@ -44,7 +44,7 @@ public class FileServiceImpl implements FileService {
         String name;
         do {
             name = UUID.randomUUID().toString() + ".pdf";
-            file = new File(name);
+            file = new File(name); // TODO: папка сохранения
         } while (file.exists());
         try {
             document.save(file);
