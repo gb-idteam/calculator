@@ -34,7 +34,6 @@ public class HumidifierServiceTest {
 
     private static Faker faker;
     private static Random random;
-    private static Integer[] possibleVoltages;
 
     private static EnumHumidifierType type1 = EnumHumidifierType.ELECTRODE;
     private static EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
@@ -43,7 +42,6 @@ public class HumidifierServiceTest {
     public static void init() {
         faker = new Faker(new Locale("ru"), new RandomService());
         random = new Random();
-        possibleVoltages = new Integer[]{220, 380};
     }
 
     @BeforeEach
@@ -223,6 +221,7 @@ public class HumidifierServiceTest {
         for (int i = 0; i < NUMBER; i++) {
             final EnumVoltageType PHASE = EnumVoltageType.THREE;
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
+            arr[i].setVoltage(PHASE);
         }
         final double CAPACITY = 123;
         arr[0].setCapacity(CAPACITY);
