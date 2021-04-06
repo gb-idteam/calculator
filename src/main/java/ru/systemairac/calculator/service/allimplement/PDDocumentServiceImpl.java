@@ -141,9 +141,9 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         table.draw();
         yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
-        String name = "Распыление";
+        String name = "Парораспределение";
         String[][] data = {
-                {"Установка в:", techDataDto.getTypeMontage().getTxt()},
+                {"Парораспределитель в:", techDataDto.getTypeMontage().getTxt()},
                 {"Ширина (мм)", String.valueOf(techDataDto.getWidth())},
                 {"Высота (мм)", String.valueOf(techDataDto.getLength())}
         };
@@ -154,12 +154,12 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         drawTable(table, font, name, data);
         yPositionLeft -= table.getHeaderAndDataHeight() + marginBetweenTables;
-
+        Double velocity = Double.valueOf(techDataDto.getAirFlow())/ (Double.valueOf(techDataDto.getWidth())/1000 * Double.valueOf(techDataDto.getLength())/1000)/3600;
         name = "Информация по увлажнению";
         data = new String[][]{
                 {"Температура увлажнения (°С)", String.format("%.1f", techDataDto.getTempIn())},
-                {"Суммарный расход воздуха (м3/ч)", String.format("%d", techDataDto.getAirFlow())},
-                {"Скорость воздуха (м/с)", "n/a"},
+                {"Суммарный расход воздуха (м³/ч)", String.format("%d", techDataDto.getAirFlow())},
+                {"Скорость воздуха (м/с)",  String.format("%.1f",velocity)},
                 {"Нагрузка по пару (кг/ч)", String.format("%.1f", techDataDto.getCalcCapacity())},
         };
 
@@ -185,21 +185,22 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         name = "Результаты расчета увлажнения";
         data = new String[][]{
                 { "Тип увлажнения",
-                        String.format("1 x $1%s, $2%.1f kg/h, $3%sV $4%.2f kW",
-                                "(TITLE)",
+                        String.format("1 x %s, %.1f kg/h, %sV %.2f kW - %.1f€",
+                                humidifierDto.getTitle(),
                                 humidifierDto.getCapacity(),
                                 humidifierDto.getVoltage().getTxt(),
-                                humidifierDto.getElectricPower()
+                                humidifierDto.getElectricPower(),
+                                humidifierDto.getPrice()
                         )
                 },
                 { "Тип распыления",
-                       String.format("%d %s*ø:%dmm L:%dmm",
-                               humidifierDto.getNumberOfCylinders(), // число дисперсионных трубок
-                               "Дисперсионная трубка", // разные данные для разных чисел
-                               humidifierDto.getVaporPipeDiameter(), // диаметр трубок
-                               190 // длина трубок
-                       )
-                } // нужно передавать в метод данные о компонентах
+                        String.format("%d %s ø:%dmm L:%dmm",
+                                humidifierDto.getNumberOfCylinders(), // число дисперсионных трубок
+                                "Дисперсионная трубка", // разные данные для разных чисел
+                                humidifierDto.getVaporPipeDiameter(), // диаметр трубок
+                                techDataDto.getWidth() // длина трубок //TODO исправить
+                        )
+                }// нужно передавать в метод данные о компонентах
         };
 
         table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);

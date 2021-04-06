@@ -98,14 +98,14 @@ public class MainController {
             this.projectDto = projectService.save(projectDto, userService.findByEmail( principal.getName() ).orElseThrow());
             this.calculation = calculationService.save(new Calculation(), this.projectDto);
         }
-        return "redirect:calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/selectHumidifier")
     public String selectHumidifier(Model model, Long idSelectHumidifier){
         this.idSelectHumidifier = idSelectHumidifier;
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);
-        return "redirect:calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/calc")
@@ -119,7 +119,7 @@ public class MainController {
         this.distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
         techDataService.save(techDataDto,this.calculation);
-        return "redirect:calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/resultEstimate")
@@ -133,7 +133,7 @@ public class MainController {
                 humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions)),
                 distributors.get(this.idSelectHumidifier)); //TODO исправить когду будет возможность выбора вентиляторного распределителя
         document.save("result.pdf");
-        return "redirect:calculator";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/clear")
@@ -145,6 +145,6 @@ public class MainController {
             this.humidifiers = new ArrayList<>();
             this.options = new HashMap<>();
             this.distributors = new HashMap<>();
-            return "redirect:calculator";
+            return "redirect:/calculator";
     }
 }
