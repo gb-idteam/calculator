@@ -7,29 +7,23 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.systemairac.calculator.domain.Project;
-import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.TypeCylinder;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.myenum.TypeMontage;
-import ru.systemairac.calculator.myenum.TypeWater;
 import ru.systemairac.calculator.service.allinterface.FileService;
 import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 import ru.systemairac.calculator.service.allinterface.ProjectService;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PDDocumentServiceTest {
@@ -48,13 +42,11 @@ class PDDocumentServiceTest {
 
     private static Faker faker;
     private static Random random;
-    private static Integer[] possibleVoltages;
 
     @BeforeAll
     static void init() {
         faker = new Faker(new Locale("ru"), new RandomService());
         random = new Random();
-        possibleVoltages = new Integer[]{220, 380};
     }
 
     @Test
@@ -66,15 +58,12 @@ class PDDocumentServiceTest {
                 .build();
 
         TechDataDto techDataDto = TechDataDto.builder()
-                .voltage(220)
+                .voltage(EnumVoltageType.ONE)
                 .width(123)
-                .typeCylinder(TypeCylinder.DISMOUNTABLE_CYLINDER)
-                .typeWater(TypeWater.TAP_WATER)
                 .tempIn(20.4)
                 .typeMontage(TypeMontage.AHU)
                 .length(2233)
                 .humOut(100)
-                .phase(1)
                 .humIn(0)
                 .enumHumidifierType(EnumHumidifierType.HEATING_ELEMENT)
                 .calcCapacity(123)
@@ -105,8 +94,7 @@ class PDDocumentServiceTest {
                 .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
                 .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
                 .capacity(random.nextDouble() * 120) // от 0 до 120
-                .phase(random.nextInt(2) * 2 + 1) // 1 или 3
-                .voltage(possibleVoltages[random.nextInt(possibleVoltages.length)]) // из списка
+                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
                 .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
                 .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
                 .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
