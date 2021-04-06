@@ -21,8 +21,8 @@ public class TechData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Calculation calculation;
 
     private int airFlow;
 

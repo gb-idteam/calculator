@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EstimateDto {
-    private Long id;
     private Humidifier humidifier;
     private List<HumidifierComponentDto> humidifierComponentDtoList;
     private VaporDistributorDto vaporDistributorDto;

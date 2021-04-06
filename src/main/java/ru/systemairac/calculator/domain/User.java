@@ -1,6 +1,8 @@
 package ru.systemairac.calculator.domain;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,10 +37,8 @@ public class User {
     private String post;
     private Long phone;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Project> projects;
-
-
-
 }

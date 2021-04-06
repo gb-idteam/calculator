@@ -3,8 +3,10 @@ package ru.systemairac.calculator.service.allimplement;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.Calculation;
 import ru.systemairac.calculator.domain.Project;
+import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.ProjectDto;
+import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.mapper.ProjectMapper;
 import ru.systemairac.calculator.repository.ProjectRepository;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
@@ -40,6 +42,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ProjectDto save(ProjectDto projectDto, User user) {
+        Project project = mapper.toProject(projectDto);
+        project.setUser(user);
+        return mapper.fromProject(projectRepository.save(project));
+    }
+
+    @Override
     @Transactional
     public ProjectDto addProject(ProjectDto projectDto, String email) {
         User user = userService.getByEmail( email );
@@ -55,7 +64,6 @@ public class ProjectServiceImpl implements ProjectService {
         if(project == null){
             project = createNewProject(user,projectDto.getAddress(),projectDto.getTitle());
         } else {
-            project.setCalculation(Collections.singletonList(new Calculation()));
             projectRepository.save(project);
         }
         return mapper.fromProject(project);
@@ -65,10 +73,17 @@ public class ProjectServiceImpl implements ProjectService {
     public  Project createNewProject(User user, String address, String title) {
         List<Project> projects = user.getProjects();
         List<Project> newProjectsList = projects == null ? new ArrayList<>() : new ArrayList<> (projects);
-        Project newProject = new Project(null,address,title, Collections.singletonList(new Calculation()),user);
+        Project newProject = new Project(null,address,title,null,user);
         newProjectsList.add(newProject);
         user.setProjects(newProjectsList);
         userService.save(user);
         return newProject;
+    }
+
+    @Override
+    @Transactional
+    public void saveTechData(ProjectDto projectDto, TechDataDto techDataDto) {
+        Project project = projectRepository.findById(projectDto.getId()).orElseThrow();
+        Calculation calculation = calculationService.createNewCalculation(techDataDto,project);
     }
 }

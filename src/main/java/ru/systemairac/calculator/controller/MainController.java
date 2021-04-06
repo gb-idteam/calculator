@@ -5,12 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.systemairac.calculator.domain.Calculation;
+import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.service.allinterface.*;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +27,10 @@ public class MainController {
     private final ProjectService projectService;
     private final UserService userService;
     private final CalculationService calculationService;
+    private final TechDataService techDataService;
     private final HumidifierComponentService humidifierComponentService;
     private final HumidifierService humidifierService;
+    private Calculation calculation;
     private ProjectDto projectDto = new ProjectDto();
     private EstimateDto estimateDto = new EstimateDto();
     private List<ProjectDto> projects = new ArrayList<>();
@@ -41,10 +47,11 @@ public class MainController {
             humOut(60).
             build();
 
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
+        this.techDataService = techDataService;
         this.humidifierComponentService = humidifierComponentService;
         this.humidifierService = humidifierService;
         init();
@@ -62,7 +69,6 @@ public class MainController {
 
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
-        model.addAttribute("projectDto", projectDto);
         if (principal!=null) {
             projects = projectService.findByUser(
                     userService.getByEmail( principal.getName() )
@@ -80,8 +86,14 @@ public class MainController {
     }
 
     @PostMapping("/saveProject")
+    @Transactional
     public String saveProject(ProjectDto projectDto, Principal principal){
-        this.projectDto = projectService.addProject(projectDto, principal.getName());
+        //this.projectDto = projectService.addProject(projectDto, principal.getName());
+        if (projectDto.getId()==null) {
+            this.projectDto = projectService.save(projectDto, userService.getByEmail(principal.getName()));
+            this.calculation = calculationService.save(new Calculation(), this.projectDto);
+
+        }
         return "redirect:/calculator";
     }
 
@@ -97,9 +109,24 @@ public class MainController {
         this.humidifiers.clear();
         this.options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
+        //projectService.saveTechData(projectDto,techDataDto);
         this.humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
         this.distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
+        techDataService.save(techDataDto,this.calculation);
+        return "redirect:/calculator";
+    }
+
+    @PostMapping("/resultEstimate")
+    public String resultEstimate(Model model, Long idSelectHumidifier,
+                                 ProjectDto projectDto,
+                                 Principal principal,
+                                 @RequestParam(value = "selectedOptions" , required = false) String[] artSelectedOptions,
+                                 @RequestParam(value = "distributor" , required = false) String artDistributor ,
+                                 EstimateDto estimateDto){
+        User user = userService.getByEmail( principal.getName() );
+        this.idSelectHumidifier = idSelectHumidifier;
+        // TODO Сохранение результата в файл
         return "redirect:/calculator";
     }
 
@@ -107,6 +134,7 @@ public class MainController {
     public String clear(){
             this.humidifiers.clear();
             this.techDataDto = new TechDataDto();
+            this.calculation = null;
             this.projectDto = new ProjectDto();
             this.humidifiers = new ArrayList<>();
             this.options = new HashMap<>();

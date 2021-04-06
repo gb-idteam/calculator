@@ -11,6 +11,7 @@ import ru.systemairac.calculator.myenum.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TechDataDto {
+    private Long id;
     private int airFlow;
     private double tempIn;
     private double humIn;
