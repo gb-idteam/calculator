@@ -4,25 +4,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
-import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
-import ru.systemairac.calculator.myenum.HumidifierComponentType;
 import ru.systemairac.calculator.repository.HumidifierComponentRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierFilter;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierSpecification;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class HumidifierServiceImpl implements HumidifierService {
@@ -59,17 +54,17 @@ public class HumidifierServiceImpl implements HumidifierService {
         EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
         List<Humidifier> humidifiers = new ArrayList<>();
         humidifiers.add(generateHumidifier(1L,"123",7,25,type1,25,
-                1,EnumVoltageType.THREE,new BigDecimal(1500)));
+                1,EnumVoltageType.THREE_PHASE_380V,new BigDecimal(1500)));
         humidifiers.add(generateHumidifier(2L,"1234",5,29,type2,25,
-                1,EnumVoltageType.ONE,new BigDecimal(1000)));
+                1,EnumVoltageType.ONE_PHASE_220V,new BigDecimal(1000)));
         humidifiers.add(generateHumidifier(3L,"12",7,50,type1,25,
-                1,EnumVoltageType.THREE,new BigDecimal(1500)));
+                1,EnumVoltageType.THREE_PHASE_380V,new BigDecimal(1500)));
         humidifiers.add(generateHumidifier(4L,"1",5,15,type2,25,
-                1,EnumVoltageType.THREE,new BigDecimal(1000)));
+                1,EnumVoltageType.THREE_PHASE_380V,new BigDecimal(1000)));
         humidifiers.add(generateHumidifier(5L,"2",20,15,type1,25,
-                1,EnumVoltageType.ONE,new BigDecimal(1000)));
+                1,EnumVoltageType.ONE_PHASE_220V,new BigDecimal(1000)));
         humidifiers.add(generateHumidifier(6L,"3",50,15,type2,25,
-                1,EnumVoltageType.ONE,new BigDecimal(1000)));
+                1,EnumVoltageType.ONE_PHASE_220V,new BigDecimal(1000)));
         humidifierRepository.saveAll(humidifiers);
     }
     @Override
@@ -81,7 +76,7 @@ public class HumidifierServiceImpl implements HumidifierService {
     }
 
     @Override
-    public List<HumidifierDto> findDtoHumidifiers(double power, EnumVoltageType voltageType, EnumHumidifierType humidifierType) {
+    public List<HumidifierDto> findDtoHumidifiers(double power, EnumHumidifierType humidifierType, EnumVoltageType voltageType) {
         List<Humidifier> humidifiers = humidifierRepository.findAll(
                 new HumidifierSpecification(new HumidifierFilter(power, voltageType, humidifierType)),
                 PageRequest.of(0,NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))

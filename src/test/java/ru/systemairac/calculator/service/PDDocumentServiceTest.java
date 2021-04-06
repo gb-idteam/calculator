@@ -58,7 +58,7 @@ class PDDocumentServiceTest {
                 .build();
 
         TechDataDto techDataDto = TechDataDto.builder()
-                .voltage(EnumVoltageType.ONE)
+                .voltage(EnumVoltageType.ONE_PHASE_220V)
                 .width(123)
                 .tempIn(20.4)
                 .typeMontage(TypeMontage.AHU)

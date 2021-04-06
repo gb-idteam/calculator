@@ -13,7 +13,7 @@ public interface HumidifierService {
 
     List<Humidifier> findHumidifiers(double capacity, EnumHumidifierType humidifierType, EnumVoltageType voltage);
 
-    List<HumidifierDto> findDtoHumidifiers(double power, EnumVoltageType voltage, EnumHumidifierType humidifierType);
+    List<HumidifierDto> findDtoHumidifiers(double power, EnumHumidifierType humidifier, EnumVoltageType voltage);
 
     HumidifierDto findById(Long id);
 

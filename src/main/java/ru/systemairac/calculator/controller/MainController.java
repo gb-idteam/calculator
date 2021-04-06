@@ -43,7 +43,7 @@ public class MainController {
             airFlow(500).
             tempIn(20).
             humIn(1).
-            voltage(EnumVoltageType.ONE).
+            voltage(EnumVoltageType.ONE_PHASE_220V).
             humOut(60).
             build();
 

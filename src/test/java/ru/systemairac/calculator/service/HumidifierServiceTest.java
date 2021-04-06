@@ -135,9 +135,9 @@ public class HumidifierServiceTest {
             humidifier.setCapacity((i + 1) * 3d);
 
             if (i % 2 == 0) // 0, 2, 4, ...
-                humidifier.setVoltage(EnumVoltageType.ONE);
+                humidifier.setVoltage(EnumVoltageType.ONE_PHASE_220V);
             else // 1, 3, 5, ...
-                humidifier.setVoltage(EnumVoltageType.THREE);
+                humidifier.setVoltage(EnumVoltageType.THREE_PHASE_380V);
 
             if (i % 3 == 0) // 0, 3, 6, 9, ...
                 humidifier.setHumidifierType(EnumHumidifierType.ELECTRODE);
@@ -148,7 +148,7 @@ public class HumidifierServiceTest {
 
         // ищем для производительности = 15, фазности = 3, электродный
         final double CAPACITY = 15;
-        final EnumVoltageType PHASE = EnumVoltageType.THREE;
+        final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
@@ -163,9 +163,9 @@ public class HumidifierServiceTest {
             humidifier.setCapacity((double) (i % 2 == 0 ? i : i * 3));
 
             if (i % 3 == 0) // 0, 3, 6, 9, ...
-                humidifier.setVoltage(EnumVoltageType.THREE);
+                humidifier.setVoltage(EnumVoltageType.THREE_PHASE_380V);
             else // 1, 2, 4, 5, 7, 8, ...
-                humidifier.setVoltage(EnumVoltageType.ONE);
+                humidifier.setVoltage(EnumVoltageType.ONE_PHASE_220V);
 
             if (i % 3 == 0)
                 humidifier.setHumidifierType(EnumHumidifierType.ELECTRODE);
@@ -176,7 +176,7 @@ public class HumidifierServiceTest {
 
         // ищем для производительности = 1, фазности = 3, электродный
         final double CAPACITY = 1;
-        final EnumVoltageType PHASE = EnumVoltageType.ONE;
+        final EnumVoltageType PHASE = EnumVoltageType.ONE_PHASE_220V;
         final EnumHumidifierType TYPE = EnumHumidifierType.HEATING_ELEMENT;
 
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
@@ -198,7 +198,7 @@ public class HumidifierServiceTest {
         int NUMBER = 3;
         Humidifier[] arr = fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
         for (int i = 0; i < NUMBER; i++) {
-            arr[i].setVoltage(EnumVoltageType.THREE);
+            arr[i].setVoltage(EnumVoltageType.THREE_PHASE_380V);
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
         }
         final double CAPACITY = 123;
@@ -208,7 +208,7 @@ public class HumidifierServiceTest {
         service.saveAll(Arrays.asList(arr));
 
         // ищем для производительности = 123, фазности = 3, электродный
-        final EnumVoltageType PHASE = EnumVoltageType.THREE;
+        final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
         checkHumidifiersFromService(Arrays.asList(arr), CAPACITY, PHASE, TYPE);
@@ -219,7 +219,7 @@ public class HumidifierServiceTest {
         int NUMBER = 4;
         Humidifier[] arr = fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
         for (int i = 0; i < NUMBER; i++) {
-            final EnumVoltageType PHASE = EnumVoltageType.THREE;
+            final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
             arr[i].setVoltage(PHASE);
         }
@@ -231,7 +231,7 @@ public class HumidifierServiceTest {
         service.saveAll(Arrays.asList(arr));
 
         // ищем для производительности = 123, фазности = 3, электродный
-        final EnumVoltageType PHASE = EnumVoltageType.THREE;
+        final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
         List<Humidifier> actual = service.findHumidifiers(CAPACITY, TYPE, PHASE);
@@ -248,7 +248,7 @@ public class HumidifierServiceTest {
 
         // ищем для производительности = 50, фазности = 1, ТЭН
         final double CAPACITY = 50;
-        final EnumVoltageType PHASE = EnumVoltageType.ONE;
+        final EnumVoltageType PHASE = EnumVoltageType.ONE_PHASE_220V;
         final EnumHumidifierType TYPE = EnumHumidifierType.HEATING_ELEMENT;
 
         checkHumidifiersFromService(list, CAPACITY, PHASE, TYPE);
