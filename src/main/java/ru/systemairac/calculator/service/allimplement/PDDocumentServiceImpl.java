@@ -9,12 +9,13 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.User;
-import ru.systemairac.calculator.dto.ProjectDto;
-import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class PDDocumentServiceImpl implements PDDocumentService {
@@ -30,7 +31,13 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
     // TODO: refactor
     @Override
-    public PDDocument toPDDocument(User user, ProjectDto projectDto, TechDataDto techDataDto) throws IOException {
+    public PDDocument toPDDocument(
+            UserDto userDto,
+            ProjectDto projectDto,
+            TechDataDto techDataDto,
+            HumidifierDto humidifierDto,
+            List<HumidifierComponentDto> humidifierComponentDtoList
+    ) throws IOException {
 
         PDPage myPage = new PDPage(PDRectangle.A4);
         PDDocument mainDocument = new PDDocument();
@@ -70,19 +77,19 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         cell.setFontSize(fontSizeNormal);
         cell.setAlign(HorizontalAlignment.CENTER);
         row = table.createRow(12);
-        cell = row.createCell(100, "Компания: " + user.getNameCompany());
+        cell = row.createCell(100, "Компания: " + userDto.getNameCompany());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
         row = table.createRow(12);
-        cell = row.createCell(100, "Имя: " + user.getFullName());
+        cell = row.createCell(100, "Имя: " + userDto.getFullName());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
         row = table.createRow(12);
-        cell = row.createCell(100, "Телефон: " + user.getPhone());
+        cell = row.createCell(100, "Телефон: " + userDto.getPhone());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
         row = table.createRow(12);
-        cell = row.createCell(100, "email: " + user.getEmail());
+        cell = row.createCell(100, "email: " + userDto.getEmail());
         cell.setFont(font);
         cell.setFontSize(fontSizeNormal);
 
@@ -148,7 +155,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         name = "Информация по увлажнению";
         data = new String[][]{
-                {"Темература увлажнения (°С)", String.format("%.1f", techDataDto.getTempIn())},
+                {"Температура увлажнения (°С)", String.format("%.1f", techDataDto.getTempIn())},
                 {"Суммарный расход воздуха (м3/ч)", String.format("%d", techDataDto.getAirFlow())},
                 {"Скорость воздуха (м/с)", "n/a"},
                 {"Нагрузка по пару (кг/ч)", String.format("%.1f", techDataDto.getCalcCapacity())},
@@ -163,6 +170,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         data = new String[][]{
                 {"Тип увлажнения", techDataDto.getEnumHumidifierType().getTxt()},
                 {"Электропитание", techDataDto.getVoltage().getTxt() + "V"}
+
         };
 
         table = new BaseTable( yPositionLeft, yStartNewPage, bottomMargin, tableWidth / 2f, margin, mainDocument, myPage, false, true);
@@ -174,8 +182,22 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         name = "Результаты расчета увлажнения";
         data = new String[][]{
-                {"Тип увлажнения", "1 x EHU 751-1, 1.0 kg/h, 220V 0.75kW/h"},
-                {"Тип распыления", "1 Дисперсионные трубки*ø:25mm L:290mm"}
+                { "Тип увлажнения",
+                        String.format("1 x %s, %.1f kg/h, %dV %.2f kW",
+                                "(TITLE)",
+                                humidifierDto.getCapacity(),
+                                humidifierDto.getVoltage(),
+                                humidifierDto.getElectricPower()
+                        )
+                },
+                { "Тип распыления",
+                       String.format("%d %s*ø:%dmm L:%dmm",
+                               1, // число дисперсионных трубок
+                               "Дисперсионная трубка", // разные данные для разных чисел
+                               25, // диаметр трубок
+                               190 // длина трубок
+                       )
+                } // нужно передавать в метод данные о компонентах
         };
 
         table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
