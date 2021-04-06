@@ -24,13 +24,10 @@ public class Project {
     private String address;
     private String title;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "project_id")
     private List<Calculation> calculations;
 
     @ManyToOne
     private User user;
-
-    public Project(Long id, String address, String title, User user) {
-    }
 }

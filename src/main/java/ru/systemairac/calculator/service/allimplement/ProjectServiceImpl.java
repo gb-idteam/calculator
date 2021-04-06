@@ -1,6 +1,7 @@
 package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.systemairac.calculator.domain.Calculation;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.TechData;
@@ -13,7 +14,6 @@ import ru.systemairac.calculator.service.allinterface.CalculationService;
 import ru.systemairac.calculator.service.allinterface.ProjectService;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public ProjectDto save(ProjectDto projectDto, User user) {
         Project project = mapper.toProject(projectDto);
         project.setUser(user);

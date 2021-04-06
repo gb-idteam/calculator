@@ -49,10 +49,10 @@
                     </td>
                 </tr>
             </table>
-            <button id="btn-save" type="submit">Сохранить</button>
+            <button id="btn-save" type="submit" th:disabled="${projectDto.id!=null ? true: false}">Сохранить</button>
         </form>
         <form th:action="@{calculator/clear}" method="post">
-            <button id="btn-clear" type="submit">Сброс</button>
+            <button id="btn-clear" type="submit" th:disabled="${projectDto.id==null ? true: false}">Сброс</button>
         </form>
     </div>
     <!--  part-2  -->
@@ -66,19 +66,19 @@
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
                 <tr>
                     <td>Расход воздуха</td>
-                    <td><input type="number" th:field="*{airFlow}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
+                    <td><input type="number" th:field="*{airFlow}" th:disabled="${projectDto.id==null ? true: false}"/></td>
                 </tr>
                 <tr>
                     <td>Температура на входе</td>
-                    <td><input type="number" th:field="*{tempIn}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
+                    <td><input type="number" th:field="*{tempIn}" th:disabled="${projectDto.id==null ? true: false}"/></td>
                 </tr>
                 <tr>
                     <td>Влажность на входе</td>
-                    <td><input type="number" th:field="*{humIn}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
+                    <td><input type="number" th:field="*{humIn}" th:disabled="${projectDto.id==null ? true: false}"/></td>
                 </tr>
                 <tr th:border="2">
                     <td>Влажность на выходе </td>
-                    <td><input type="number" th:field="*{humOut}" th:disabled="${projectDto.title==null || projectDto.address==null ? true: false}"/></td>
+                    <td><input type="number" th:field="*{humOut}" th:disabled="${projectDto.id==null ? true: false}"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -171,7 +171,7 @@
                 </tr>
                 </tbody>
             </table>
-            <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null ? true: false}" type="submit">Выбрать</button>
+            <button th:disabled="${ idSelectHumidifier==null ? true: false}" type="submit">Выбрать</button>
         </form>
 
         <!--  part-4  -->

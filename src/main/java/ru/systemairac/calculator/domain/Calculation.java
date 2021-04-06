@@ -28,7 +28,7 @@ public class Calculation {
     @JoinColumn(name = "calculation_id")
     private List<TechData> techData;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Project project;
 
     @UpdateTimestamp

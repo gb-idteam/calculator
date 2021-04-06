@@ -2,6 +2,7 @@ package ru.systemairac.calculator.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,6 @@ import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.service.allinterface.*;
 
-import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +92,6 @@ public class MainController {
         if (projectDto.getId()==null) {
             this.projectDto = projectService.save(projectDto, userService.getByEmail(principal.getName()));
             this.calculation = calculationService.save(new Calculation(), this.projectDto);
-
         }
         return "redirect:/calculator";
     }
@@ -105,6 +104,7 @@ public class MainController {
     }
 
     @PostMapping("/calc")
+    @Transactional
     public String calcAndGetHumidifier(TechDataDto techDataDto){
         this.humidifiers.clear();
         this.options.clear();
