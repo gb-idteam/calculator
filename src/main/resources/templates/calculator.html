@@ -171,7 +171,7 @@
                 </tr>
                 </tbody>
             </table>
-            <button th:disabled="${ idSelectHumidifier==null ? true: false}" type="submit">Выбрать</button>
+            <button th:disabled="${himidifiers.size()==0 ? true: false}" type="submit">Выбрать</button>
         </form>
 
         <!--  part-4  -->

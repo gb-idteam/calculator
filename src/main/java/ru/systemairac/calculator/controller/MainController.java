@@ -118,12 +118,10 @@ public class MainController {
     }
 
     @PostMapping("/resultEstimate")
-    public String resultEstimate(Model model, Long idSelectHumidifier,
-                                 ProjectDto projectDto,
+    public String resultEstimate(Long idSelectHumidifier,
                                  Principal principal,
                                  @RequestParam(value = "selectedOptions" , required = false) String[] artSelectedOptions,
-                                 @RequestParam(value = "distributor" , required = false) String artDistributor ,
-                                 EstimateDto estimateDto){
+                                 @RequestParam(value = "distributor" , required = false) String artDistributor){
         User user = userService.getByEmail( principal.getName() );
         this.idSelectHumidifier = idSelectHumidifier;
         // TODO Сохранение результата в файл
