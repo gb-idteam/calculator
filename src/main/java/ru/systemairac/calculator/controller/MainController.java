@@ -3,7 +3,6 @@ package ru.systemairac.calculator.controller;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,12 +90,11 @@ public class MainController {
     }
 
     @PostMapping("/saveProject")
-    @Transactional
     public String saveProject(ProjectDto projectDto, Principal principal){
-        //this.projectDto = projectService.addProject(projectDto, principal.getName());
         if (projectDto.getId()==null) {
-            this.projectDto = projectService.save(projectDto, userService.findByEmail( principal.getName() ).orElseThrow());
-            this.calculation = calculationService.save(new Calculation(), this.projectDto);
+            User user = userService.findByEmail( principal.getName() ).orElseThrow();
+            this.calculation = calculationService.save(projectDto,user);
+            this.projectDto = projectService.findByCalculation(calculation);
         }
         return "redirect:/calculator";
     }
@@ -109,16 +107,14 @@ public class MainController {
     }
 
     @PostMapping("/calc")
-    @Transactional
     public String calcAndGetHumidifier(TechDataDto techDataDto){
         this.humidifiers.clear();
         this.options.clear();
         this.techDataDto = calculationService.calcPower(techDataDto);
-        //projectService.saveTechData(projectDto,techDataDto);
         this.humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
         this.distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         this.options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
-        techDataService.save(techDataDto,this.calculation);
+        techDataService.save(techDataDto,this.calculation.getId());
         return "redirect:/calculator";
     }
 

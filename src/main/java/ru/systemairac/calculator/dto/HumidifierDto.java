@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class HumidifierDto {
     private Long id;
     private String title;
+    private String image;
     private String articleNumber;
     private Double electricPower;
     private Double capacity;

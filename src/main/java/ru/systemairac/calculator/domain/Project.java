@@ -30,4 +30,14 @@ public class Project {
 
     @ManyToOne
     private User user;
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", address='" + address + '\'' +
+                ", title='" + title + '\'' +
+                ", calculations=" + calculations +
+                '}';
+    }
 }

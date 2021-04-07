@@ -49,4 +49,22 @@ public class TechData {
 
     @UpdateTimestamp
     private LocalDateTime date;
+
+    @Override
+    public String toString() {
+        return "TechData{" +
+                "id=" + id +
+                ", airFlow=" + airFlow +
+                ", tempIn=" + tempIn +
+                ", humIn=" + humIn +
+                ", humOut=" + humOut +
+                ", enumHumidifierType=" + enumHumidifierType +
+                ", typeMontage=" + typeMontage +
+                ", voltage=" + voltage +
+                ", length=" + length +
+                ", width=" + width +
+                ", calcCapacity=" + calcCapacity +
+                ", date=" + date +
+                '}';
+    }
 }

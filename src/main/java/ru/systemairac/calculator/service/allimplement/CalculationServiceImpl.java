@@ -3,18 +3,19 @@ package ru.systemairac.calculator.service.allimplement;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.Calculation;
 import ru.systemairac.calculator.domain.Project;
+import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.dto.VaporDistributorDto;
 import ru.systemairac.calculator.mapper.ProjectMapper;
-import ru.systemairac.calculator.mapper.TechDataMapper;
 import ru.systemairac.calculator.repository.CalculationRepository;
 import ru.systemairac.calculator.repository.ProjectRepository;
 import ru.systemairac.calculator.service.Point;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
+import ru.systemairac.calculator.service.allinterface.ProjectService;
 import ru.systemairac.calculator.service.allinterface.VaporDistributorService;
 
 import javax.transaction.Transactional;
@@ -29,16 +30,15 @@ public class CalculationServiceImpl implements CalculationService {
 
     private final HumidifierService humidifierService;
     private final VaporDistributorService vaporDistributorService;
-    private final TechDataMapper mapper = TechDataMapper.MAPPER;
     private final ProjectMapper mapperProject = ProjectMapper.MAPPER;
-    private final CalculationRepository repository;
-    private final ProjectRepository projectRepository;
+    private final CalculationRepository calculationRepository;
+    private final ProjectService projectService;
 
-    public CalculationServiceImpl(HumidifierService humidifierService, VaporDistributorService vaporDistributorService, CalculationRepository repository, ProjectRepository projectRepository) {
+    public CalculationServiceImpl(HumidifierService humidifierService, VaporDistributorService vaporDistributorService, CalculationRepository repository, ProjectService projectService) {
         this.humidifierService = humidifierService;
         this.vaporDistributorService = vaporDistributorService;
-        this.repository = repository;
-        this.projectRepository = projectRepository;
+        this.calculationRepository = repository;
+        this.projectService = projectService;
     }
 
     @Override
@@ -66,10 +66,19 @@ public class CalculationServiceImpl implements CalculationService {
 
     @Override
     @Transactional
-    public Calculation save(Calculation calculation, ProjectDto dto) {
-        Project project = projectRepository.findById(dto.getId()).orElseThrow();
-        calculation.setProject(project);
-        return repository.save(calculation);
+    public Calculation save(ProjectDto dto, User user) {
+        Calculation calculation = new Calculation();
+        Project project;
+        Project oldProject = projectService.getOldProjectByTitleAndAddress(user,dto.getTitle(),dto.getAddress());
+        if (oldProject==null) {
+            project = mapperProject.toProject(dto);
+            project.setUser(user);
+            projectService.save(project);
+            calculation.setProject(project);
+        } else {
+            calculation.setProject(oldProject);
+        }
+        return calculationRepository.save(calculation);
     }
 
     @Override
@@ -87,6 +96,5 @@ public class CalculationServiceImpl implements CalculationService {
         double capacity = airFlow * averageDensity  * (outPoint.getMoistureContent()-inPoint.getMoistureContent())/1000;
         techDataDto.setCalcCapacity(capacity);
         return techDataDto;
-
     }
 }

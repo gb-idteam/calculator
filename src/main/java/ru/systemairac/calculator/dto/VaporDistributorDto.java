@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 public class VaporDistributorDto {
     private Long id;
     private String articleNumber;
+    private String image;
     private String title;
     private int length;
     private int diameter;

@@ -33,4 +33,13 @@ public class Calculation {
 
     @UpdateTimestamp
     private LocalDateTime date;
+
+    @Override
+    public String toString() {
+        return "Calculation{" +
+                "id=" + id +
+                ", techData=" + techData +
+                ", date=" + date +
+                '}';
+    }
 }
