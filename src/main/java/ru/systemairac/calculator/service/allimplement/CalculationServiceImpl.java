@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
 public class CalculationServiceImpl implements CalculationService {
 
     private final HumidifierService humidifierService;

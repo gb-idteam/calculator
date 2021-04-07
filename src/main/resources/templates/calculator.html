@@ -142,9 +142,9 @@
                 <thead>
                 <tr>
                     <td>№</td>
+                    <td>Вид</td>
                     <td>Артикул</td>
                     <td>Модель</td>
-                    <!--                <td>Вид</td> TODO картинка -->
                     <td>Расчетная мощность</td>
                     <td>Мощность</td>
                     <td>Потребление</td>
@@ -158,6 +158,11 @@
                 <tr th:each="humidifier : ${himidifiers}">
                     <td>
                         <input name="idSelectHumidifier" type="radio" th:value="${humidifier.id}" style="width: 50px;" th:checked="${humidifier.id==idSelectHumidifier ? true: false}">
+                    </td>
+                    <td>
+                        <div>
+                            <img th:src="@{${humidifier.image.link}}" alt="">
+                        </div>
                     </td>
                     <td th:text="${humidifier.articleNumber}">Article</td>
                     <td th:text="${humidifier.title}">Title</td>
@@ -189,9 +194,9 @@
                         <thead id="thead_option">
                         <tr>
                             <td>№</td>
+                            <td>Вид</td>
                             <td>Артикул</td>
                             <td>Название</td>
-                            <!--                <td>Вид</td> TODO картинка -->
                             <td>Цена</td>
                         </tr>
                         </thead>
@@ -201,6 +206,9 @@
                                     <input type="checkbox" name="distributor" th:value="${instance.articleNumber}">
                                     <span class="checkmark"></span>
                                 </label>
+                            </td>
+                            <td>
+                                <img th:src="@{${instance.image.link}}" alt="">
                             </td>
                             <td th:text="${instance.articleNumber}">арт</td>
                             <td th:text="${instance.type.getTxt()}">тип</td>
@@ -212,6 +220,9 @@
                                     <input type="checkbox" name="selectedOptions" th:value="${instance.id}">
                                     <span class="checkmark"></span>
                                 </label>
+                            </td>
+                            <td>
+                                <img th:src="@{${instance.image.link}}" alt="">
                             </td>
                             <td th:text="${instance.articleNumber}">арт</td>
                             <td th:text="${instance.type.getTxt()}">тип</td>

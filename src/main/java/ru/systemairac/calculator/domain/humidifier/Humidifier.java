@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 
@@ -42,6 +43,12 @@ public class Humidifier {
      */
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Brand brand;
+
+    /**
+     * Ссылка на картинку
+     */
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Image image;
 
     /**
      * Тип увлажнителя: ТЭНовый или электродный.

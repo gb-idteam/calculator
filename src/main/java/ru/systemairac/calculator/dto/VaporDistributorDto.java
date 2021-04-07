@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class VaporDistributorDto {
     private Long id;
+    private Image image;
     private String articleNumber;
     private String image;
     private String title;

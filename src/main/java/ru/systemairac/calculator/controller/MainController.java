@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.systemairac.calculator.domain.Calculation;
-import ru.systemairac.calculator.domain.User;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.*;
@@ -30,6 +30,7 @@ public class MainController {
     private final UserService userService;
     private final CalculationService calculationService;
     private final TechDataService techDataService;
+    private final ImageService imageService;
     private final HumidifierComponentService humidifierComponentService;
     private final HumidifierService humidifierService;
     private Calculation calculation;
@@ -50,11 +51,12 @@ public class MainController {
             build();
     private final PDDocumentService pdDocumentService;
 
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, PDDocumentService pdDocumentService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, ImageService imageService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, PDDocumentService pdDocumentService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
         this.techDataService = techDataService;
+        this.imageService = imageService;
         this.humidifierComponentService = humidifierComponentService;
         this.humidifierService = humidifierService;
         this.pdDocumentService = pdDocumentService;
@@ -65,8 +67,12 @@ public class MainController {
         Humidifier humidifier1 = humidifierService.findHumidifierById(1L);
         Humidifier humidifier3 = humidifierService.findHumidifierById(3L);
         List<HumidifierComponent> options = humidifierComponentService.getAllComponent();
+        Image image1 = imageService.findById(1L);
+        Image image2 = imageService.findById(2L);
         humidifier1.setHumidifierComponents(options);
+        humidifier1.setImage(image1);
         humidifier3.setHumidifierComponents(options);
+        humidifier3.setImage(image2);
         humidifierService.save(humidifier1);
         humidifierService.save(humidifier3);
     }

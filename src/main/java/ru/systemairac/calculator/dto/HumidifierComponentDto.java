@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class HumidifierComponentDto {
     private Long id;
+    private Image image;
     private String articleNumber;
     private HumidifierComponentType type;
     private boolean optional;

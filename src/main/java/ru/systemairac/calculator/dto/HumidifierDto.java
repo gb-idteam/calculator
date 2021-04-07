@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 public class HumidifierDto {
     private Long id;
     private String title;
-    private String image;
+    private Image image;
     private String articleNumber;
     private Double electricPower;
     private Double capacity;
