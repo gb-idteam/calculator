@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class HumidifierComponent {
 
     @Column(unique = true)
     private String articleNumber;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Image image;
 
     @Enumerated(EnumType.STRING)
     private HumidifierComponentType type;

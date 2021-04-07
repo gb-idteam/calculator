@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Brand;
+import ru.systemairac.calculator.domain.Image;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,6 +22,10 @@ public class VaporDistributor {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Brand brand;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Image image;
+
 
     @Column(unique = true)
     private String articleNumber;
