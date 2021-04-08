@@ -85,17 +85,21 @@ public class CalculationServiceImpl implements CalculationService {
         Point inPoint = Point.builder()
                 .temperature(techDataDto.getTempIn())
                 .humidity(techDataDto.getHumIn())
-
+                .altitude(techDataDto.getAltitude())
+                .atmospherePressure(techDataDto.getAtmospherePressure())
                 .build();
         Point outPoint = Point.builder()
                 .temperature(techDataDto.getTempIn())
                 .humidity(techDataDto.getHumOut())
-
+                .altitude(techDataDto.getAltitude())
+                .atmospherePressure(techDataDto.getAtmospherePressure())
                 .build();
         int airFlow = techDataDto.getAirFlow();
         double averageDensity = (inPoint.getDensity()+outPoint.getDensity())/2;
         double capacity = airFlow * averageDensity  * (outPoint.getMoistureContent()-inPoint.getMoistureContent())/1000;
         techDataDto.setCalcCapacity(capacity);
+        techDataDto.setAltitude(inPoint.getAltitude());
+        techDataDto.setAtmospherePressure(inPoint.getAtmospherePressure());
         return techDataDto;
     }
 }

@@ -39,13 +39,15 @@
                 <tr>
                     <td>Название проекта</td>
                     <td>
-                        <input id="project_title" type="text" th:field="*{title}" th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                        <input id="project_title" type="text" th:field="*{title}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                        <span></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Адрес проекта</td>
                     <td>
-                        <input id="project_address" type="text" th:field="*{address}" th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                        <input id="project_address" type="text" th:field="*{address}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                        <span></span>
                     </td>
                 </tr>
             </table>
@@ -65,39 +67,55 @@
         <form th:action="@{calculator/calc}" th:object="${techDataDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
                 <tr>
-                    <td>
-                        <input name="radioAltitude" type="radio" style="width: 50px;" checked>
-                    </td>
+
                     <td>Высота над уровнем моря</td>
-                    <td><input type="number" th:value="${techDataDto.altitude != null} ? ${techDataDto.altitude} : 0" th:disabled="${projectDto.id==null}"/></td>
+                    <td>
+                        <input type="number" step="1" th:field="${techDataDto.altitude}" th:value="${techDataDto.altitude != null} ? ${#numbers.formatDecimal(techDataDto.altitude,1,0)} : 0" th:disabled="${projectDto.id==null}"/>
+                    </td>
+                    <td>
+                        <input id="radioAltitude" name="radioAltitude" type="radio" style="width: 50px;" value="0" checked>
+                    </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input name="radioAltitude" type="radio" style="width: 50px;">
-                    </td>
+
                     <td>Атмосферное давление</td>
-                    <td><input type="number" th:value="${techDataDto.atmospherePressure != null} ? ${techDataDto.atmospherePressure} : 101.325" th:disabled="${projectDto.id==null}"/></td>
+                    <td>
+                        <input type="number" step="0.001" th:field="${techDataDto.atmospherePressure}" th:value="${techDataDto.atmospherePressure != null} ? ${#numbers.formatDecimal(techDataDto.atmospherePressure,1,3)} : 101.325" th:disabled="${projectDto.id==null}"/>
+                    </td>
+                    <td>
+                        <input name="radioAltitude" type="radio" style="width: 50px;" value="1" >
+                    </td>
                 </tr>
                 <tr>
                     <td>Расход воздуха</td>
-                    <td><input type="number" th:field="*{airFlow}" th:disabled="${projectDto.id==null}"/></td>
+                    <td>
+                        <input type="number" th:field="*{airFlow}" required th:disabled="${projectDto.id==null}"/>
+                        <span></span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Температура на входе</td>
-                    <td><input type="number" th:field="*{tempIn}" th:disabled="${projectDto.id==null}"/></td>
+                    <td>
+                        <input type="number" th:field="*{tempIn}" required th:disabled="${projectDto.id==null}"/>
+                        <span></span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Влажность на входе</td>
-                    <td><input type="number" th:field="*{humIn}" th:disabled="${projectDto.id==null}"/></td>
+                    <td>
+                        <input type="number" th:field="*{humIn}" required th:disabled="${projectDto.id==null}"/>
+                        <span></span>
+                    </td>
                 </tr>
                 <tr th:border="2">
                     <td>Влажность на выходе </td>
-                    <td><input type="number" th:field="*{humOut}" th:disabled="${projectDto.id==null}"/></td>
+                    <td>
+                        <input type="number" th:field="*{humOut}" required th:disabled="${projectDto.id==null}"/>
+                        <span></span>
+                    </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        <h3>Тип расположения парораспределителя</h3>
-                    </td>
+                    <td colspan="2"><h3>Тип расположения парораспределителя</h3></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -122,7 +140,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <h3>Выберите тип увлажнителя</h3>
+                        Выберите тип увлажнителя
                     </td>
                     <td>
                         <select name="EnumHumidifierType">

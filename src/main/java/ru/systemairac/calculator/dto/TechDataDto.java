@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 import ru.systemairac.calculator.myenum.*;
 
 @Data
@@ -13,15 +14,17 @@ import ru.systemairac.calculator.myenum.*;
 public class TechDataDto {
     private Long id;
     private Integer airFlow;
-    private Integer altitude;
-    private Double atmospherePressure;
+    @NumberFormat(pattern = "###")
+    private Integer altitude = 0;
+    @NumberFormat(pattern = "###,###")
+    private Double atmospherePressure = 101.325;
     private Double tempIn;
     private Double humIn;
     private Double humOut;
     private EnumHumidifierType enumHumidifierType;
     private TypeMontage typeMontage;
     private EnumVoltageType voltage;
-    private Integer length;
-    private Integer width;
+    private int length;
+    private int width;
     private double calcCapacity;
 }

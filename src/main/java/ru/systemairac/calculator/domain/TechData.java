@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.NumberFormat;
 import ru.systemairac.calculator.myenum.*;
 
 import javax.persistence.*;
@@ -28,8 +29,9 @@ public class TechData {
 
     private double tempIn;
 
+    @NumberFormat(pattern = "###")
     private Integer altitude;
-
+    @NumberFormat(pattern = "###,###")
     private Double atmospherePressure;
 
     private double humIn;

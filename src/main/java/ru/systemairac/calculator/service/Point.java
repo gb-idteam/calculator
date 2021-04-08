@@ -17,14 +17,14 @@ public class Point {
     private Double temperature; //°C
     private Double humidity; //%
     private Integer altitude;
-    private Double atmospherePressure = 94.5; // kPa
+    private Double atmospherePressure; // kPa
     private Double enthalpy; //kJ/kg
     private Double moistureContent; // g/kg
     private Double density; // kg/m³
 
     private Point(PointBuilder builder) {
-        this.altitude = calcAltitude(atmospherePressure);
-        this.atmospherePressure = calcAtmPressure(altitude);
+        this.altitude = calcAltitude(builder);
+        this.atmospherePressure = calcAtmPressure(builder);
         this.temperature = calcTemperature(builder);
         this.pressureD = calcPressureD(temperature);
         this.humidity = calcHumidity(builder);
@@ -34,12 +34,18 @@ public class Point {
         this.density = calcDensity(builder);
     }
 
-    private Double calcAtmPressure(Integer altitude) {
-        return 101.325 * Math.pow(1-(0.0065*altitude/288.15)/288.15,5.255);
+    private Double calcAtmPressure(PointBuilder builder) {
+        if (builder.atmospherePressure != null) {
+            return builder.atmospherePressure;
+        }
+        return 101.325 * Math.pow(1-(0.0065*builder.altitude/288.15),5.255);
     }
 
-    private Integer calcAltitude(Double atmospherePressure) {
-        return (int) ((1-Math.pow(atmospherePressure/101.325,1/5.255))*288.15/0.0065);
+    private Integer calcAltitude(PointBuilder builder) {
+        if (builder.altitude != null) {
+            return builder.altitude;
+        }
+        return (int) ((1-Math.pow(builder.atmospherePressure/101.325,1/5.255))*288.15/0.0065);
     }
 
     private double calcPressureS(Double u) {
@@ -155,7 +161,7 @@ public class Point {
         private Integer altitude;
         private Double atmospherePressure;
 
-        private static final int MAX_PARAMETERS_DEFINED = 3;
+        private static final int MAX_PARAMETERS_DEFINED = 4;
 
         private int definedParametersCounter = 0;
 

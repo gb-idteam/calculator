@@ -219,3 +219,67 @@
     font-weight:Bold;
     background:#858585;  /* #44AFE5;  */
 }
+
+input[type="number"]:invalid+span:after {
+    content: '✖';
+    padding-left: 5px;
+    color: red;
+}
+
+input[type="number"]:valid+span:after {
+    content: '✓';
+    padding-left: 5px;
+    color: green;
+}
+
+input[type="number"] {
+    background-color: #eee;
+    vertical-align: top;
+    outline: none;
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+input[type="number"]:focus {
+    outline: 2px solid blue;
+}
+
+input[type="text"]:invalid+span:after {
+    content: '✖';
+    padding-left: 5px;
+    color: red;
+}
+
+input[type="text"]:valid+span:after {
+    content: '✓';
+    padding-left: 5px;
+    color: green;
+}
+
+input[type="text"] {
+    background-color: #eee;
+    vertical-align: top;
+    outline: none;
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+input[type="text"]:focus {
+    outline: 2px solid blue;
+}
