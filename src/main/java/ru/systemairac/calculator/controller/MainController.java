@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.systemairac.calculator.domain.Calculation;
 import ru.systemairac.calculator.domain.Image;
+import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.*;
