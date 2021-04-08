@@ -75,7 +75,7 @@ public class UserServiceTest {
         assertEquals(u.getFullName(), user.getFullName());
         assertEquals(u.getPassword(), user.getPassword());
         assertEquals(u.getNameCompany(), user.getNameCompany());
-        assertEquals(u.getPost(), user.getPost());
+        assertEquals(u.getPosition(), user.getPosition());
         assertEquals(u.getPhone(), user.getPhone());
 //        assertEquals(u.getProjects(), user.getProjects());
     }
@@ -93,9 +93,23 @@ public class UserServiceTest {
 
         User user = userService.findByEmail(userDto.getEmail()).orElseThrow();
 
-        assertEquals(userDto.getEmail(), user.getEmail());
+        assertFieldsEqual(user, userDto);
+    }
+
+    private void assertFieldsEqual(User user, UserDto userDto) {
         assertTrue(BCrypt.checkpw(userDto.getMatchingPassword(), user.getPassword()));
-        assertEquals(userDto.getEmail(), user.getEmail());
+        assertEquals(user.getFullName(), userDto.getFullName());
+        assertEquals(user.getNameCompany(), userDto.getNameCompany());
+        assertEquals(user.getAddressCompany(), userDto.getAddressCompany());
+        assertEquals(user.getPosition(), userDto.getPosition());
+        assertEquals(user.getPhone(), userDto.getPhone());
+        assertEquals(user.getEmail(), userDto.getEmail());
+        if (user.getProjects() != null && userDto.getProjects() != null) {
+            assertEquals(user.getProjects(), userDto.getProjects());
+        } else {
+            assertTrue(user.getProjects() == null || user.getProjects().isEmpty());
+            assertTrue(userDto.getProjects() == null || userDto.getProjects().isEmpty());
+        }
     }
 
     @Test

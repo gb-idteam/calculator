@@ -34,7 +34,7 @@ public class User {
     private String fullName;
     private String nameCompany;
     private String addressCompany;
-    private String post;
+    private String position;
     private Long phone;
 
     @LazyCollection(LazyCollectionOption.FALSE)

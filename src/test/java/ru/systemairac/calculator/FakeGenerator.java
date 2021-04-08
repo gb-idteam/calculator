@@ -26,8 +26,17 @@ public class FakeGenerator {
     private final Random random = new Random();
     private final Faker faker= new Faker(new Locale("ru"), new RandomService());
 
+    public long fakeId() {
+        long id;
+        do {
+            id = random.nextLong();
+        } while (id <= 0);
+        return id;
+    }
+
     public TechDataDto fakeTechDataDto() {
         return TechDataDto.builder()
+                .id(fakeId())
                 .airFlow(random.nextInt(300))
                 .calcCapacity(random.nextInt(300)) // а это не правда
                 .enumHumidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
@@ -42,8 +51,8 @@ public class FakeGenerator {
     }
 
     public TechData fakeTechData() {
-        Random random = new Random();
         return TechData.builder()
+                .id(fakeId()) // id обязательно > 0
                 .airFlow(random.nextInt(300))
                 .calcCapacity(random.nextInt(300)) // а это не правда
                 .enumHumidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
@@ -60,7 +69,7 @@ public class FakeGenerator {
 
     public HumidifierDto fakeGoodHumidifierDto() {
         return HumidifierDto.builder()
-                .id(null)
+                .id(fakeId())
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
 //                .brand(null) // TODO: пока без бренда
                 .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
@@ -77,7 +86,7 @@ public class FakeGenerator {
         BigDecimal price = BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01);
         price = price.setScale(2, RoundingMode.FLOOR); // TODO: а как это происходит в БД?
         return Humidifier.builder()
-                .id(null)
+                .id(fakeId())
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
                 .brand(null) // TODO: пока без бренда
                 .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
@@ -104,12 +113,12 @@ public class FakeGenerator {
 
     public User fakeGoodUser(PasswordEncoder encoder) {
         User user = new User();
-//        user.setId(null);
+        user.setId(fakeId());
         user.setEmail(faker.bothify("?#?#?#?#?#@example.com"));
         user.setFullName(faker.name().fullName());
         user.setPassword(encoder.encode(faker.regexify("[A-Za-z0-9]{8,20}")));
         user.setNameCompany(faker.company().name());
-        user.setPost(faker.address().fullAddress());
+        user.setPosition(faker.address().fullAddress());
         user.setPhone(74951234567L);
 //        user.setRole()
         user.setProjects(new ArrayList<>());
@@ -117,13 +126,18 @@ public class FakeGenerator {
     }
 
     public UserDto fakeGoodUserDto() {
-        UserDto userDto = new UserDto();
-        userDto.setEmail(faker.bothify("?#?#?#?#@example.com"));
-        String pw = faker.regexify("[A-Za-z0-9]{8,20}");
-        userDto.setPassword(pw);
-        userDto.setMatchingPassword(pw);
-
-        return userDto;
+        String pw = faker.internet().password(8, 40);
+        // Проекты тут не добавляем
+        return UserDto.builder()
+                .password(pw)
+                .fullName(faker.name().fullName())
+                .nameCompany(faker.company().name())
+                .addressCompany(faker.address().fullAddress())
+                .position(faker.company().profession())
+                .phone(74951234567L)
+                .email(faker.internet().emailAddress())
+                .matchingPassword(pw)
+                .build();
     }
 
     public VaporDistributorDto fakeVaporDistributorDto() {

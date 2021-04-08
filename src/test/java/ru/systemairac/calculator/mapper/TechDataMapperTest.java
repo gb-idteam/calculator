@@ -23,16 +23,17 @@ class TechDataMapperTest {
     }
 
     private void assertFieldsEqual(TechDataDto techDataDto, TechData techData) {
+        assertEquals(techDataDto.getId(), techData.getId());
         assertEquals(techDataDto.getAirFlow(), techData.getAirFlow());
-        assertEquals(techDataDto.getCalcCapacity(), techData.getCalcCapacity());
+        assertEquals(techDataDto.getTempIn(), techData.getTempIn());
         assertEquals(techDataDto.getHumIn(), techData.getHumIn());
         assertEquals(techDataDto.getHumOut(), techData.getHumOut());
-        assertEquals(techDataDto.getLength(), techData.getLength());
         assertEquals(techDataDto.getEnumHumidifierType(), techData.getEnumHumidifierType());
-        assertEquals(techDataDto.getTempIn(), techData.getTempIn());
         assertEquals(techDataDto.getTypeMontage(), techData.getTypeMontage());
         assertEquals(techDataDto.getVoltage(), techData.getVoltage());
+        assertEquals(techDataDto.getLength(), techData.getLength());
         assertEquals(techDataDto.getWidth(), techData.getWidth());
+        assertEquals(techDataDto.getCalcCapacity(), techData.getCalcCapacity());
     }
 
     @Test
