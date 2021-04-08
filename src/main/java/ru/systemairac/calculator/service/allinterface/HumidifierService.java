@@ -11,9 +11,9 @@ import java.util.List;
 public interface HumidifierService {
     List<Humidifier> findHumidifiersByIds(List<Long> ids);
 
-    List<Humidifier> findHumidifiers(double capacity, EnumHumidifierType humidifierType, EnumVoltageType voltage);
+    List<Humidifier> findHumidifiers(Double minimalCapacity, EnumVoltageType voltage, EnumHumidifierType type);
 
-    List<HumidifierDto> findDtoHumidifiers(double power, EnumHumidifierType humidifier, EnumVoltageType voltage);
+    List<HumidifierDto> findDtoHumidifiers(Double minimalCapacity, EnumVoltageType voltage, EnumHumidifierType type);
 
     HumidifierDto findById(Long id);
 
@@ -30,4 +30,8 @@ public interface HumidifierService {
     Humidifier findHumidifierById(Long id);
 
     HashMap<Long, Integer> getAllDiameters(List<Humidifier> humidifiers);
+
+    boolean existsById (Long id);
+
+    Humidifier saveOrUpdate(Humidifier humidifier);
 }
