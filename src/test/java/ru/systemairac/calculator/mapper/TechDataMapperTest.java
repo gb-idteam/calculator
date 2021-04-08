@@ -1,56 +1,22 @@
 package ru.systemairac.calculator.mapper;
 
 import org.junit.jupiter.api.Test;
-import org.mapstruct.Mapper;
+import ru.systemairac.calculator.FakeGenerator;
 import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.myenum.*;
 
-import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TechDataMapperTest {
 
     private final TechDataMapper mapper = TechDataMapper.MAPPER;
-    private final Random random = new Random();
 
-    private TechDataDto fakeTechDataDto() {
-        return TechDataDto.builder()
-                .airFlow(random.nextInt(300))
-                .calcCapacity(random.nextInt(300)) // а это не правда
-                .enumHumidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .humIn(random.nextInt(100))
-                .humOut(random.nextInt(100))
-                .tempIn(random.nextInt(80) - 40)
-                .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
-                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
-                .width(random.nextInt(1000))
-                .length(random.nextInt(1000))
-                .build();
-    }
-
-    private TechData fakeTechData() {
-        Random random = new Random();
-        return TechData.builder()
-                .airFlow(random.nextInt(300))
-                .calcCapacity(random.nextInt(300)) // а это не правда
-                .enumHumidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .id(random.nextLong())
-                .humIn(random.nextInt(100))
-                .humOut(random.nextInt(100))
-                .tempIn(random.nextInt(80) - 40)
-                .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
-                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
-                .width(random.nextInt(1000))
-                .length(random.nextInt(1000))
-                .build();
-    }
+    private final FakeGenerator fakeGenerator = new FakeGenerator();
 
     @Test
     void toTechData() {
         for (int i = 0; i < 100; i++) {
-            TechDataDto techDataDto = fakeTechDataDto();
+            TechDataDto techDataDto = fakeGenerator.fakeTechDataDto();
             TechData techData = mapper.toTechData(techDataDto);
             assertFieldsEqual(techDataDto, techData);
         }
@@ -72,7 +38,7 @@ class TechDataMapperTest {
     @Test
     void fromTechData() {
         for (int i = 0; i < 100; i++) {
-            TechData techData = fakeTechData();
+            TechData techData = fakeGenerator.fakeTechData();
             TechDataDto techDataDto = mapper.fromTechData(techData);
             assertFieldsEqual(techDataDto, techData);
         }

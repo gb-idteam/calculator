@@ -1,7 +1,5 @@
 package ru.systemairac.calculator.service;
 
-import com.github.javafaker.Faker;
-import com.github.javafaker.service.RandomService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -9,19 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import ru.systemairac.calculator.FakeGenerator;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class HumidifierServiceTest {
@@ -32,12 +28,12 @@ public class HumidifierServiceTest {
     @Autowired
     private HumidifierRepository repository;
 
-    private static Faker faker;
+    private static FakeGenerator fakeGenerator;
     private static Random random;
 
     @BeforeAll
     public static void init() {
-        faker = new Faker(new Locale("ru"), new RandomService());
+        fakeGenerator = new FakeGenerator();
         random = new Random();
     }
 
@@ -46,58 +42,20 @@ public class HumidifierServiceTest {
         repository.deleteAll();
     }
 
-    private Humidifier fakeGoodHumidifier() {
-        BigDecimal price = BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01);
-        price = price.setScale(2, RoundingMode.FLOOR); // TODO: а как это происходит в БД?
-        return Humidifier.builder()
-                .id(null)
-                .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
-                .brand(null) // TODO: пока без бренда
-                .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
-                .capacity(random.nextDouble() * 120) // от 0 до 120
-                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
-                .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
-                .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
-                .vaporDistributors(null) // TODO: пока без парораспределителей
-                .humidifierComponents(null) // TODO: пока без компонентов
-                .price(price) // от 0 до 1_000_000
-                .build();
-    }
 
-    private List<Humidifier> fakeListOfGoodHumidifiers(int number) {
-        List<Humidifier> list = new ArrayList<>(number);
-        for (int i = 0; i < number; i++) {
-            list.add(fakeGoodHumidifier());
-            Humidifier humidifier = list.get(i);
-            humidifier.setArticleNumber(i + "_" + humidifier.getArticleNumber()); // нужно, так как у нас
-        }
-        return list;
-    }
 
-    private HumidifierDto fakeGoodHumidifierDto() {
-        return HumidifierDto.builder()
-                .id(null)
-                .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
-//                .brand(null) // TODO: пока без бренда
-                .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
-                .capacity(random.nextDouble() * 120) // от 0 до 120
-                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
-                .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
-                .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
-                .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
-                .build();
-    }
+
+
+
 
     @Test
     public void saveHumidifier() {
-        service.save(fakeGoodHumidifier());
+        service.save(fakeGenerator.fakeGoodHumidifier());
     }
 
     @Test
     public void saveHumidifiersWithSameArticleNumber() {
-        Humidifier[] humidifiers = {fakeGoodHumidifier(), fakeGoodHumidifier()};
+        Humidifier[] humidifiers = {fakeGenerator.fakeGoodHumidifier(), fakeGenerator.fakeGoodHumidifier()};
         humidifiers[0].setArticleNumber(humidifiers[1].getArticleNumber());
         service.save(humidifiers[0]);
         assertThrows(DataIntegrityViolationException.class,
@@ -108,14 +66,14 @@ public class HumidifierServiceTest {
     @Test
     public void saveManyHumidifiers() {
         int NUMBER = 100;
-        List<Humidifier> humidifiers = fakeListOfGoodHumidifiers(NUMBER);
+        List<Humidifier> humidifiers = fakeGenerator.fakeListOfGoodHumidifiers(NUMBER);
         service.saveAll(humidifiers);
     }
 
     @Test
     public void saveManyHumidifiersWithSameArticleNumber() {
         int NUMBER = 4;
-        List<Humidifier> list = fakeListOfGoodHumidifiers(NUMBER);
+        List<Humidifier> list = fakeGenerator.fakeListOfGoodHumidifiers(NUMBER);
         for (Humidifier humidifier : list)
             humidifier.setArticleNumber(list.get(0).getArticleNumber());
         assertThrows(DataIntegrityViolationException.class,
@@ -126,7 +84,7 @@ public class HumidifierServiceTest {
     @Test
     public void findSuitableHumidifiersFixed1() {
         int NUMBER = 25;
-        List<Humidifier> list = fakeListOfGoodHumidifiers(NUMBER);
+        List<Humidifier> list = fakeGenerator.fakeListOfGoodHumidifiers(NUMBER);
         for (int i = 0; i < NUMBER; i++) {
             Humidifier humidifier = list.get(i);
             humidifier.setCapacity((i + 1) * 3d);
@@ -154,7 +112,7 @@ public class HumidifierServiceTest {
     @Test
     public void findSuitableHumidifiersFixed2() {
         int NUMBER = 25;
-        List<Humidifier> list = fakeListOfGoodHumidifiers(NUMBER);
+        List<Humidifier> list = fakeGenerator.fakeListOfGoodHumidifiers(NUMBER);
         for (int i = 0; i < NUMBER; i++) {
             Humidifier humidifier = list.get(i);
             humidifier.setCapacity((double) (i % 2 == 0 ? i : i * 3));
@@ -193,7 +151,7 @@ public class HumidifierServiceTest {
     @Test
     public void findSuitableHumidifiersFixed3() {
         int NUMBER = 3;
-        Humidifier[] arr = fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
+        Humidifier[] arr = fakeGenerator.fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
         for (int i = 0; i < NUMBER; i++) {
             arr[i].setVoltage(EnumVoltageType.THREE_PHASE_380V);
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
@@ -214,7 +172,7 @@ public class HumidifierServiceTest {
     @Test
     public void findSuitableHumidifiersFixed4() {
         int NUMBER = 4;
-        Humidifier[] arr = fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
+        Humidifier[] arr = fakeGenerator.fakeListOfGoodHumidifiers(NUMBER).toArray(Humidifier[]::new);
         for (int i = 0; i < NUMBER; i++) {
             final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
             arr[i].setHumidifierType(EnumHumidifierType.ELECTRODE);
@@ -254,7 +212,7 @@ public class HumidifierServiceTest {
     @RepeatedTest(100)
     public void findSuitableHumidifiersRandom() {
         final int MAX_NUMBER_OF_ELEMENTS = 250;
-        List<Humidifier> list = fakeListOfGoodHumidifiers(random.nextInt(MAX_NUMBER_OF_ELEMENTS));
+        List<Humidifier> list = fakeGenerator.fakeListOfGoodHumidifiers(random.nextInt(MAX_NUMBER_OF_ELEMENTS));
         removeDuplicateCapacityOrArticle(list);
         service.saveAll(list);
 

@@ -13,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.systemairac.calculator.FakeGenerator;
 import ru.systemairac.calculator.domain.Role;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.repository.UserRepository;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
@@ -34,11 +34,13 @@ public class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+    private static FakeGenerator fakeGenerator;
     private static Faker faker;
     private static PasswordEncoder encoder;
 
     @BeforeAll
     static void init() {
+        fakeGenerator = new FakeGenerator();
         faker = new Faker(new Locale("ru"), new RandomService());
         encoder = new BCryptPasswordEncoder();
     }
@@ -48,46 +50,23 @@ public class UserServiceTest {
         userRepository.deleteAll();
     }
 
-    private User generateGoodUser() {
-        User user = new User();
-//        user.setId(null);
-        user.setEmail(faker.bothify("?#?#?#?#?#@example.com"));
-        user.setFullName(faker.name().fullName());
-        user.setPassword(encoder.encode(faker.regexify("[A-Za-z0-9]{8,20}")));
-        user.setNameCompany(faker.company().name());
-        user.setPost(faker.address().fullAddress());
-        user.setPhone(74951234567L);
-//        user.setRole()
-        user.setProjects(new ArrayList<>());
-        return user;
-    }
-
-    private UserDto generateGoodUserDto() {
-        UserDto userDto = new UserDto();
-        userDto.setEmail(faker.bothify("?#?#?#?#@example.com"));
-        String pw = faker.regexify("[A-Za-z0-9]{8,20}");
-        userDto.setPassword(pw);
-        userDto.setMatchingPassword(pw);
-
-        return userDto;
-    }
 
     @Test
     void testSaveNewUserNoProjectsNoId() {
-        User user = generateGoodUser();
+        User user = fakeGenerator.fakeGoodUser(encoder);
         userService.save(user);
     }
 
     @Test
     void testSaveNewUserWithIdNoProjects() {
-        User user = generateGoodUser();
+        User user = fakeGenerator.fakeGoodUser(encoder);
         user.setId(123L);
         userService.save(user);
     }
 
     @Test
     void testSaveAndFindByNameIgnoreProjects() {
-        User u = generateGoodUser();
+        User u = fakeGenerator.fakeGoodUser(encoder);
         userService.save(u);
 
         User user = userService.findByEmail(u.getEmail()).orElseThrow();
@@ -103,13 +82,13 @@ public class UserServiceTest {
 
     @Test
     void testSaveUserDto() {
-        UserDto userDto = generateGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeGoodUserDto();
         userService.save(userDto);
     }
 
     @Test
     void testSaveUserDtoAndFindByName() {
-        UserDto userDto = generateGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeGoodUserDto();
         userService.save(userDto);
 
         User user = userService.findByEmail(userDto.getEmail()).orElseThrow();
@@ -121,7 +100,7 @@ public class UserServiceTest {
 
     @Test
     void testSaveUserDtoPasswordMismatch() {
-        UserDto userDto = generateGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeGoodUserDto();
         String pw1 = faker.regexify("[A-Za-z0-9]{8,20}");
         String pw2;
         do {
@@ -130,14 +109,14 @@ public class UserServiceTest {
         userDto.setPassword(pw1);
         userDto.setMatchingPassword(pw2);
 
-        assertThrows(RuntimeException.class, () -> {
-            userService.save(userDto);
-        });
+        assertThrows(RuntimeException.class, () ->
+            userService.save(userDto)
+        );
     }
 
     @Test
     void testDeleteWhenUserExists() {
-        User user = generateGoodUser();
+        User user = fakeGenerator.fakeGoodUser(encoder);
         userService.save(user);
 
         long id = userService.findByEmail(user.getEmail()).orElseThrow().getId();
@@ -149,14 +128,14 @@ public class UserServiceTest {
     @Test
     void testDeleteWhenUserNotExists() {
         long id = new Random().nextLong();
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            userService.delete(id);
-        });
+        assertThrows(EmptyResultDataAccessException.class, () ->
+            userService.delete(id)
+        );
     }
 
     @Test
     void testGetByIdWhenUserExists() {
-        User user = generateGoodUser();
+        User user = fakeGenerator.fakeGoodUser(encoder);
         userService.save(user);
         long id = userService.findByEmail(user.getEmail()).orElseThrow().getId();
         userService.getById(id);
@@ -170,7 +149,7 @@ public class UserServiceTest {
 
     @Test
     void testLoadUserByUsername() {
-        User user = generateGoodUser();
+        User user = fakeGenerator.fakeGoodUser(encoder);
         userService.save(user);
         UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
         assertEquals(user.getEmail(), userDetails.getUsername());
