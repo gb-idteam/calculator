@@ -35,9 +35,6 @@ public class HumidifierServiceTest {
     private static Faker faker;
     private static Random random;
 
-    private static EnumHumidifierType type1 = EnumHumidifierType.ELECTRODE;
-    private static EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
-
     @BeforeAll
     public static void init() {
         faker = new Faker(new Locale("ru"), new RandomService());
@@ -185,7 +182,7 @@ public class HumidifierServiceTest {
     private void checkHumidifiersFromService(List<Humidifier> list, double CAPACITY, EnumVoltageType PHASE, EnumHumidifierType TYPE) {
         Humidifier[] expected = getSuitableHumidifiers(list, CAPACITY, PHASE, TYPE);
         Humidifier[] actual =
-                service.findHumidifiers(CAPACITY, TYPE, PHASE)
+                service.findHumidifiers(CAPACITY, PHASE, TYPE)
                         .toArray(new Humidifier[0]);
         assertEquals(expected.length, actual.length);
         for (int i = 0; i < expected.length; i++) {
@@ -234,7 +231,7 @@ public class HumidifierServiceTest {
         final EnumVoltageType PHASE = EnumVoltageType.THREE_PHASE_380V;
         final EnumHumidifierType TYPE = EnumHumidifierType.ELECTRODE;
 
-        List<Humidifier> actual = service.findHumidifiers(CAPACITY, TYPE, PHASE);
+        List<Humidifier> actual = service.findHumidifiers(CAPACITY, PHASE, TYPE);
         assertEquals(arr[0].getArticleNumber(), actual.get(0).getArticleNumber());
         assertEquals(arr[1].getArticleNumber(), actual.get(1).getArticleNumber());
         assertEquals(arr[3].getArticleNumber(), actual.get(2).getArticleNumber());
@@ -276,7 +273,7 @@ public class HumidifierServiceTest {
                 .limit(3)
                 .toArray(Humidifier[]::new);
         Humidifier[] actual =
-                service.findHumidifiers(CAPACITY, TYPE, PHASE)
+                service.findHumidifiers(CAPACITY, PHASE, TYPE)
                         .toArray(new Humidifier[0]);
         assertEquals(expected.length, actual.length);
         for (int i = 0; i < expected.length; i++) {
