@@ -21,5 +21,7 @@ public interface HumidifierComponentService {
 
     void deleteById(Long id);
 
-    List<HumidifierComponentDto> findAllByIds(List<Long> ids);
+    List<HumidifierComponent> findAllByIds(List<Long> ids);
+
+    List<HumidifierComponentDto> getListDto(List<HumidifierComponent> humidifierComponents);
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
@@ -76,21 +78,40 @@ class PDDocumentServiceTest {
                 .phone(123465354L)
                 .build();
 
-        HumidifierDto humidifierDto = fakeGoodHumidifierDto();
-        VaporDistributorDto distributorDto  = VaporDistributorDto.builder()
+        Humidifier humidifier = fakeGoodHumidifier();
+        VaporDistributor distributor  = VaporDistributor.builder()
                 .length(1000)
                 .articleNumber("sdfs")
                 .diameter(25)
                 .price(new BigDecimal(100))
                 .build();
+        EstimateDto estimateDto = EstimateDto.builder().
+                humidifier(humidifier).
+                vaporDistributor(distributor).
+                build();
 
-        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, humidifierDto, new ArrayList<>(),distributorDto)) {
+        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto,estimateDto)) {
 //            document.save("123.pdf");
         }
     }
 
     private HumidifierDto fakeGoodHumidifierDto() {
         return HumidifierDto.builder()
+                .id(null)
+                .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
+//                .brand(null) // TODO: пока без бренда
+                .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
+                .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
+                .capacity(random.nextDouble() * 120) // от 0 до 120
+                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
+                .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
+                .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
+                .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
+                .build();
+    }
+
+    private Humidifier fakeGoodHumidifier() {
+        return Humidifier.builder()
                 .id(null)
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
 //                .brand(null) // TODO: пока без бренда

@@ -19,7 +19,6 @@ import ru.systemairac.calculator.service.allinterface.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,8 +31,10 @@ public class MainController {
     private final CalculationService calculationService;
     private final TechDataService techDataService;
     private final ImageService imageService;
+    private final EstimateService estimateService;
     private final HumidifierComponentService humidifierComponentService;
     private final HumidifierService humidifierService;
+    private final FileService fileService;
     private Calculation calculation;
     private ProjectDto projectDto = new ProjectDto();
     private EstimateDto estimateDto = new EstimateDto();
@@ -52,14 +53,16 @@ public class MainController {
             build();
     private final PDDocumentService pdDocumentService;
 
-    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, ImageService imageService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, PDDocumentService pdDocumentService) {
+    public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, ImageService imageService, EstimateService estimateService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, FileService fileService, PDDocumentService pdDocumentService) {
         this.projectService = projectService;
         this.userService = userService;
         this.calculationService = calculationService;
         this.techDataService = techDataService;
         this.imageService = imageService;
+        this.estimateService = estimateService;
         this.humidifierComponentService = humidifierComponentService;
         this.humidifierService = humidifierService;
+        this.fileService = fileService;
         this.pdDocumentService = pdDocumentService;
         init();
     }
@@ -128,13 +131,12 @@ public class MainController {
     @PostMapping("/resultEstimate")
     public String resultEstimate(Principal principal,
                                  @RequestParam(value = "selectedOptions" , required = false) Long[] idSelectedOptions,
-                                 @RequestParam(value = "distributor" , required = false) String artDistributor) throws IOException {
+                                 @RequestParam(value = "distributor" , required = false) Long idDistributor) throws IOException {
+        EstimateDto estimateDto = estimateService.save(calculation.getId(), idSelectHumidifier,idSelectedOptions,idDistributor);
         PDDocument document = pdDocumentService.toPDDocument(userService.getByEmail(principal.getName()),
                 projectDto,
                 techDataDto,
-                humidifierService.findById(this.idSelectHumidifier),
-                humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions)),
-                distributors.get(this.idSelectHumidifier)); //TODO исправить когду будет возможность выбора вентиляторного распределителя
+                estimateDto); //TODO исправить когду будет возможность выбора вентиляторного распределителя
         document.save("result.pdf");
         return "redirect:/calculator";
     }

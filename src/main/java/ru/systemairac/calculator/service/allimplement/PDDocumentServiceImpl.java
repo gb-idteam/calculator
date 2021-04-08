@@ -36,9 +36,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
             UserDto userDto,
             ProjectDto projectDto,
             TechDataDto techDataDto,
-            HumidifierDto humidifierDto,
-            List<HumidifierComponentDto> humidifierComponentDtoList,
-            VaporDistributorDto distributor
+            EstimateDto estimateDto
     ) throws IOException {
 
         PDPage myPage = new PDPage(PDRectangle.A4);
@@ -186,18 +184,18 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         data = new String[][]{
                 { "Тип увлажнения",
                         String.format("1 x %s, %.1f kg/h, %sV %.2f kW - %.1f€",
-                                humidifierDto.getTitle(),
-                                humidifierDto.getCapacity(),
-                                humidifierDto.getVoltage().getTxt(),
-                                humidifierDto.getElectricPower(),
-                                humidifierDto.getPrice()
+                                estimateDto.getHumidifier().getTitle(),
+                                estimateDto.getHumidifier().getCapacity(),
+                                estimateDto.getHumidifier().getVoltage().getTxt(),
+                                estimateDto.getHumidifier().getElectricPower(),
+                                estimateDto.getHumidifier().getPrice()
                         )
                 },
                 { "Тип распыления",
                         String.format("%d %s ø:%dmm L:%dmm",
-                                humidifierDto.getNumberOfCylinders(), // число дисперсионных трубок
+                                estimateDto.getHumidifier().getNumberOfCylinders(), // число дисперсионных трубок
                                 "Дисперсионная трубка", // разные данные для разных чисел
-                                humidifierDto.getVaporPipeDiameter(), // диаметр трубок
+                                estimateDto.getHumidifier().getVaporPipeDiameter(), // диаметр трубок
                                 techDataDto.getWidth() // длина трубок //TODO исправить
                         )
                 }// нужно передавать в метод данные о компонентах

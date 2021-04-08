@@ -93,7 +93,12 @@ public class HumidifierComponentServiceImpl implements HumidifierComponentServic
     }
 
     @Override
-    public List<HumidifierComponentDto> findAllByIds(List<Long> ids) {
-        return mapper.fromHumidifierComponentList(humidifierComponentRepository.findAllById(ids));
+    public List<HumidifierComponent> findAllByIds(List<Long> ids) {
+        return humidifierComponentRepository.findAllById(ids);
+    }
+
+    @Override
+    public List<HumidifierComponentDto> getListDto(List<HumidifierComponent> humidifierComponents) {
+        return mapper.fromHumidifierComponentList(humidifierComponents);
     }
 }

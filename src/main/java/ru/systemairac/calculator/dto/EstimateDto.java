@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 
 import java.util.List;
 
@@ -14,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EstimateDto {
     private Humidifier humidifier;
-    private List<HumidifierComponentDto> humidifierComponentDtoList;
-    private VaporDistributorDto vaporDistributorDto;
-    private String sum;
+    private List<HumidifierComponent> humidifierComponentDtoList;
+    private VaporDistributor vaporDistributor;
 }

@@ -51,9 +51,7 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new IOException("Document " + name + " couldn't be saved: " + e.getMessage());
         }
-
         fileRepository.save(new FileEntity(null, name, project));
-
         return name;
     }
 

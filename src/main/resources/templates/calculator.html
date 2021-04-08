@@ -203,7 +203,7 @@
                         <tr className="tr_distributor" id="tr_distributor" th:each ="instance : ${distributors.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
-                                    <input type="checkbox" name="distributor" th:value="${instance.articleNumber}">
+                                    <input type="checkbox" name="distributor" th:value="${instance.id}">
                                     <span class="checkmark"></span>
                                 </label>
                             </td>
@@ -212,7 +212,7 @@
                             </td>
                             <td th:text="${instance.articleNumber}">арт</td>
                             <td th:text="${instance.type.getTxt()}">тип</td>
-                            <td class="option_price" th:text="${instance.price}">0</td>
+                            <td class="distributor_price" th:text="${instance.price}">0</td>
                         </tr>
                         <tr className="tr_option" id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
                             <td>
@@ -235,7 +235,7 @@
                                 <h3>Сумма: </h3>
                             </td>
                             <td>
-                                <h3 id="Summary" th:text="${estimate.sum}" name="sum"></h3>
+                                <h3 id="Summary"></h3>
                             </td>
                         </tr>
                     </table>

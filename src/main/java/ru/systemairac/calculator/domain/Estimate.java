@@ -4,8 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.systemairac.calculator.domain.humidifier.Humidifier;
+import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,5 +22,13 @@ public class Estimate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    Humidifier humidifier;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    List<HumidifierComponent> humidifierComponents;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    VaporDistributor vaporDistributor;
 
 }

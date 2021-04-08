@@ -28,6 +28,9 @@ public class Calculation {
     @JoinColumn(name = "calculation_id")
     private List<TechData> techData;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Estimate estimate;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     private Project project;
 

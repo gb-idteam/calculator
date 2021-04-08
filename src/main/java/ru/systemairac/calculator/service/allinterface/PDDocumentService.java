@@ -13,8 +13,6 @@ public interface PDDocumentService {
     PDDocument toPDDocument(UserDto userDto,
                             ProjectDto projectDto,
                             TechDataDto techDataDto,
-                            HumidifierDto humidifierDto,
-                            List<HumidifierComponentDto> humidifierComponentDtoList,
-                            VaporDistributorDto distributor
+                            EstimateDto estimateDto
     ) throws IOException;
 }
