@@ -46,10 +46,10 @@ public class MainController {
     // Для тестирования
     private TechDataDto techDataDto = TechDataDto.builder().
             airFlow(500).
-            tempIn(20).
-            humIn(1).
+            tempIn(20.0).
+            humIn(1.0).
             voltage(EnumVoltageType.ONE_PHASE_220V).
-            humOut(60).
+            humOut(60.0).
             build();
     private final PDDocumentService pdDocumentService;
 

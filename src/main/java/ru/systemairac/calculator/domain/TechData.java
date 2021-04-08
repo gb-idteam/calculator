@@ -28,6 +28,10 @@ public class TechData {
 
     private double tempIn;
 
+    private Integer altitude;
+
+    private Double atmospherePressure;
+
     private double humIn;
 
     private double humOut;

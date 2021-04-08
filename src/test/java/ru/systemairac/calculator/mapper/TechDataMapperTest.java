@@ -20,9 +20,9 @@ class TechDataMapperTest {
                 .airFlow(random.nextInt(300))
                 .calcCapacity(random.nextInt(300)) // а это не правда
                 .enumHumidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .humIn(random.nextInt(100))
-                .humOut(random.nextInt(100))
-                .tempIn(random.nextInt(80) - 40)
+                .humIn(Double.valueOf(random.nextInt(100)))
+                .humOut(Double.valueOf(random.nextInt(100)))
+                .tempIn(Double.valueOf(random.nextInt(80) - 40))
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
                 .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
                 .width(random.nextInt(1000))

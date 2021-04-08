@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Point {
 
-    private final static double ATMOSPHERE_PRESSURE = 94.5; // kPa
     private static final double HEAT_CAPACITY_AIR_DRY = 1.006; // kJ / (kg * K)
     private static final double HEAT_OF_FUSION_WATER_0 = 2501.000; // kJ / kg
     private static final double HEAT_OF_FUSION_WATER_DELTA = 2.360; // kJ / (kg * K)
@@ -17,11 +16,15 @@ public class Point {
     private Double pressureS; // kPa парциальное давление
     private Double temperature; //°C
     private Double humidity; //%
+    private Integer altitude;
+    private Double atmospherePressure = 94.5; // kPa
     private Double enthalpy; //kJ/kg
     private Double moistureContent; // g/kg
     private Double density; // kg/m³
 
     private Point(PointBuilder builder) {
+        this.altitude = calcAltitude(atmospherePressure);
+        this.atmospherePressure = calcAtmPressure(altitude);
         this.temperature = calcTemperature(builder);
         this.pressureD = calcPressureD(temperature);
         this.humidity = calcHumidity(builder);
@@ -29,6 +32,14 @@ public class Point {
         this.enthalpy = calcEnthalpy(builder);
         this.moistureContent = calcMoistureContent(builder);
         this.density = calcDensity(builder);
+    }
+
+    private Double calcAtmPressure(Integer altitude) {
+        return 101.325 * Math.pow(1-(0.0065*altitude/288.15)/288.15,5.255);
+    }
+
+    private Integer calcAltitude(Double atmospherePressure) {
+        return (int) ((1-Math.pow(atmospherePressure/101.325,1/5.255))*288.15/0.0065);
     }
 
     private double calcPressureS(Double u) {
@@ -39,7 +50,7 @@ public class Point {
         Double t = calcTemperature(builder);
         Double d = calcHumidity(builder);
 //        ATMOSPHERE_PRESSURE * 1000 * (h / 1000 + 1) / 461.39 / (273.15 + t) / (h / 1000 + 0.6222)
-        return (ATMOSPHERE_PRESSURE * 10) / (4.62 * (0.622 + d / 1000) * (t + 273.5));
+        return (atmospherePressure * 10) / (4.62 * (0.622 + d / 1000) * (t + 273.5));
     }
 
     private Double calcMoistureContent(PointBuilder builder) {
@@ -47,12 +58,12 @@ public class Point {
             return builder.moistureContent;
         }
         if (builder.temperature!= null && builder.enthalpy!=null) {
-            double moistureContentByT = 622 * calcPressureS(100.0) / (ATMOSPHERE_PRESSURE - calcPressureS(100.0));
+            double moistureContentByT = 622 * calcPressureS(100.0) / (atmospherePressure - calcPressureS(100.0));
             double moistureContentByH = (enthalpy - 1.006 * temperature) / (HEAT_OF_FUSION_WATER_0 + 1.805 * temperature) * 1000;
             return Math.min(moistureContentByT, moistureContentByH);
         }
         if ((builder.humidity!= null && builder.enthalpy!=null) || (builder.temperature!= null && builder.humidity!=null)) {
-            return 622 * pressureS / (ATMOSPHERE_PRESSURE - pressureS);
+            return 622 * pressureS / (atmospherePressure - pressureS);
         }
         return null;
     }
@@ -71,7 +82,7 @@ public class Point {
             return builder.humidity;
         }
         if (builder.temperature!= null && builder.moistureContent!=null) {
-            return ATMOSPHERE_PRESSURE / pressureD *1000 / (0.622 / moistureContent * 1000 + 1) * 100;
+            return atmospherePressure / pressureD *1000 / (0.622 / moistureContent * 1000 + 1) * 100;
         }
         return null;
     }
@@ -83,7 +94,7 @@ public class Point {
         if (builder.humidity!= null && builder.moistureContent!=null) {
             if (builder.humidity.equals(0))
                 return null;
-            this.pressureD = builder.moistureContent/1000 * ATMOSPHERE_PRESSURE/(builder.humidity/100)/(0.622 + builder.moistureContent/1000)*1000;
+            this.pressureD = builder.moistureContent/1000 * atmospherePressure/(builder.humidity/100)/(0.622 + builder.moistureContent/1000)*1000;
             if (pressureD<641)
                 return (271 * Math.log(pressureD)-1738.4) / (28.74 - Math.log(pressureD));
             else
@@ -123,7 +134,7 @@ public class Point {
         double pressureSaturatedVapor = calcPressureD(temperature);
         return HEAT_CAPACITY_AIR_DRY * temperature + (HEAT_OF_FUSION_WATER_0 - HEAT_OF_FUSION_WATER_DELTA * temperature
                 + HEAT_CAPACITY_WATER_VAPOR * temperature) * MOLAR_RATIO * pressureSaturatedVapor * humidity/100
-                / (ATMOSPHERE_PRESSURE * 1000 - pressureSaturatedVapor);
+                / (atmospherePressure * 1000 - pressureSaturatedVapor);
     }
 
     private Double calcPressureD(Double t) {
@@ -141,14 +152,16 @@ public class Point {
         private Double humidity;
         private Double enthalpy;
         private Double moistureContent;
+        private Integer altitude;
+        private Double atmospherePressure;
 
-        private static final int MAX_PARAMETERS_DEFINED = 2;
+        private static final int MAX_PARAMETERS_DEFINED = 3;
 
         private int definedParametersCounter = 0;
 
         private void checkAndIncrementCounter() {
             if (definedParametersCounter >= MAX_PARAMETERS_DEFINED)
-                throw new RuntimeException("Задано больше двух определяющих параметров.");
+                throw new RuntimeException("Задано больше трех определяющих параметров.");
             definedParametersCounter++;
         }
 
@@ -161,6 +174,19 @@ public class Point {
         public PointBuilder humidity(Double humidity) {
             checkAndIncrementCounter();
             this.humidity = humidity;
+            return this;
+        }
+
+
+        public PointBuilder altitude(Integer altitude) {
+            checkAndIncrementCounter();
+            this.altitude = altitude;
+            return this;
+        }
+
+        public PointBuilder atmospherePressure(Double atmospherePressure) {
+            checkAndIncrementCounter();
+            this.atmospherePressure = atmospherePressure;
             return this;
         }
 

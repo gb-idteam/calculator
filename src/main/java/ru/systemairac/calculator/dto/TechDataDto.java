@@ -12,14 +12,16 @@ import ru.systemairac.calculator.myenum.*;
 @NoArgsConstructor
 public class TechDataDto {
     private Long id;
-    private int airFlow;
-    private double tempIn;
-    private double humIn;
-    private double humOut;
+    private Integer airFlow;
+    private Integer altitude;
+    private Double atmospherePressure;
+    private Double tempIn;
+    private Double humIn;
+    private Double humOut;
     private EnumHumidifierType enumHumidifierType;
     private TypeMontage typeMontage;
     private EnumVoltageType voltage;
-    private int length;
-    private int width;
+    private Integer length;
+    private Integer width;
     private double calcCapacity;
 }

@@ -62,10 +62,10 @@ class PDDocumentServiceTest {
                 .tempIn(20.4)
                 .typeMontage(TypeMontage.AHU)
                 .length(2233)
-                .humOut(100)
-                .humIn(0)
+                .humOut(100.0)
+                .humIn(0.0)
                 .enumHumidifierType(EnumHumidifierType.HEATING_ELEMENT)
-                .calcCapacity(123)
+                .calcCapacity(123.0)
                 .airFlow(123)
                 .build();
 
