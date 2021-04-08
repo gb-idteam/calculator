@@ -19,7 +19,7 @@ class HumidifierMapperTest {
 
     @RepeatedTest(5)
     void toHumidifier() {
-        HumidifierDto dto = fakeGenerator.fakeGoodHumidifierDto();
+        HumidifierDto dto = fakeGenerator.fakeHumidifierDto();
         Humidifier entity = mapper.toHumidifier(dto);
         assertFieldsEqual(entity, dto);
     }
@@ -29,7 +29,7 @@ class HumidifierMapperTest {
         final int NUMBER_OF_ELEMENTS = 100;
         List<HumidifierDto> dtoList = new ArrayList<>(NUMBER_OF_ELEMENTS);
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            dtoList.add(fakeGenerator.fakeGoodHumidifierDto());
+            dtoList.add(fakeGenerator.fakeHumidifierDto());
         }
         List<Humidifier> entityList = mapper.toHumidifierList(dtoList);
         assertEquals(NUMBER_OF_ELEMENTS, entityList.size());
@@ -40,7 +40,7 @@ class HumidifierMapperTest {
 
     @RepeatedTest(5)
     void fromHumidifier() {
-        Humidifier entity = fakeGenerator.fakeGoodHumidifier();
+        Humidifier entity = fakeGenerator.fakeHumidifier();
         HumidifierDto dto = mapper.fromHumidifier(entity);
         assertFieldsEqual(entity, dto);
     }
@@ -50,7 +50,7 @@ class HumidifierMapperTest {
         final int NUMBER_OF_ELEMENTS = 100;
         List<Humidifier> entityList = new ArrayList<>(NUMBER_OF_ELEMENTS);
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            entityList.add(fakeGenerator.fakeGoodHumidifier());
+            entityList.add(fakeGenerator.fakeHumidifier());
         }
         List<HumidifierDto> dtoList = mapper.fromHumidifierList(entityList);
         assertEquals(NUMBER_OF_ELEMENTS, dtoList.size());

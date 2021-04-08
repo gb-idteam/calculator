@@ -2,6 +2,7 @@ package ru.systemairac.calculator.mapper;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.systemairac.calculator.FakeGenerator;
 import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.domain.TechData;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class HumidifierComponentMapperTest {
 
     private FakeGenerator fakeGenerator = new FakeGenerator();

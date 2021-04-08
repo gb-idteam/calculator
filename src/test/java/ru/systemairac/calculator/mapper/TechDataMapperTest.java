@@ -1,12 +1,14 @@
 package ru.systemairac.calculator.mapper;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.systemairac.calculator.FakeGenerator;
 import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.dto.TechDataDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 class TechDataMapperTest {
 
     private final TechDataMapper mapper = TechDataMapper.MAPPER;

@@ -47,9 +47,9 @@ class PDDocumentServiceTest {
 
         TechDataDto techDataDto = fakeGenerator.fakeTechDataDto();
 
-        UserDto userDto = fakeGenerator.fakeGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeUserDto();
 
-        HumidifierDto humidifierDto = fakeGenerator.fakeGoodHumidifierDto();
+        HumidifierDto humidifierDto = fakeGenerator.fakeHumidifierDto();
 
         VaporDistributorDto vaporDistributorDto = fakeGenerator.fakeVaporDistributorDto();
 

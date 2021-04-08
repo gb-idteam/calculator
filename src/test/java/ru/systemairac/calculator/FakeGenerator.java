@@ -2,8 +2,6 @@ package ru.systemairac.calculator;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.TechData;
@@ -82,7 +80,7 @@ public class FakeGenerator {
                 .build();
     }
 
-    public HumidifierDto fakeGoodHumidifierDto() {
+    public HumidifierDto fakeHumidifierDto() {
         return HumidifierDto.builder()
                 .id(fakeId())
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
@@ -97,7 +95,7 @@ public class FakeGenerator {
                 .build();
     }
 
-    public Humidifier fakeGoodHumidifier() {
+    public Humidifier fakeHumidifier() {
         return Humidifier.builder()
                 .id(fakeId())
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
@@ -114,17 +112,17 @@ public class FakeGenerator {
                 .build();
     }
 
-    public List<Humidifier> fakeListOfGoodHumidifiers(int number) {
+    public List<Humidifier> fakeHumidifierList(int number) {
         List<Humidifier> list = new ArrayList<>(number);
         for (int i = 0; i < number; i++) {
-            list.add(fakeGoodHumidifier());
+            list.add(fakeHumidifier());
             Humidifier humidifier = list.get(i);
             humidifier.setArticleNumber(i + "_" + humidifier.getArticleNumber()); // нужно, так как у нас
         }
         return list;
     }
 
-    public User fakeGoodUser(PasswordEncoder encoder) {
+    public User fakeUser(PasswordEncoder encoder) {
         User user = new User();
         user.setId(fakeId());
         user.setEmail(faker.bothify("?#?#?#?#?#@example.com"));
@@ -138,7 +136,7 @@ public class FakeGenerator {
         return user;
     }
 
-    public UserDto fakeGoodUserDto() {
+    public UserDto fakeUserDto() {
         String pw = faker.internet().password(8, 40);
         // Проекты тут не добавляем
         return UserDto.builder()
@@ -174,7 +172,7 @@ public class FakeGenerator {
                 .build();
     }
 
-    public Project fakeGoodProject(User user) {
+    public Project fakeProject(User user) {
         return Project.builder()
                 .id(fakeId())
                 .title(faker.commerce().productName())
@@ -184,7 +182,7 @@ public class FakeGenerator {
                 .build();
     }
 
-    public ProjectDto fakeGoodProjectDto() {
+    public ProjectDto fakeProjectDto() {
         return ProjectDto.builder()
                 .id(fakeId())
                 .title(faker.commerce().productName())

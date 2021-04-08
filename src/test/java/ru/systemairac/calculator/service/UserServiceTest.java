@@ -4,12 +4,14 @@ import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,20 +55,20 @@ public class UserServiceTest {
 
     @Test
     void testSaveNewUserNoProjectsNoId() {
-        User user = fakeGenerator.fakeGoodUser(encoder);
+        User user = fakeGenerator.fakeUser(encoder);
         userService.save(user);
     }
 
     @Test
     void testSaveNewUserWithIdNoProjects() {
-        User user = fakeGenerator.fakeGoodUser(encoder);
+        User user = fakeGenerator.fakeUser(encoder);
         user.setId(123L);
         userService.save(user);
     }
 
     @Test
     void testSaveAndFindByNameIgnoreProjects() {
-        User u = fakeGenerator.fakeGoodUser(encoder);
+        User u = fakeGenerator.fakeUser(encoder);
         userService.save(u);
 
         User user = userService.findByEmail(u.getEmail()).orElseThrow();
@@ -82,22 +84,24 @@ public class UserServiceTest {
 
     @Test
     void testSaveUserDto() {
-        UserDto userDto = fakeGenerator.fakeGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeUserDto();
         userService.save(userDto);
     }
 
     @Test
     void testSaveUserDtoAndFindByName() {
-        UserDto userDto = fakeGenerator.fakeGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeUserDto();
         userService.save(userDto);
+        userDto.setPassword(userDto.getMatchingPassword()); // так как UserService.save(UserDto) изменяет поле password в UserDto
 
         User user = userService.findByEmail(userDto.getEmail()).orElseThrow();
+
 
         assertFieldsEqual(user, userDto);
     }
 
     private void assertFieldsEqual(User user, UserDto userDto) {
-        assertTrue(BCrypt.checkpw(userDto.getMatchingPassword(), user.getPassword()));
+        assertTrue(BCrypt.checkpw(userDto.getPassword(), user.getPassword()));
         assertEquals(user.getFullName(), userDto.getFullName());
         assertEquals(user.getNameCompany(), userDto.getNameCompany());
         assertEquals(user.getAddressCompany(), userDto.getAddressCompany());
@@ -114,7 +118,7 @@ public class UserServiceTest {
 
     @Test
     void testSaveUserDtoPasswordMismatch() {
-        UserDto userDto = fakeGenerator.fakeGoodUserDto();
+        UserDto userDto = fakeGenerator.fakeUserDto();
         String pw1 = faker.regexify("[A-Za-z0-9]{8,20}");
         String pw2;
         do {
@@ -130,7 +134,7 @@ public class UserServiceTest {
 
     @Test
     void testDeleteWhenUserExists() {
-        User user = fakeGenerator.fakeGoodUser(encoder);
+        User user = fakeGenerator.fakeUser(encoder);
         userService.save(user);
 
         long id = userService.findByEmail(user.getEmail()).orElseThrow().getId();
@@ -149,7 +153,7 @@ public class UserServiceTest {
 
     @Test
     void testGetByIdWhenUserExists() {
-        User user = fakeGenerator.fakeGoodUser(encoder);
+        User user = fakeGenerator.fakeUser(encoder);
         userService.save(user);
         long id = userService.findByEmail(user.getEmail()).orElseThrow().getId();
         userService.getById(id);
@@ -163,7 +167,7 @@ public class UserServiceTest {
 
     @Test
     void testLoadUserByUsername() {
-        User user = fakeGenerator.fakeGoodUser(encoder);
+        User user = fakeGenerator.fakeUser(encoder);
         userService.save(user);
         UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
         assertEquals(user.getEmail(), userDetails.getUsername());
@@ -181,6 +185,38 @@ public class UserServiceTest {
                     .toArray(String[]::new);
         }
         assertArrayEquals(rolesExpected, rolesActual);
+    }
+
+    @Test
+    void testLoadUserByUsernameFail() {
+        User user = fakeGenerator.fakeUser(encoder);
+        userService.save(user);
+        String email;
+        do {
+            email = faker.internet().emailAddress();
+        } while (email.equals(user.getEmail()));
+        final String finalEmail = email;
+        assertThrows(UsernameNotFoundException.class, () ->
+                userService.loadUserByUsername(finalEmail)
+        );
+    }
+
+    @Disabled // нужно разобраться с шифрованием пароля
+    @Test
+    void getDtoById() {
+        User user = fakeGenerator.fakeUser(encoder);
+        long id = userRepository.save(user).getId();
+        UserDto userDto = userService.getDtoById(id).orElseThrow();
+        assertFieldsEqual(user, userDto);
+    }
+
+    @Disabled
+    @Test
+    void getByEmail() {
+        User user = fakeGenerator.fakeUser(encoder);
+        String email = userRepository.save(user).getEmail();
+        UserDto userDto = userService.getByEmail(email);
+        assertFieldsEqual(user, userDto);
     }
 
 }
