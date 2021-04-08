@@ -16,12 +16,11 @@ public class VaporDistributorDto {
     private Long id;
     private Image image;
     private String articleNumber;
-    private String title;
     private int length;
     private int diameter;
     private BigDecimal price;
 
-    public void setTitle(String title) {
-        this.title = "Парораспределитель из нержавеющей стали, d=" + this.diameter + "мм, L=" + this.length + "мм";
+    public String getTitle() {
+        return "Парораспределитель из нержавеющей стали, d=" + this.diameter + "мм, L=" + this.length + "мм";
     }
 }

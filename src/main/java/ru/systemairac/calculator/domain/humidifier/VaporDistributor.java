@@ -1,6 +1,7 @@
 package ru.systemairac.calculator.domain.humidifier;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Brand;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "vapor_distributor")
+@Builder
 public class VaporDistributor {
 
     @Id

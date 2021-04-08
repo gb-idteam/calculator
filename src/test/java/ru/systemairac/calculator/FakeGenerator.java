@@ -2,16 +2,19 @@ package ru.systemairac.calculator;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.dto.UserDto;
-import ru.systemairac.calculator.dto.VaporDistributorDto;
+import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
+import ru.systemairac.calculator.dto.*;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
+import ru.systemairac.calculator.myenum.HumidifierComponentType;
 import ru.systemairac.calculator.myenum.TypeMontage;
 
 import java.math.BigDecimal;
@@ -26,12 +29,24 @@ public class FakeGenerator {
     private final Random random = new Random();
     private final Faker faker= new Faker(new Locale("ru"), new RandomService());
 
+    private long nextId = 1;
+
     public long fakeId() {
-        long id;
-        do {
-            id = random.nextLong();
-        } while (id <= 0);
-        return id;
+        return nextId++;
+    }
+
+
+    private static final BigDecimal TWO = BigDecimal.valueOf(2);
+
+    /**
+     * @param minPrice Минимальная цена, в копейках.
+     * @param maxPrice Максимальная цена, в копейках.
+     */
+    public BigDecimal fakePrice(int minPrice, int maxPrice) { // TODO: проверить метод. То ли я делаю вообще??
+        BigDecimal price = BigDecimal.valueOf(random.nextInt(maxPrice - minPrice) + minPrice);
+        price = price.divide(TWO, RoundingMode.FLOOR);
+        price = price.setScale(2, RoundingMode.FLOOR); // TODO: а как это происходит в БД?
+        return price;
     }
 
     public TechDataDto fakeTechDataDto() {
@@ -83,8 +98,6 @@ public class FakeGenerator {
     }
 
     public Humidifier fakeGoodHumidifier() {
-        BigDecimal price = BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01);
-        price = price.setScale(2, RoundingMode.FLOOR); // TODO: а как это происходит в БД?
         return Humidifier.builder()
                 .id(fakeId())
                 .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
@@ -97,7 +110,7 @@ public class FakeGenerator {
                 .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
                 .vaporDistributors(null) // TODO: пока без парораспределителей
                 .humidifierComponents(null) // TODO: пока без компонентов
-                .price(price) // от 0 до 1_000_000
+                .price(fakePrice(0, 50_000_000)) // от 0 до 500_000 рублей
                 .build();
     }
 
@@ -140,12 +153,65 @@ public class FakeGenerator {
                 .build();
     }
 
+    public VaporDistributor fakeVaporDistributor() {
+        return VaporDistributor.builder()
+                .id(fakeId())
+                .length(random.nextInt(1000) + 400)
+                .articleNumber(faker.bothify("D##############"))
+                .diameter(random.nextInt(25) + 10)
+                .price(fakePrice(0, 50_000_000))
+                .image(null) // TODO
+                .build();
+    }
+
     public VaporDistributorDto fakeVaporDistributorDto() {
         return VaporDistributorDto.builder()
-            .length(1000)
-            .articleNumber("sdfs")
-            .diameter(25)
-            .price(new BigDecimal(100))
-            .build();
+                .length(random.nextInt(1000) + 400)
+                .articleNumber(faker.bothify("D##############"))
+                .diameter(random.nextInt(25) + 10)
+                .price(fakePrice(0, 50_000_000))
+                .image(null) // TODO
+                .build();
+    }
+
+    public Project fakeGoodProject(User user) {
+        return Project.builder()
+                .id(fakeId())
+                .title(faker.commerce().productName())
+                .address(faker.address().fullAddress())
+                .user(user)
+                .calculations(null)
+                .build();
+    }
+
+    public ProjectDto fakeGoodProjectDto() {
+        return ProjectDto.builder()
+                .id(fakeId())
+                .title(faker.commerce().productName())
+                .address(faker.address().fullAddress())
+                .build();
+    }
+
+    public HumidifierComponent fakeHumidifierComponent() {
+        return HumidifierComponent.builder()
+                .id(fakeId())
+                .articleNumber(faker.bothify("D##############"))
+                .type(HumidifierComponentType.values()[random.nextInt(HumidifierComponentType.values().length)])
+                .image(null)
+                .optional(random.nextBoolean())
+                .brand(null)
+                .price(fakePrice(0, 50_000_000))
+                .build();
+    }
+
+    public HumidifierComponentDto fakeHumidifierComponentDto() {
+        return HumidifierComponentDto.builder()
+                .id(fakeId())
+                .articleNumber(faker.bothify("D##############"))
+                .type(HumidifierComponentType.values()[random.nextInt(HumidifierComponentType.values().length)])
+                .image(null)
+                .optional(random.nextBoolean())
+                .price(fakePrice(0, 50_000_000))
+                .build();
     }
 }
