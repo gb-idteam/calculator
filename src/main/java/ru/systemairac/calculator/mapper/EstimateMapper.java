@@ -13,8 +13,8 @@ import java.util.List;
 public interface EstimateMapper {
     EstimateMapper MAPPER = Mappers.getMapper(EstimateMapper.class);
 
-    @Mapping(source = "humidifierComponents", target = "humidifierComponents")
     @Mapping(source = "humidifier", target = "humidifier")
+    @Mapping(source = "humidifierComponents", target = "humidifierComponents")
     @Mapping(source = "vaporDistributor", target = "vaporDistributor")
     Estimate toEstimate(EstimateDto dto);
     List<Estimate> toEstimateList(List<EstimateDto> estimates);

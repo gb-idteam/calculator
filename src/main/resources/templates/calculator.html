@@ -161,7 +161,7 @@
                     </td>
                     <td>
                         <div>
-                            <img th:src="@{${humidifier.image.link}}" alt="">
+                            <img th:if="${humidifier.image!=null}" th:src="@{${humidifier.image.link}}" alt="">
                         </div>
                     </td>
                     <td th:text="${humidifier.articleNumber}">Article</td>
@@ -208,7 +208,7 @@
                                 </label>
                             </td>
                             <td>
-                                <img th:src="@{${instance.image.link}}" alt="">
+                                <img th:if="${instance.image!=null}" th:src="@{${instance.image.link}}" alt="">
                             </td>
                             <td th:text="${instance.articleNumber}">арт</td>
                             <td th:text="${instance.type.getTxt()}">тип</td>
@@ -222,7 +222,7 @@
                                 </label>
                             </td>
                             <td>
-                                <img th:src="@{${instance.image.link}}" alt="">
+                                <img th:if="${instance.image!=null}" th:src="@{${instance.image.link}}" alt="">
                             </td>
                             <td th:text="${instance.articleNumber}">арт</td>
                             <td th:text="${instance.type.getTxt()}">тип</td>

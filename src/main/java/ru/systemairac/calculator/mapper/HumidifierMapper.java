@@ -13,7 +13,7 @@ import java.util.List;
 public interface HumidifierMapper {
     HumidifierMapper MAPPER = Mappers.getMapper(HumidifierMapper.class);
 
-    Humidifier toHumidifier(HumidifierDto dto);
+    Humidifier toHumidifier(HumidifierDto humidifier);
     List<Humidifier> toHumidifierList(List<HumidifierDto> humidifiers);
     @InheritInverseConfiguration
     HumidifierDto fromHumidifier(Humidifier humidifier);

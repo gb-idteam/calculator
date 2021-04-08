@@ -12,10 +12,10 @@ import java.util.List;
 public interface HumidifierComponentMapper {
     HumidifierComponentMapper MAPPER = Mappers.getMapper(HumidifierComponentMapper.class);
 
-    HumidifierComponent toHumidifierComponent (HumidifierComponentDto dto);
-    List<HumidifierComponent> toHumidifierComponentList (List<HumidifierComponentDto> dtos);
+    HumidifierComponent toHumidifierComponent (HumidifierComponentDto humidifierComponent);
+    List<HumidifierComponent> toHumidifierComponentList (List<HumidifierComponentDto> humidifierComponents);
 
     @InheritInverseConfiguration
-    HumidifierComponentDto fromHumidifierComponent (HumidifierComponent component);
-    List<HumidifierComponentDto> fromHumidifierComponentList (List<HumidifierComponent> components);
+    HumidifierComponentDto fromHumidifierComponent (HumidifierComponent humidifierComponent);
+    List<HumidifierComponentDto> fromHumidifierComponentList (List<HumidifierComponent> humidifierComponents);
 }

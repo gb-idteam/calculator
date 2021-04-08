@@ -138,6 +138,7 @@ public class MainController {
                 techDataDto,
                 estimateDto); //TODO исправить когду будет возможность выбора вентиляторного распределителя
         document.save("result.pdf");
+        document.close();
         return "redirect:/calculator";
     }
 

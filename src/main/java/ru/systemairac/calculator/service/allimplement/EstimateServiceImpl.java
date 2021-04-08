@@ -8,7 +8,6 @@ import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.EstimateDto;
 import ru.systemairac.calculator.mapper.EstimateMapper;
-import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.repository.CalculationRepository;
 import ru.systemairac.calculator.repository.EstimateRepository;
 import ru.systemairac.calculator.repository.VaporDistributorRepository;
@@ -43,7 +42,7 @@ public class EstimateServiceImpl implements EstimateService {
         Calculation calculation = calculationRepository.findById(calculationId).orElseThrow();
         Humidifier humidifier = humidifierRepository.findById(idHumidifier).orElseThrow();
         List<HumidifierComponent> options = humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions));
-        VaporDistributor distributor  = vaporDistributorRepository.findById(idHumidifier).orElseThrow();
+        VaporDistributor distributor  = vaporDistributorRepository.findById(idHumidifier).orElse(null);
         Estimate estimate = Estimate.builder().
                 humidifier(humidifier).
                 vaporDistributor(distributor).
@@ -51,6 +50,7 @@ public class EstimateServiceImpl implements EstimateService {
                 build();
         estimateRepository.save(estimate);
         calculation.setEstimate(estimate);
+        calculationRepository.save(calculation);
         return mapper.fromEstimate(estimate);
     }
 }

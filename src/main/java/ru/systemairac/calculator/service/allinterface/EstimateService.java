@@ -1,6 +1,5 @@
 package ru.systemairac.calculator.service.allinterface;
 
-import ru.systemairac.calculator.domain.Estimate;
 import ru.systemairac.calculator.dto.EstimateDto;
 
 public interface EstimateService {
