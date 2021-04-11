@@ -341,7 +341,7 @@ public class HumidifierServiceTest {
         assertDtoFieldsEqual(humidifier, humidifierDto);
     }
 
-    private void assertDtoFieldsEqual(Humidifier entity, HumidifierDto dto) {
+    public static void assertDtoFieldsEqual(Humidifier entity, HumidifierDto dto) {
 //        assertEquals(entity.getBrand(), dto.getBrand());
         // TODO: почему в HumidifierDto нет Brand?
         assertEquals(entity.getId(), dto.getId());
@@ -357,7 +357,7 @@ public class HumidifierServiceTest {
         assertEquals(entity.getHumidifierType(), dto.getHumidifierType());
     }
 
-    private void removeDuplicateCapacityOrArticle(List<Humidifier> list) {
+    public static void removeDuplicateCapacityOrArticle(List<Humidifier> list) {
         Set<Double> capacitySet = new HashSet<>();
         Set<String> articleSet = new HashSet<>();
         Iterator<Humidifier> it = list.iterator();

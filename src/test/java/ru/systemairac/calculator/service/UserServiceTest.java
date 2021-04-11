@@ -55,20 +55,20 @@ public class UserServiceTest {
 
     @Test
     void testSaveNewUserNoProjectsNoId() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         userService.save(user);
     }
 
     @Test
     void testSaveNewUserWithIdNoProjects() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         user.setId(123L);
         userService.save(user);
     }
 
     @Test
     void testSaveAndFindByNameIgnoreProjects() {
-        User u = fakeGenerator.fakeUser(encoder);
+        User u = fakeGenerator.fakeUser();
         userService.save(u);
 
         User user = userService.findByEmail(u.getEmail()).orElseThrow();
@@ -134,7 +134,7 @@ public class UserServiceTest {
 
     @Test
     void testDeleteWhenUserExists() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         userService.save(user);
 
         long id = userService.findByEmail(user.getEmail()).orElseThrow().getId();
@@ -153,7 +153,7 @@ public class UserServiceTest {
 
     @Test
     void testGetByIdWhenUserExists() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         userService.save(user);
         long id = userService.findByEmail(user.getEmail()).orElseThrow().getId();
         userService.getById(id);
@@ -167,7 +167,7 @@ public class UserServiceTest {
 
     @Test
     void testLoadUserByUsername() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         userService.save(user);
         UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
         assertEquals(user.getEmail(), userDetails.getUsername());
@@ -189,7 +189,7 @@ public class UserServiceTest {
 
     @Test
     void testLoadUserByUsernameFail() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         userService.save(user);
         String email;
         do {
@@ -204,7 +204,7 @@ public class UserServiceTest {
     @Disabled // нужно разобраться с шифрованием пароля
     @Test
     void getDtoById() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         long id = userRepository.save(user).getId();
         UserDto userDto = userService.getDtoById(id).orElseThrow();
         assertFieldsEqual(user, userDto);
@@ -213,7 +213,7 @@ public class UserServiceTest {
     @Disabled
     @Test
     void getByEmail() {
-        User user = fakeGenerator.fakeUser(encoder);
+        User user = fakeGenerator.fakeUser();
         String email = userRepository.save(user).getEmail();
         UserDto userDto = userService.getByEmail(email);
         assertFieldsEqual(user, userDto);

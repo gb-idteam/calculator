@@ -2,6 +2,7 @@ package ru.systemairac.calculator;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.TechData;
@@ -25,7 +26,8 @@ import java.util.Random;
 public class FakeGenerator {
 
     private final Random random = new Random();
-    private final Faker faker= new Faker(new Locale("ru"), new RandomService());
+    private final Faker faker = new Faker(new Locale("ru"), new RandomService());
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private long nextId = 1;
 
@@ -122,12 +124,12 @@ public class FakeGenerator {
         return list;
     }
 
-    public User fakeUser(PasswordEncoder encoder) {
+    public User fakeUser() {
         User user = new User();
         user.setId(fakeId());
         user.setEmail(faker.bothify("?#?#?#?#?#@example.com"));
         user.setFullName(faker.name().fullName());
-        user.setPassword(encoder.encode(faker.regexify("[A-Za-z0-9]{8,20}")));
+        user.setPassword(this.encoder.encode(faker.regexify("[A-Za-z0-9]{8,20}")));
         user.setNameCompany(faker.company().name());
         user.setPosition(faker.address().fullAddress());
         user.setPhone(74951234567L);
