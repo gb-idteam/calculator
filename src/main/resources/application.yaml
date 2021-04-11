@@ -11,22 +11,22 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  datasource:
-    url: jdbc:h2:file:~/test
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:file:~/test
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
   mvc:
     static-path-pattern: statico/**
-#  datasource:
-#     name: 'systemairac'
-#     url: jdbc:${DATABASE_PATH:mysql://localhost:3306/systemairac?serverTimezone=UTC}
-#     username: ${DATABASE_USER:root}
-#     password: ${DATABASE_PASSWORD:Nbirf}
+  datasource:
+     name: 'systemairac'
+     url: jdbc:${DATABASE_PATH:mysql://localhost:3306/systemairac?serverTimezone=UTC}
+     username: ${DATABASE_USER:root}
+     password: ${DATABASE_PASSWORD:Nbirf}
 #  flyway:
 #    baseline-on-migrate: true
 #    driver-class-name: org.postgresql.Driver

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.domain.Image;
+import ru.systemairac.calculator.myenum.ConverterHumidifierComponentType;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "humidifier_component")
 @Table(name = "humidifier_component")
 public class HumidifierComponent {
 
@@ -32,7 +33,7 @@ public class HumidifierComponent {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Image image;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ConverterHumidifierComponentType.class)
     private HumidifierComponentType type;
 
     private boolean optional;
