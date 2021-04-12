@@ -42,11 +42,7 @@ public class HumidifierServiceImpl implements HumidifierService {
 
     @Override
     public List<HumidifierDto> findDtoHumidifiers(Double minimalCapacity, EnumVoltageType voltage, EnumHumidifierType type) {
-        List<Humidifier> humidifiers = humidifierRepository.findAll(
-                new HumidifierSpecification(new HumidifierFilter(minimalCapacity, voltage, type)),
-                PageRequest.of(0,NUMBER_OF_RESULTS, Sort.by(Sort.Order.asc("capacity")))
-        ).toList();
-        return mapper.fromHumidifierList(humidifiers);
+        return mapper.fromHumidifierList(findHumidifiers(minimalCapacity, voltage, type));
     }
 
     @Override

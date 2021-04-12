@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "vapor_distributor")
+@Builder
 public class VaporDistributor {
 
     @Id

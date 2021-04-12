@@ -1,28 +1,19 @@
 package ru.systemairac.calculator.service;
 
-import com.github.javafaker.Faker;
-import com.github.javafaker.service.RandomService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
+import ru.systemairac.calculator.FakeGenerator;
 import ru.systemairac.calculator.dto.*;
-import ru.systemairac.calculator.myenum.EnumHumidifierType;
-import ru.systemairac.calculator.myenum.EnumVoltageType;
-import ru.systemairac.calculator.myenum.TypeMontage;
 import ru.systemairac.calculator.service.allinterface.FileService;
 import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 import ru.systemairac.calculator.service.allinterface.ProjectService;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Random;
 
 @SpringBootTest
 class PDDocumentServiceTest {
@@ -39,13 +30,11 @@ class PDDocumentServiceTest {
     @Autowired
     private ProjectService projectService;
 
-    private static Faker faker;
-    private static Random random;
+    private static FakeGenerator fakeGenerator;
 
     @BeforeAll
     static void init() {
-        faker = new Faker(new Locale("ru"), new RandomService());
-        random = new Random();
+        fakeGenerator = new FakeGenerator();
     }
 
     @Test
@@ -56,72 +45,16 @@ class PDDocumentServiceTest {
                         "Ленинский пр-т, стр. 123")
                 .build();
 
-        TechDataDto techDataDto = TechDataDto.builder()
-                .voltage(EnumVoltageType.ONE_PHASE_220V)
-                .width(123)
-                .tempIn(20.4)
-                .typeMontage(TypeMontage.AHU)
-                .length(2233)
-                .humOut(100.0)
-                .humIn(0.0)
-                .enumHumidifierType(EnumHumidifierType.HEATING_ELEMENT)
-                .calcCapacity(123.0)
-                .airFlow(123)
-                .build();
+        TechDataDto techDataDto = fakeGenerator.fakeTechDataDto();
 
-        UserDto userDto = UserDto.builder()
-                .fullName("Иванов Иван Иванович")
-                .addressCompany("г. Москва, ул. Академика Королёва, д. 12")
-                .email("mkfgops@rdgijf.dfg")
-                .position("Директор всего")
-                .nameCompany("ООО Вектор")
-                .phone(123465354L)
-                .build();
+        UserDto userDto = fakeGenerator.fakeUserDto();
 
-        Humidifier humidifier = fakeGoodHumidifier();
-        VaporDistributor distributor  = VaporDistributor.builder()
-                .length(1000)
-                .articleNumber("sdfs")
-                .diameter(25)
-                .price(new BigDecimal(100))
-                .build();
-        EstimateDto estimateDto = EstimateDto.builder().
-                humidifier(humidifier).
-                vaporDistributor(distributor).
-                build();
+        HumidifierDto humidifierDto = fakeGenerator.fakeHumidifierDto();
 
-        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto,estimateDto)) {
+        VaporDistributorDto vaporDistributorDto = fakeGenerator.fakeVaporDistributorDto();
+
+        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, humidifierDto, new ArrayList<>(), vaporDistributorDto)) {
 //            document.save("123.pdf");
         }
-    }
-
-    private HumidifierDto fakeGoodHumidifierDto() {
-        return HumidifierDto.builder()
-                .id(null)
-                .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
-//                .brand(null) // TODO: пока без бренда
-                .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
-                .capacity(random.nextDouble() * 120) // от 0 до 120
-                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
-                .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
-                .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
-                .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
-                .build();
-    }
-
-    private Humidifier fakeGoodHumidifier() {
-        return Humidifier.builder()
-                .id(null)
-                .articleNumber(faker.bothify("???###")) // должен быть Unique, вообще-то
-//                .brand(null) // TODO: пока без бренда
-                .humidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .electricPower(random.nextDouble() * 90) // от 0 до 90, не зависит от capacity
-                .capacity(random.nextDouble() * 120) // от 0 до 120
-                .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)]) // из списка
-                .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
-                .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
-                .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
-                .build();
     }
 }
