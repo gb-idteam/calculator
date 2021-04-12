@@ -18,10 +18,7 @@ import ru.systemairac.calculator.myenum.TypeMontage;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class FakeGenerator {
 
@@ -55,9 +52,9 @@ public class FakeGenerator {
                 .airFlow(random.nextInt(300))
                 .calcCapacity(random.nextInt(300)) // а это не правда
                 .enumHumidifierType(EnumHumidifierType.values()[random.nextInt(EnumHumidifierType.values().length)])
-                .humIn(random.nextInt(100))
-                .humOut(random.nextInt(100))
-                .tempIn(random.nextInt(80) - 40)
+                .humIn(Double.valueOf(random.nextInt(100)))
+                .humOut(Double.valueOf(random.nextInt(100)))
+                .tempIn(Double.valueOf(random.nextInt(80) - 40))
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
                 .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
                 .width(random.nextInt(1000))
@@ -181,6 +178,14 @@ public class FakeGenerator {
                 .address(faker.address().fullAddress())
                 .user(user)
                 .calculations(null)
+                .build();
+    }
+
+    public EstimateDto fakeEstimateDto() {
+        return EstimateDto.builder()
+                .humidifier(fakeHumidifier())
+                .humidifierComponents(Collections.singletonList(fakeHumidifierComponent()))
+                .vaporDistributor(fakeVaporDistributor())
                 .build();
     }
 

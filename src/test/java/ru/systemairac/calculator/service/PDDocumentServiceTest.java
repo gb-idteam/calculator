@@ -53,7 +53,9 @@ class PDDocumentServiceTest {
 
         VaporDistributorDto vaporDistributorDto = fakeGenerator.fakeVaporDistributorDto();
 
-        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, humidifierDto, new ArrayList<>(), vaporDistributorDto)) {
+        EstimateDto estimateDto = fakeGenerator.fakeEstimateDto();
+
+        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, estimateDto )) {
 //            document.save("123.pdf");
         }
     }
