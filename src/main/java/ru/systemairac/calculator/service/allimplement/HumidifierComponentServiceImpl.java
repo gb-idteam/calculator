@@ -27,7 +27,6 @@ public class HumidifierComponentServiceImpl implements HumidifierComponentServic
     public HumidifierComponentServiceImpl(HumidifierComponentRepository humidifierComponentRepository, HumidifierRepository humidifierRepository) {
         this.humidifierComponentRepository = humidifierComponentRepository;
         this.humidifierRepository = humidifierRepository;
-        init();
     }
 
     @Override

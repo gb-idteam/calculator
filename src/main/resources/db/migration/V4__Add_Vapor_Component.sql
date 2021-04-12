@@ -1,5 +1,5 @@
-INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (1, 'D107979', 1, 111, 'Вентиляторный парораспределитель BP1 от 5 до 10 EHU');
-INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (2, 'D107980', 1, 111, 'Вентиляторный парораспределитель BP30 от 15 до 30HC EHU');
+INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (1, 'D107979', 1, 111, 'Вентиляторный распределитель');
+INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (2, 'D107980', 1, 111, 'Вентиляторный распределитель');
 INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (3, 'D69061', 1, 3, 'Панель Master/Slave');
 INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (4, '400502', 1, 4, 'Y переходник');
 INSERT INTO humidifier_component (id, article_number, optional, price, type) VALUES (5, '930108', 1, 5, 'Датчик протечки');

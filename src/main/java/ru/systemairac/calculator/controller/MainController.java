@@ -64,7 +64,6 @@ public class MainController {
         this.humidifierService = humidifierService;
         this.fileService = fileService;
         this.pdDocumentService = pdDocumentService;
-        init();
     }
 
     public void init() {

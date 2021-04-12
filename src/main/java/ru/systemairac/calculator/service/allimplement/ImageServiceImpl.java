@@ -19,7 +19,6 @@ public class ImageServiceImpl implements ImageService {
 
     public ImageServiceImpl(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
-        init();
     }
 
     @Override

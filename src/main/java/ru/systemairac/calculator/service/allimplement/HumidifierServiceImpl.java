@@ -32,7 +32,6 @@ public class HumidifierServiceImpl implements HumidifierService {
     public HumidifierServiceImpl(HumidifierRepository humidifierRepository, HumidifierComponentRepository humidifierComponentRepository) {
         this.humidifierRepository = humidifierRepository;
         this.humidifierComponentRepository = humidifierComponentRepository;
-        init();
     }
 
     private Humidifier generateHumidifier(Long id, String article,double elPower,double capacity, EnumHumidifierType type, EnumVoltageType voltage, int vaporPipeDiameter,int numberOfCylinders, BigDecimal price) {
