@@ -7,16 +7,16 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Service;
-import ru.systemairac.calculator.domain.User;
-import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
-import ru.systemairac.calculator.dto.*;
+import ru.systemairac.calculator.dto.EstimateDto;
+import ru.systemairac.calculator.dto.ProjectDto;
+import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @Service
 public class PDDocumentServiceImpl implements PDDocumentService {
@@ -58,89 +58,50 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         float bottomMargin = 70;
         float yPosition = 720;
 
-        BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, drawContent);
-
         Row<PDPage> row;
         Cell<PDPage> cell;
 
-        row = table.createRow(12);
-        cell = row.createCell(100, "Наименование проекта: " + projectDto.getTitle());
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        row = table.createRow(12);
-        cell = row.createCell(100, "Адрес проекта: " + projectDto.getAddress());
-        cell.setFont(font);
-        cell.setFontSize(fontSizeSmall);
-        row = table.createRow(12);
-        cell = row.createCell(100, "Заказчик/клиент");
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-        row = table.createRow(12);
-        cell = row.createCell(100, "Компания: " + userDto.getNameCompany());
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        row = table.createRow(12);
-        cell = row.createCell(100, "Имя: " + userDto.getFullName());
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        row = table.createRow(12);
-        cell = row.createCell(100, "Телефон: " + userDto.getPhone());
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        row = table.createRow(12);
-        cell = row.createCell(100, "email: " + userDto.getEmail());
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-
-        table.draw();
-
-        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
-        table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, drawContent);
-
-        row = table.createRow(12);
-        cell = row.createCell(25, "");
-        cell = row.createCell(50/2f, "Вход");
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-        cell = row.createCell(50/2f, "Выход");
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-
-        row = table.createRow(12);
-        cell = row.createCell(25, "Температура (°C)");
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell = row.createCell(50/2f, String.format("%.1f", techDataDto.getTempIn()));
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-        cell = row.createCell(50/2f, String.format("%.1f", techDataDto.getTempIn()));
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-
-
-        row = table.createRow(12);
-        cell = row.createCell(25, "RH (%)");
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell = row.createCell(50/2f, String.format("%.0f", techDataDto.getHumIn()));
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-        cell = row.createCell(50/2f, String.format("%.0f", techDataDto.getHumOut()));
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
-
-        table.draw();
-        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
-
-        String name = "Парораспределение";
+        String name = null;
         String[][] data = {
+                {"Наименование проекта: " + projectDto.getTitle()},
+                {"Адрес проекта: " + projectDto.getAddress()}
+        };
+
+        BaseTable table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
+
+        drawTable(table, font, name, data);
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
+
+
+
+        name = "Заказчик/клиент";
+        data = new String[][] {
+                {"Компания: " + userDto.getNameCompany()},
+                {"Имя: " + userDto.getFullName()},
+                {"Телефон: " + userDto.getPhone()},
+                {"email: " + userDto.getEmail()}
+        };
+
+        table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
+
+        drawTable(table, font, name, data);
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
+
+
+        name = null;
+        data = new String[][] {
+                {"", "Вход", "Выход"},
+                {"Температура (°C)", String.format("%.1f", techDataDto.getTempIn()), String.format("%.1f", techDataDto.getTempIn())},
+                {"RH (%)", String.format("%.0f", techDataDto.getHumIn()), String.format("%.0f", techDataDto.getHumOut())}
+        };
+
+        table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, drawContent);
+        drawTable(table, font, name, data, new float[]{30, 20, 20}, HorizontalAlignment.CENTER);
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
+
+
+        name = "Парораспределение";
+        data = new String[][]{
                 {"Парораспределитель в:", techDataDto.getTypeMontage().getTxt()},
                 {"Ширина (мм)", String.valueOf(techDataDto.getWidth())},
                 {"Высота (мм)", String.valueOf(techDataDto.getLength())}
@@ -206,7 +167,28 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         drawTable(table, font, name, data, new float[]{40f, 60f});
         yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
+        contentStream.drawImage(
+                PDImageXObject.createFromFile(
+                        estimateDto.getHumidifier().getImage().getLink(),
+                        mainDocument
+                ),
+                450,
+                720,
+                100,
+                100
+        );
+
+        contentStream.drawImage(
+                PDImageXObject.createFromFile(
+                        "src/main/resources/static/img/logo.png",
+                        mainDocument
+                ),
+                200,
+                780
+        );
+
         contentStream.close();
+
         return mainDocument;
     }
 
@@ -219,19 +201,26 @@ public class PDDocumentServiceImpl implements PDDocumentService {
     }
 
     private static void drawTable(BaseTable table, PDFont font, String name, String[][] data, float[] columnWidth) throws IOException {
+        drawTable(table, font, name, data, columnWidth, HorizontalAlignment.LEFT);
+    }
+
+    private static void drawTable(BaseTable table, PDFont font, String name, String[][] data, float[] columnWidth, HorizontalAlignment horizontalAlignment) throws IOException {
         Row<PDPage> row;
         Cell<PDPage> cell;
-        row = table.createRow(12);
-        cell = row.createCell(100, name);
-        cell.setFont(font);
-        cell.setFontSize(fontSizeNormal);
-        cell.setAlign(HorizontalAlignment.CENTER);
+        if (name != null) {
+            row = table.createRow(12);
+            cell = row.createCell(100, name);
+            cell.setFont(font);
+            cell.setFontSize(fontSizeNormal);
+            cell.setAlign(HorizontalAlignment.CENTER);
+        }
         for (int i = 0; i < data.length; i++) {
             row = table.createRow(0);
             for (int j = 0; j < data[i].length; j++) {
                 cell = row.createCell(columnWidth[j], data[i][j]);
                 cell.setFont(font);
                 cell.setFontSize(fontSizeNormal);
+                cell.setAlign(horizontalAlignment);
                 cell.setValign(VerticalAlignment.MIDDLE);
             }
         }

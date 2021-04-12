@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.*;
@@ -79,6 +80,7 @@ class PDDocumentServiceTest {
                 .build();
 
         Humidifier humidifier = fakeGoodHumidifier();
+        humidifier.setImage(new Image(null, "src/main/resources/static/img/humidifiers/ehu-1.png"));
         VaporDistributor distributor  = VaporDistributor.builder()
                 .length(1000)
                 .articleNumber("sdfs")
@@ -90,7 +92,7 @@ class PDDocumentServiceTest {
                 vaporDistributor(distributor).
                 build();
 
-        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto,estimateDto)) {
+        try (PDDocument document = service.toPDDocument(userDto, projectDto, techDataDto, estimateDto)) {
 //            document.save("123.pdf");
         }
     }
