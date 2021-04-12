@@ -17,6 +17,7 @@ import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 @Service
 public class PDDocumentServiceImpl implements PDDocumentService {
@@ -118,7 +119,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         data = new String[][]{
                 {"Температура увлажнения (°С)", String.format("%.1f", techDataDto.getTempIn())},
                 {"Суммарный расход воздуха (м³/ч)", String.format("%d", techDataDto.getAirFlow())},
-                {"Скорость воздуха (м/с)",  String.format("%.1f",velocity)},
+                {"Скорость воздуха (м/с)",  String.format("%.2f",velocity)},
                 {"Нагрузка по пару (кг/ч)", String.format("%.1f", techDataDto.getCalcCapacity())},
         };
 
@@ -166,10 +167,11 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         drawTable(table, font, name, data, new float[]{40f, 60f});
         yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
-
+        Path path = Path.of(estimateDto.getHumidifier().getImage().getLink());
+        path.getFileName();
         contentStream.drawImage(
                 PDImageXObject.createFromFile(
-                        estimateDto.getHumidifier().getImage().getLink(),
+                        "src/main/resources/static/img/humidifiers/"+ path.getFileName(),
                         mainDocument
                 ),
                 450,
