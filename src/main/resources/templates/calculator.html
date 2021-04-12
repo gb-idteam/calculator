@@ -232,19 +232,19 @@
                             <td>Цена</td>
                         </tr>
                         </thead>
-                        <tr className="tr_distributor" id="tr_distributor" th:each ="instance : ${distributors.get(idSelectHumidifier)}">
+                        <tr className="tr_distributor" id="tr_distributor" th:object = "${distributors.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
-                                    <input type="checkbox" name="distributor" th:value="${instance.id}">
+                                    <input type="checkbox" name="selectedOptions" th:value="*{id}">
                                     <span class="checkmark"></span>
                                 </label>
                             </td>
                             <td>
-                                <img th:if="${instance.image!=null}" th:src="@{${instance.image.link}}" alt="">
+                                <img th:if="*{image!=null}" th:src="@{*{image.link}}" alt="">
                             </td>
-                            <td th:text="${instance.articleNumber}">арт</td>
-                            <td th:text="${instance.type.getTxt()}">тип</td>
-                            <td class="distributor_price" th:text="${instance.price}">0</td>
+                            <td th:text="*{articleNumber}">арт</td>
+                            <td th:text="*{title}">тип</td>
+                            <td class="distributor_price" th:text="*{price}">0</td>
                         </tr>
                         <tr className="tr_option" id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
                             <td>
