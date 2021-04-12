@@ -27,47 +27,11 @@ public class HumidifierServiceImpl implements HumidifierService {
     private final HumidifierRepository humidifierRepository;
 
     private final HumidifierMapper mapper = HumidifierMapper.MAPPER;
-    private final HumidifierComponentRepository humidifierComponentRepository;
 
-    public HumidifierServiceImpl(HumidifierRepository humidifierRepository, HumidifierComponentRepository humidifierComponentRepository) {
+    public HumidifierServiceImpl(HumidifierRepository humidifierRepository) {
         this.humidifierRepository = humidifierRepository;
-        this.humidifierComponentRepository = humidifierComponentRepository;
     }
 
-    private Humidifier generateHumidifier(Long id, String article,double elPower,double capacity, EnumHumidifierType type, EnumVoltageType voltage, int vaporPipeDiameter,int numberOfCylinders, BigDecimal price) {
-        Humidifier humidifier = Humidifier.builder()
-                .id(id)
-                .articleNumber(article)
-                .electricPower(elPower)
-                .capacity(capacity)
-                .humidifierType(type)
-                .voltage(voltage)
-                .vaporPipeDiameter(vaporPipeDiameter)
-                .numberOfCylinders(numberOfCylinders)
-                .voltage(voltage)
-                .price(price)
-                .build();
-        return humidifier;
-    }
-
-    public void init(){
-        EnumHumidifierType type1 = EnumHumidifierType.ELECTRODE;
-        EnumHumidifierType type2 = EnumHumidifierType.HEATING_ELEMENT;
-        List<Humidifier> humidifiers = new ArrayList<>();
-        humidifiers.add(generateHumidifier(1L,"123",7,25,type1,EnumVoltageType.THREE_PHASE_380V,25,
-                1,new BigDecimal(1500)));
-        humidifiers.add(generateHumidifier(2L,"1234",5,29,type2,EnumVoltageType.ONE_PHASE_220V,25,
-                1,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier(3L,"12",7,50,type1,EnumVoltageType.THREE_PHASE_380V,25,
-                1,new BigDecimal(1500)));
-        humidifiers.add(generateHumidifier(4L,"1",5,15,type2,EnumVoltageType.THREE_PHASE_380V,25,
-                1,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier(5L,"2",20,15,type1,EnumVoltageType.ONE_PHASE_220V,25,
-                1,new BigDecimal(1000)));
-        humidifiers.add(generateHumidifier(6L,"3",50,15,type2,EnumVoltageType.ONE_PHASE_220V,25,
-                1,new BigDecimal(1000)));
-        humidifierRepository.saveAll(humidifiers);
-    }
     @Override
     public List<Humidifier> findHumidifiers(Double minimalCapacity, EnumVoltageType voltage, EnumHumidifierType type) {
         return humidifierRepository.findAll(

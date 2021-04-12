@@ -28,13 +28,16 @@ public class VaporDistributor {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Image image;
 
-
     @Column(unique = true)
     private String articleNumber;
 
     private int length;
 
     private int diameter;
+
+    @Transient
+    private String title = "Парораспределитель из нержавеющей стали, d=" + this.diameter + "мм, L=" + this.length + "мм";
+
 
     private BigDecimal price;
 }

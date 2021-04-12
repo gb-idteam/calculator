@@ -1,10 +1,7 @@
 $(document).ready(function(){
     $('input:radio[name=idSelectHumidifier]').change(function(){
-        var idSelectHumidifier = $(this).val();
         var price = priceHumidifier() + calcSummaryOption();
         $("#Summary").text(price);
-        //Для теста
-        $("#inputTest").val(idSelectHumidifier);
     });
 });
 $(document).ready(function(){
@@ -14,30 +11,9 @@ $(document).ready(function(){
     });
 });
 
-//Пока не работает
-// $('form').submit(function(){
-//     // Если textarea пустое
-//     if(!$(this).find('textarea').val()){
-//         // отменяем отправку
-//         return false;
-//     }
-// });
-
-// $(document).ready(function(){
-// // Разблокировать на будущее для блокировки до внесения данных проекта
-//     $('#btn-save').click(function(){
-//         option ();
-//     });
-// });
-// $(document).ready(function(){
-// // Разблокировать на будущее для блокировки до внесения данных проекта
-//     $('#btn-clear').click(function(){
-//         option ();
-//     });
-// });
-
 function calcSummaryOption() {
     var table = document.getElementById("table_option");
+    if (table===null) return 0;
     let lastRow = table.rows[table.rows.length-1];
     let lastCell = lastRow.cells.length-1;
     var sum=0;

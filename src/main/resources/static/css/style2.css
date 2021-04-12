@@ -92,6 +92,15 @@
     border-radius: 50%;
 }
 
+.content .table img {
+    margin-left: 17px;
+    max-width:64px;
+    max-height:64px;
+    border-radius: 50%;
+}
+
+
+
 .content .box_text {
     width: 671px;
     background-color: #ffffff;

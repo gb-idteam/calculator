@@ -34,29 +34,6 @@ public class HumidifierComponentServiceImpl implements HumidifierComponentServic
         return humidifierComponentRepository.findAll();
     }
 
-    private HumidifierComponent generateOption(Long id, String article, HumidifierComponentType type, BigDecimal price) {
-        HumidifierComponent option = HumidifierComponent.builder()
-                .id(id)
-                .type(type)
-                .articleNumber(article)
-                .price(price)
-                .build();
-        return option;
-    }
-
-    public void init() {
-        List<HumidifierComponent> options = new ArrayList<>();
-        options.add(generateOption(1L, "art1", HumidifierComponentType.CYLINDER_WATER_HEATING_KIT, new BigDecimal(1500)));
-        options.add(generateOption(2L, "art2", HumidifierComponentType.CYLINDER, new BigDecimal(879)));
-        options.add(generateOption(3L, "art3", HumidifierComponentType.CONDENSATE_OUTLET_TUBE_8, new BigDecimal(123)));
-        options.add(generateOption(4L, "art4", HumidifierComponentType.FAN_DISTRIBUTOR, new BigDecimal(345)));
-        options.add(generateOption(5L, "art5", HumidifierComponentType.LEAK_SENSOR, new BigDecimal(68)));
-        options.add(generateOption(6L, "art6", HumidifierComponentType.DUCT_LIMIT_HYGROSTAT, new BigDecimal(50)));
-        options.add(generateOption(7L, "art7", HumidifierComponentType.OTHER_DIAMETER_ADAPTER, new BigDecimal(100)));
-        options.add(generateOption(8L, "art8", HumidifierComponentType.LED_DISPLAY, new BigDecimal(2000)));
-        humidifierComponentRepository.saveAll(options);
-    }
-
     @Override
     public HashMap<Long, List<HumidifierComponentDto>> getAllComponentByHumidifiers(List<HumidifierDto> humidifiers) {
         List<Long> ids = humidifiers.stream().map(HumidifierDto::getId).collect(Collectors.toList());

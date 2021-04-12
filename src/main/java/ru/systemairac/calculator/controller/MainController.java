@@ -42,6 +42,7 @@ public class MainController {
     private List<HumidifierDto> humidifiers = new ArrayList<>();
     private HashMap<Long, VaporDistributorDto> distributors = new HashMap<>();
     private HashMap<Long, List<HumidifierComponentDto>> options = new HashMap<>();
+    private HumidifierDto selectedHumidifier = new HumidifierDto();
     private Long idSelectHumidifier;
     // Для тестирования
     private TechDataDto techDataDto = TechDataDto.builder().
@@ -66,20 +67,6 @@ public class MainController {
         this.pdDocumentService = pdDocumentService;
     }
 
-    public void init() {
-        Humidifier humidifier1 = humidifierService.findHumidifierById(1L);
-        Humidifier humidifier3 = humidifierService.findHumidifierById(3L);
-        List<HumidifierComponent> options = humidifierComponentService.getAllComponent();
-        Image image1 = imageService.findById(1L);
-        Image image2 = imageService.findById(2L);
-        humidifier1.setHumidifierComponents(options);
-        humidifier1.setImage(image1);
-        humidifier3.setHumidifierComponents(options);
-        humidifier3.setImage(image2);
-        humidifierService.save(humidifier1);
-        humidifierService.save(humidifier3);
-    }
-
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
         if (principal!=null) {
@@ -92,6 +79,7 @@ public class MainController {
         model.addAttribute("himidifiers", humidifiers);
         model.addAttribute("projectDto", projectDto);
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);
+        model.addAttribute("selectedHumidifier", selectedHumidifier);
         model.addAttribute("techDataDto", techDataDto);
         model.addAttribute("options", options);
         model.addAttribute("distributors", distributors);
@@ -111,7 +99,6 @@ public class MainController {
     @PostMapping("/selectHumidifier")
     public String selectHumidifier(Model model, Long idSelectHumidifier){
         this.idSelectHumidifier = idSelectHumidifier;
-        model.addAttribute("idSelectHumidifier", idSelectHumidifier);
         return "redirect:/calculator";
     }
 
