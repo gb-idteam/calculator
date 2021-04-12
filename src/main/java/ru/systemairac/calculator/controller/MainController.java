@@ -99,6 +99,7 @@ public class MainController {
     @PostMapping("/selectHumidifier")
     public String selectHumidifier(Model model, Long idSelectHumidifier){
         this.idSelectHumidifier = idSelectHumidifier;
+        this.selectedHumidifier = humidifierService.findById(idSelectHumidifier);
         return "redirect:/calculator";
     }
 

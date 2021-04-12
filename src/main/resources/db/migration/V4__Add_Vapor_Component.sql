@@ -34,7 +34,7 @@ INSERT INTO humidifier_component (id, article_number, optional, price, type ,bra
 INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (34, 'D113314-25', 1, 34, 'Система подогрева воды в цилиндре [+65°C]', 1, 13);
 INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (35, 'D113314-40', 1, 35, 'Система подогрева воды в цилиндре [+65°C]', 1, 13);
 INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (36, 'D113321', 1, 36, 'Комнатный датчик влажности (с дисплеем)', 1, 17);
-INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (37, 'D113322', 0, 37, 'Трубка для подачи пара армированная синтетической нитью d=60мм (цена за метр)', 1, 19);
+INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (37, 'D113322', 0, 37, 'Трубка для подачи пара армированная синтетической нитью d=60 мм (цена за метр)', 1, 19);
 INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (38, 'D116650', 0, 38, 'Трубка для отвода конденсата для канальных парораспределителей, d = 13мм (Цена за метр)', 1, 4);
 INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (39, 'D116711', 1, 39, 'Кожух цилиндра', 1, 3);
 INSERT INTO humidifier_component (id, article_number, optional, price, type ,brand_id,image_id) VALUES (40, 'D128015-1LT', 0, 40, 'Трубки для подачи(0,5 м ,с фитингом 3/4”)  и слива воды(1м,Ø=60мм)', 1, 21);
