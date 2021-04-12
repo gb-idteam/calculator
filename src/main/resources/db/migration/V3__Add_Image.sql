@@ -18,9 +18,10 @@ INSERT INTO image (id, link) VALUES (17, 'statico/img/components/room-led-sensor
 INSERT INTO image (id, link) VALUES (18, 'statico/img/components/room-sensor.png');
 INSERT INTO image (id, link) VALUES (19, 'statico/img/components/vapor-inlet-tube.png');
 INSERT INTO image (id, link) VALUES (20, 'statico/img/components/y-adapter.png');
-INSERT INTO image (id, link) VALUES (21, 'statico/img/humidifiers/ehu-1.png');
-INSERT INTO image (id, link) VALUES (22, 'statico/img/humidifiers/ehu-2.png');
-INSERT INTO image (id, link) VALUES (23, 'statico/img/humidifiers/ehu-3.png');
-INSERT INTO image (id, link) VALUES (24, 'statico/img/humidifiers/ers.png');
-INSERT INTO image (id, link) VALUES (25, 'statico/img/humidifiers/ers-big.png');
-INSERT INTO image (id, link) VALUES (26, 'statico/img/humidifiers/ers-lc.png');
+INSERT INTO image (id, link) VALUES (21, 'statico/img/components/water-outlet-inlet-tube.png');
+INSERT INTO image (id, link) VALUES (22, 'statico/img/humidifiers/ehu-1.png');
+INSERT INTO image (id, link) VALUES (23, 'statico/img/humidifiers/ehu-2.png');
+INSERT INTO image (id, link) VALUES (24, 'statico/img/humidifiers/ehu-3.png');
+INSERT INTO image (id, link) VALUES (25, 'statico/img/humidifiers/ers.png');
+INSERT INTO image (id, link) VALUES (26, 'statico/img/humidifiers/ers-big.png');
+INSERT INTO image (id, link) VALUES (27, 'statico/img/humidifiers/ers-lc.png');
