@@ -26,6 +26,10 @@ public class Estimate {
     Humidifier humidifier;
 
     @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "estimate_humidifier_components",
+            joinColumns = @JoinColumn(name = "estimate_id"),
+            inverseJoinColumns = @JoinColumn(name = "humidifier_components_id"))
     List<HumidifierComponent> humidifierComponents;
 
     @ManyToOne(cascade = CascadeType.MERGE)

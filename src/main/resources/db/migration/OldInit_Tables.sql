@@ -16,7 +16,7 @@
 #    full_name       VARCHAR(255),
 #    name_company    VARCHAR(255),
 #    address_company VARCHAR(255),
-#    post            VARCHAR(255),
+#    postition            VARCHAR(255),
 #    phone           BIGINT,
 #    email           VARCHAR(255) UNIQUE NOT NULL ,
 #    role varchar(255),

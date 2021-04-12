@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "vapor_distributor")
-@Builder
 public class VaporDistributor {
 
     @Id
@@ -38,7 +37,6 @@ public class VaporDistributor {
 
     @Transient
     private String title = "Парораспределитель из нержавеющей стали, d=" + this.diameter + "мм, L=" + this.length + "мм";
-
 
     private BigDecimal price;
 }

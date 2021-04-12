@@ -1,25 +1,14 @@
 package ru.systemairac.calculator.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.systemairac.calculator.FakeGenerator;
-import ru.systemairac.calculator.domain.Project;
-import ru.systemairac.calculator.domain.TechData;
-import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.domain.humidifier.Humidifier;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
-import ru.systemairac.calculator.dto.VaporDistributorDto;
-import ru.systemairac.calculator.mapper.HumidifierMapper;
-import ru.systemairac.calculator.mapper.VaporDistributorMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 import ru.systemairac.calculator.repository.CalculationRepository;
@@ -27,11 +16,12 @@ import ru.systemairac.calculator.repository.UserRepository;
 import ru.systemairac.calculator.repository.VaporDistributorRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
-import ru.systemairac.calculator.service.allinterface.VaporDistributorService;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class CalculationServiceTest {
@@ -122,9 +112,9 @@ public class CalculationServiceTest {
         TechDataDto techDataDto = fakeGenerator.fakeTechDataDto();
 
         techDataDto.setId(null);
-        techDataDto.setTempIn(20);
-        techDataDto.setHumIn(30);
-        techDataDto.setHumOut(75);
+        techDataDto.setTempIn(20.0);
+        techDataDto.setHumIn(30.0);
+        techDataDto.setHumOut(75.0);
         techDataDto.setAirFlow(1234); // в предположении, что имеется в виду расход воздуха по объёму (м^3 / ч)
 
         TechDataDto techDataDto2 = TechDataDto.builder()

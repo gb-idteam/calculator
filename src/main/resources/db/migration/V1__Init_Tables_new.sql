@@ -14,6 +14,7 @@ CREATE TABLE estimate (
                           id BIGINT NOT NULL AUTO_INCREMENT,
                           humidifier_id BIGINT,
                           vapor_distributor_id BIGINT,
+                          humidifier_components_id BIGINT,
                           PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE estimate_humidifier_components (
@@ -93,13 +94,13 @@ CREATE TABLE tech_data (
 ) engine = InnoDB;
 CREATE TABLE user (
                       id BIGINT NOT NULL AUTO_INCREMENT,
-                      ADDress_company VARCHAR(255),
+                      address_company VARCHAR(255),
                       email VARCHAR(255),
                       full_name VARCHAR(255),
                       name_company VARCHAR(255),
                       password VARCHAR(255),
                       phone BIGINT,
-                      post VARCHAR(255),
+                      position VARCHAR(255),
                       PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE users_roles (
@@ -223,3 +224,4 @@ ALTER TABLE
     vapor_distributor
     ADD
         CONSTRAINT FKa7es9r8ceuqw66rsvm3kednhu FOREIGN KEY (image_id) REFERENCES image (id);
+

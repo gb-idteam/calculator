@@ -1,19 +1,17 @@
 package ru.systemairac.calculator.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.service.allinterface.FileService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.file.Files;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.security.Principal;
 
 @RequestMapping("/file")
