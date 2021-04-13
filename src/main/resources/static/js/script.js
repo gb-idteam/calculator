@@ -3,6 +3,14 @@ function calcSummaryPrice() {
     $("#Summary").text(price);
 }
 
+function calcAltitude(atmospherePressure){
+    document.getElementById("textAltitude").value = ((1-Math.pow(atmospherePressure/101.325,1/5.255))*288.15/0.0065).toFixed(0);
+}
+
+function calcAtmospherePressure(altitude){
+    document.getElementById("textAtmospherePressure").value = (101.325 * Math.pow(1-(0.0065*altitude/288.15),5.255)).toFixed(2);
+}
+
 $(document).ready(function(){
     $('input:radio[name=idSelectHumidifier]').change(function(){
         calcSummaryPrice();
@@ -16,6 +24,18 @@ $(document).ready(function(){
 $(document).ready(function(){
     $('input:checkbox[name=selectedDistributor]').change(function() {
         calcSummaryPrice();
+    });
+});
+$(document).ready(function(){
+    $('input:radio[id=radioAltitude]').change(function(){
+        document.getElementById("textAtmospherePressure").disabled= 'disabled';
+        document.getElementById("textAltitude").disabled = '';
+    });
+});
+$(document).ready(function(){
+    $('input:radio[id=radioAtmospherePressure]').change(function(){
+        document.getElementById("textAtmospherePressure").disabled= '';
+        document.getElementById("textAltitude").disabled = 'disabled';
     });
 });
 
