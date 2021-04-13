@@ -1,6 +1,5 @@
-<
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:max-height="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8"?>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Расчет увлажнителя</title>
     <meta charset="utf-8">
@@ -17,7 +16,7 @@
 <body style="height: 100%" id="body-tag" >
 
 <div id="DivLogoPrint">
-    <img id="logoPrint" src="statico/img/logo.png" height="80px">
+    <img id="logoPrint" src="statico/img/logo.png" height="80px" alt="">
     <a href="http://www.systemair-ac.ru/" id="logoLink"></a>
 </div>
 <div name="common" id="common" class="frame content">
@@ -220,8 +219,8 @@
                     <span class="bg_circle" style="background: rgb(122, 214, 211);">4</span>
                     Выбор опций увлажнителя
                 </h1>
-                <form th:action="@{calculator/resultEstimate}" method="post">
-                    <table id="table_option" border="1" className = "table_option" class="table table-hover-option" th:if="${idSelectHumidifier!=null}">
+                <form th:action="@{calculator/estimate}" method="post">
+                    <table id="table_option" border="1" class="table table-hover-option" th:if="${idSelectHumidifier!=null}">
                         <thead id="thead_option">
                         <tr>
                             <td>№</td>
@@ -231,10 +230,10 @@
                             <td>Цена</td>
                         </tr>
                         </thead>
-                        <tr className="tr_distributor" id="tr_distributor" th:if="${distributors.get(idSelectHumidifier)!=null}" th:object = "${distributors.get(idSelectHumidifier)}">
+                        <tr id="tr_distributor" th:if="${distributors.get(idSelectHumidifier)!=null}" th:object = "${distributors.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
-                                    <input type="checkbox" name="selectedOptions"  th:if="${distributors.size() > 0}" th:value="*{id}">
+                                    <input type="checkbox" name="selectedDistributor" th:if="${distributors.size() > 0}" th:value="*{id}">
                                     <span class="checkmark"></span>
                                 </label>
                             </td>
@@ -245,7 +244,7 @@
                             <td th:text="*{title}">тип</td>
                             <td class="distributor_price" th:text="*{price}">0</td>
                         </tr>
-                        <tr className="tr_option" id="tr_option" th:if="${options.size() > 0}" th:each ="instance : ${options.get(idSelectHumidifier)}">
+                        <tr id="tr_option" th:if="${options.size() > 0}" th:each ="instance : ${options.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
                                     <input type="checkbox" name="selectedOptions" th:value="${instance.id}">

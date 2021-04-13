@@ -9,14 +9,11 @@ import ru.systemairac.calculator.exception.HumidifierNotFoundException;
 import ru.systemairac.calculator.mapper.HumidifierMapper;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
-import ru.systemairac.calculator.repository.HumidifierComponentRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierFilter;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierSpecification;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

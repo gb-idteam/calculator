@@ -93,17 +93,17 @@ public class Humidifier {
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(
-            name = "humidifiers_vaporDistributors",
+            name = "humidifiers_vapor_distributors",
             joinColumns = @JoinColumn(name = "humidifier_id"),
-            inverseJoinColumns = @JoinColumn(name = "vaporDistributor_id"))
+            inverseJoinColumns = @JoinColumn(name = "vapor_distributor_id"))
     private List<VaporDistributor> vaporDistributors;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(
-            name = "humidifiers_humidifierComponents",
+            name = "humidifiers_humidifier_components",
             joinColumns = @JoinColumn(name = "humidifier_id"),
-            inverseJoinColumns = @JoinColumn(name = "humidifierComponent_id"))
+            inverseJoinColumns = @JoinColumn(name = "humidifier_component_id"))
     private List<HumidifierComponent> humidifierComponents;
 
     @Column

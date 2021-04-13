@@ -112,11 +112,11 @@ public class MainController {
         return "redirect:/calculator";
     }
 
-    @PostMapping("/resultEstimate")
+    @PostMapping("/estimate")
     public String resultEstimate(Principal principal,
                                  @RequestParam(value = "selectedOptions" , required = false) Long[] idSelectedOptions,
-                                 @RequestParam(value = "distributor" , required = false) Long idDistributor) throws IOException {
-        EstimateDto estimateDto = estimateService.save(calculation.getId(), idSelectHumidifier,idSelectedOptions,idDistributor);
+                                 @RequestParam(value = "selectedDistributor" , required = false) Long idDistributor) throws IOException {
+        EstimateDto estimateDto = estimateService.save(calculation.getId(),this.idSelectHumidifier,idSelectedOptions,idDistributor);
         PDDocument document = pdDocumentService.toPDDocument(userService.getByEmail(principal.getName()),
                 projectDto,
                 techDataDto,

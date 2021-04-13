@@ -38,11 +38,14 @@ public class EstimateServiceImpl implements EstimateService {
 
     @Override
     @Transactional
-    public EstimateDto save(Long calculationId, Long idHumidifier, Long[] idSelectedOptions, Long id) {
+    public EstimateDto save(Long calculationId, Long idHumidifier, Long[] idSelectedOptions, Long idDistributor) {
+        if (calculationId==null || idHumidifier==null) return null;
         Calculation calculation = calculationRepository.findById(calculationId).orElseThrow();
         Humidifier humidifier = humidifierRepository.findById(idHumidifier).orElseThrow();
-        List<HumidifierComponent> options = humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions));
-        VaporDistributor distributor  = vaporDistributorRepository.findById(idHumidifier).orElse(null);
+        List<HumidifierComponent> options=null;
+        if (idSelectedOptions!=null)
+            options = humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions));
+        VaporDistributor distributor  = vaporDistributorRepository.findById(idDistributor).orElse(null);
         Estimate estimate = Estimate.builder().
                 humidifier(humidifier).
                 vaporDistributor(distributor).
