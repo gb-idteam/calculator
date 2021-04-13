@@ -73,7 +73,7 @@ public class MainController {
         }
         model.addAttribute("projects", projects);
         model.addAttribute("estimate", estimateDto);
-        model.addAttribute("himidifiers", humidifiers);
+        model.addAttribute("humidifiers", humidifiers);
         model.addAttribute("projectDto", projectDto);
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);
         model.addAttribute("selectedHumidifier", selectedHumidifier);
@@ -94,7 +94,7 @@ public class MainController {
     }
 
     @PostMapping("/selectHumidifier")
-    public String selectHumidifier(Model model, Long idSelectHumidifier){
+    public String selectHumidifier(@RequestParam(value = "idSelectHumidifier") Long idSelectHumidifier){
         this.idSelectHumidifier = idSelectHumidifier;
         this.selectedHumidifier = humidifierService.findById(idSelectHumidifier);
         return "redirect:/calculator";

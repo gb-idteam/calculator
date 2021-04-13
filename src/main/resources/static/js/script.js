@@ -13,6 +13,7 @@ function calcAtmospherePressure(altitude){
 
 $(document).ready(function(){
     $('input:radio[name=idSelectHumidifier]').change(function(){
+        post(this.value, "/selectHumidifier");
         calcSummaryPrice();
     });
 });
@@ -47,17 +48,17 @@ function calcSummaryOption() {
     var sum=0;
     for (var i = 1; i < table.rows.length; i++) {
         let row = table.rows[i];
-            if (row.cells.item(0).getElementsByTagName("input").selectedDistributor!=null)
+        if (row.cells.item(0).getElementsByTagName("input").selectedDistributor!=null)
             if (row.cells.item(0).getElementsByTagName("input").selectedDistributor===true) {
                 sum = sum +
                     (Number(row.cells.item(lastCell).innerText) || 0);
             }
-            if (row.cells.item(0).getElementsByTagName("input").selectedOptions!=null)
+        if (row.cells.item(0).getElementsByTagName("input").selectedOptions!=null)
             if (row.cells.item(0).getElementsByTagName("input").selectedOptions.checked===true) {
                 sum = sum +
                     (Number(row.cells.item(lastCell).innerText) || 0);
             }
-        }
+    }
     return sum;
 }
 
@@ -74,21 +75,17 @@ function priceHumidifier() {
     return 0;
 }
 
+function post(id, path) {
+    var xhr = new XMLHttpRequest();
 
-function option () {
-    var title = document.getElementById('project_title'),
-        address = document.getElementById('project_address'),
-        text = document.querySelectorAll('input');
-    if(title.value==="" || address.value==="") {
-        text.forEach(function (e) {
-            if (e.id !== 'project_title' && e.id !== 'project_address')
-                e.disabled = 'disabled';
-        });
-    } else {
-        text.forEach(function (e) {
-                e.disabled = '';
-        });
+    xhr.open('POST', document.URL + path, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+    xhr.send('idSelectHumidifier='+ id); // (1)
+    xhr.onreadystatechange = function() { // (3)
+        if (xhr.readyState != 4) return;
+        if (xhr.status != 200) {
+            alert(xhr.status + ': ' + xhr.statusText);
+        } return;
     }
 }
-// title.addEventListener('change', function () {option();});
-// address.addEventListener('change', function () {option();});

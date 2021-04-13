@@ -168,9 +168,9 @@
             <span class="bg_circle" style="background: rgb(122,214,211);">3</span>
             Выбор увлажнителя
         </h1>
-        <span th:if="${himidifiers.size() == 0}">Расчет не выполненен</span>
+        <span th:if="${humidifiers.size() == 0}">Расчет не выполненен</span>
         <form th:action="@{calculator/selectHumidifier}" method="post">
-            <table border="1" th:if="${himidifiers.size() > 0}" class="table table-hover" id = "table_humidifier">
+            <table border="1" th:if="${humidifiers.size() > 0}" class="table table-hover" id = "table_humidifier">
                 <thead>
                 <tr>
                     <td>№</td>
@@ -187,7 +187,7 @@
                 </tr>
                 </thead>
                 <tbody id="data">
-                <tr th:each="humidifier : ${himidifiers}">
+                <tr th:each="humidifier : ${humidifiers}">
                     <td>
                         <input name="idSelectHumidifier" type="radio" th:value="${humidifier.id}" style="width: 50px;" th:checked="${humidifier.id==idSelectHumidifier}">
                     </td>
@@ -208,7 +208,7 @@
                 </tr>
                 </tbody>
             </table>
-            <button th:disabled="${himidifiers.size()==0 ? true: false}" type="submit">Выбрать</button>
+            <button th:disabled="${humidifiers.size()==0 ? true: false}" type="submit">Выбрать</button>
         </form>
 
         <!--  part-4  -->
