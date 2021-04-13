@@ -76,16 +76,40 @@ function priceHumidifier() {
 }
 
 function post(id, path) {
-    var xhr = new XMLHttpRequest();
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('POST', document.URL + path, true);
+    // xhr.withCredentials = true;
+    // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // xhr.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+    // xhr.send('idSelectHumidifier='+ id);
+    // xhr.onload = function() {
+    //     if (xhr.status != 200) { // HTTP ошибка?
+    //         // обработаем ошибку
+    //         alert( 'Ошибка: ' + xhr.status);
+    //         return;
+    //     }
+    //     window.location = xhr.getResponseHeader('Location');
+    // };
+    // xhr.onprogress = function(event) {
+    //     // выведем прогресс
+    //     alert(`Загружено ${event.loaded} из ${event.total}`);
+    // };
+    // xhr.onerror = function() {
+    //     // обработаем ошибку, не связанную с HTTP (например, нет соединения)
+    // };
 
-    xhr.open('POST', document.URL + path, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-    xhr.send('idSelectHumidifier='+ id); // (1)
-    xhr.onreadystatechange = function() { // (3)
-        if (xhr.readyState != 4) return;
-        if (xhr.status != 200) {
-            alert(xhr.status + ': ' + xhr.statusText);
-        } return;
-    }
+    $.ajax({
+        url : document.URL + path,
+        accept : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        data : 'idSelectHumidifier='+ id,
+        contentType : 'application/x-www-form-urlencoded',
+        type : 'POST',
+        success : function(data) {
+            alert('save');
+        },
+        error : function(xhr, status, errorThrown) {
+            alert('adding component failed with status: ' + status + ". "
+                + errorThrown);
+        }
+    });
 }
