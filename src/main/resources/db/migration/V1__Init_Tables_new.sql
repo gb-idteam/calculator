@@ -1,120 +1,122 @@
 CREATE TABLE brand (
-                       id BIGINT NOT NULL AUTO_INCREMENT,
-                       name VARCHAR(255),
-                       PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    name VARCHAR(255),
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE calculation (
-                             id BIGINT NOT NULL AUTO_INCREMENT,
-                             date DATETIME(6),
-                             estimate_id BIGINT,
-                             project_id BIGINT,
-                             PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    date DATETIME(6),
+                    estimate_id BIGINT,
+                    project_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE estimate (
-                          id BIGINT NOT NULL AUTO_INCREMENT,
-                          humidifier_id BIGINT,
-                          vapor_distributor_id BIGINT,
-                          humidifier_components_id BIGINT,
-                          PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    humidifier_id BIGINT,
+                    vapor_distributor_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE estimate_humidifier_components (
-                                                estimate_id BIGINT NOT NULL, humidifier_components_id BIGINT NOT NULL
+                    estimate_id BIGINT NOT NULL, 
+                    humidifier_components_id BIGINT NOT NULL
 ) engine = InnoDB;
 CREATE TABLE file (
-                      id BIGINT NOT NULL AUTO_INCREMENT,
-                      name VARCHAR(255),
-                      project_id BIGINT,
-                      PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    name VARCHAR(255),
+                    project_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE humidifier (
-                            id BIGINT NOT NULL AUTO_INCREMENT,
-                            article_number VARCHAR(255),
-                            capacity DOUBLE PRECISION,
-                            electric_power DOUBLE PRECISION,
-                            humidifier_type VARCHAR(255),
-                            number_of_cylinders INTEGER,
-                            price DECIMAL(19, 2),
-                            title VARCHAR(255),
-                            vapor_pipe_diameter INTEGER,
-                            voltage VARCHAR(255),
-                            brand_id BIGINT,
-                            image_id BIGINT,
-                            PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    article_number VARCHAR(255),
+                    capacity DOUBLE PRECISION,
+                    electric_power DOUBLE PRECISION,
+                    humidifier_type VARCHAR(255),
+                    number_of_cylinders INTEGER,
+                    price DECIMAL(19, 2),
+                    title VARCHAR(255),
+                    vapor_pipe_diameter INTEGER,
+                    voltage VARCHAR(255),
+                    brand_id BIGINT,
+                    image_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE humidifier_component (
-                                      id BIGINT NOT NULL AUTO_INCREMENT,
-                                      article_number VARCHAR(255),
-                                      optional BIT NOT NULL,
-                                      price DECIMAL(19, 2),
-                                      type VARCHAR(255),
-                                      brand_id BIGINT,
-                                      image_id BIGINT,
-                                      PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    article_number VARCHAR(255),
+                    optional BIT NOT NULL,
+                    price DECIMAL(19, 2),
+                    type VARCHAR(255),
+                    brand_id BIGINT,
+                    image_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE humidifiers_humidifier_components (
-                                                   humidifier_id BIGINT NOT NULL, humidifier_component_id BIGINT NOT NULL
+                    humidifier_id BIGINT NOT NULL, 
+                    humidifier_component_id BIGINT NOT NULL
 ) engine = InnoDB;
 CREATE TABLE humidifiers_vapor_distributors (
-                                                humidifier_id BIGINT NOT NULL, vapor_distributor_id BIGINT NOT NULL
+                    humidifier_id BIGINT NOT NULL, 
+                    vapor_distributor_id BIGINT NOT NULL
 ) engine = InnoDB;
 CREATE TABLE image (
-                       id BIGINT NOT NULL AUTO_INCREMENT,
-                       link VARCHAR(255),
-                       PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    link VARCHAR(255),
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE project (
-                         id BIGINT NOT NULL AUTO_INCREMENT,
-                         ADDress VARCHAR(255),
-                         title VARCHAR(255),
-                         user_id BIGINT,
-                         PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    ADDress VARCHAR(255),
+                    title VARCHAR(255),
+                    user_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE role (
-                      id smallint NOT NULL AUTO_INCREMENT,
-                      role_name VARCHAR(255),
-                      PRIMARY KEY (id)
+                    id smallint NOT NULL AUTO_INCREMENT,
+                    role_name VARCHAR(255),
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE tech_data (
-                           id BIGINT NOT NULL AUTO_INCREMENT,
-                           air_flow INTEGER NOT NULL,
-                           altitude INTEGER,
-                           atmosphere_pressure DOUBLE PRECISION,
-                           calc_capacity DOUBLE PRECISION NOT NULL,
-                           date DATETIME(6),
-                           enum_humidifier_type VARCHAR(255),
-                           hum_in DOUBLE PRECISION NOT NULL,
-                           hum_out DOUBLE PRECISION NOT NULL,
-                           length INTEGER NOT NULL,
-                           temp_in DOUBLE PRECISION NOT NULL,
-                           type_montage VARCHAR(255),
-                           voltage VARCHAR(255),
-                           width INTEGER NOT NULL,
-                           calculation_id BIGINT,
-                           PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    air_flow INTEGER NOT NULL,
+                    altitude INTEGER,
+                    atmosphere_pressure DOUBLE PRECISION,
+                    calc_capacity DOUBLE PRECISION NOT NULL,
+                    date DATETIME(6),
+                    enum_humidifier_type VARCHAR(255),
+                    hum_in DOUBLE PRECISION NOT NULL,
+                    hum_out DOUBLE PRECISION NOT NULL,
+                    length INTEGER NOT NULL,
+                    temp_in DOUBLE PRECISION NOT NULL,
+                    type_montage VARCHAR(255),
+                    voltage VARCHAR(255),
+                    width INTEGER NOT NULL,
+                    calculation_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE user (
-                      id BIGINT NOT NULL AUTO_INCREMENT,
-                      address_company VARCHAR(255),
-                      email VARCHAR(255),
-                      full_name VARCHAR(255),
-                      name_company VARCHAR(255),
-                      password VARCHAR(255),
-                      phone BIGINT,
-                      position VARCHAR(255),
-                      PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    address_company VARCHAR(255),
+                    email VARCHAR(255),
+                    full_name VARCHAR(255),
+                    name_company VARCHAR(255),
+                    password VARCHAR(255),
+                    phone BIGINT,
+                    position VARCHAR(255),
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE users_roles (
-                             user_id BIGINT NOT NULL, role_id smallint NOT NULL
+                    user_id BIGINT NOT NULL, role_id smallint NOT NULL
 ) engine = InnoDB;
 CREATE TABLE vapor_distributor (
-                                   id BIGINT NOT NULL AUTO_INCREMENT,
-                                   article_number VARCHAR(255),
-                                   diameter INTEGER NOT NULL,
-                                   length INTEGER NOT NULL,
-                                   price DECIMAL(19, 2),
-                                   brand_id BIGINT,
-                                   image_id BIGINT,
-                                   PRIMARY KEY (id)
+                    id BIGINT NOT NULL AUTO_INCREMENT,
+                    article_number VARCHAR(255),
+                    diameter INTEGER NOT NULL,
+                    length INTEGER NOT NULL,
+                    price DECIMAL(19, 2),
+                    brand_id BIGINT,
+                    image_id BIGINT,
+                PRIMARY KEY (id)
 ) engine = InnoDB;
 ALTER TABLE
     brand
