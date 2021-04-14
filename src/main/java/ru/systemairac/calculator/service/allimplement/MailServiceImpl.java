@@ -1,19 +1,18 @@
 package ru.systemairac.calculator.service.allimplement;
 
-import ru.systemairac.calculator.domain.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import ru.systemairac.calculator.service.allinterface.MailSevice;
+import ru.systemairac.calculator.domain.User;
+import ru.systemairac.calculator.service.allinterface.MailService;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class MailServiceImpl implements MailSevice {
+public class MailServiceImpl implements MailService {
     private JavaMailSender sender;
     private MailMessageBuilderImpl messageBuilder;
 
@@ -42,9 +41,9 @@ public class MailServiceImpl implements MailSevice {
         try {
             sendMail (user.getEmail(),
                     String.format("Your confirmation code %s", code),
+
                     messageBuilder.buildCalculationEmail(code));
-        } catch (MessagingException ex) {
-        } catch (MailException e) {
+        } catch (MessagingException | MailException ex) {
         }
     }
 }

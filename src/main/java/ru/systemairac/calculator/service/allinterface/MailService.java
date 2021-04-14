@@ -4,7 +4,7 @@ import ru.systemairac.calculator.domain.User;
 
 import javax.mail.MessagingException;
 
-public interface MailSevice {
+public interface MailService {
     void sendMail(String email, String subject, String text) throws MessagingException;
     void sendCalculationMail(String code, User user);
 }

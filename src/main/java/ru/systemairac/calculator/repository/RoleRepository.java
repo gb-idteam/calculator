@@ -6,5 +6,5 @@ import ru.systemairac.calculator.domain.Role;
 
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Short> {
-    Role findOneByName(String name);
+
 }
