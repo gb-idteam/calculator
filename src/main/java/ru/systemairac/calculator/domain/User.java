@@ -22,6 +22,9 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Column(name = "is_confirmed")
+    private int isConfirmed;
+
     private String password;
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(fetch = FetchType.EAGER)

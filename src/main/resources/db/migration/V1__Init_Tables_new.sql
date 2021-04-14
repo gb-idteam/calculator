@@ -98,6 +98,7 @@ CREATE TABLE user (
                     id BIGINT NOT NULL AUTO_INCREMENT,
                     address_company VARCHAR(255),
                     email VARCHAR(255),
+                    is_confirmed INT NOT NULL DEFAULT 0,
                     full_name VARCHAR(255),
                     name_company VARCHAR(255),
                     password VARCHAR(255),

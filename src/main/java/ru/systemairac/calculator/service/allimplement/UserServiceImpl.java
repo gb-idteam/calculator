@@ -1,9 +1,11 @@
 package ru.systemairac.calculator.service.allimplement;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.Role;
@@ -15,6 +17,7 @@ import ru.systemairac.calculator.repository.RoleRepository;
 import ru.systemairac.calculator.repository.UserRepository;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,10 +25,23 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private MailServiceImpl mailServiceImpl;
+    private HashMap<User, String> confirmKeys;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper = UserMapper.MAPPER;
+
+    @PostConstruct
+    public void initConfirmKeys(){
+        confirmKeys = new HashMap<User, String>();
+    }
+
+    @Autowired
+    public void setMailService(MailServiceImpl mailServiceImpl){
+        this.mailServiceImpl = mailServiceImpl;
+    }
 
     private List<Role> roles;
 
@@ -70,6 +86,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findFirstByEmail(email);
     }
 
+//    public Optional <User> getAnonymousUser() {
+//        return userRepository.findByEmail("Anonymous user");
+//    }
+
     @Override
     public Optional<UserDto> getDtoById(Long id) {
         Optional<User> u = getById(id);
@@ -106,5 +126,47 @@ public class UserServiceImpl implements UserService {
                 user.getEmail(),
                 user.getPassword(),
                 authorityList);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public void generateKey(User user) {
+        Random random = new Random();
+        confirmKeys.put(user,
+                String.format ("%04d",
+                        random.ints(0, 9999)
+                                .findFirst()
+                                .getAsInt()));
+
+    }
+
+    public void userConfirmation(User user, String confirmation){
+        if (confirmKeys.get(user).equals(confirmation)){
+            user.setIsConfirmed(1);
+            userRepository.save(user);
+        }
+    }
+
+    public boolean createNewUser(User user){
+
+        if (findByEmail(user.getEmail()) != null){
+            return false;
+        }
+
+        ArrayList<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findOneByName("USER"));
+
+        user.setRoles(roles);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+
+        generateKey(user);
+        mailServiceImpl.sendCalculationMail(confirmKeys.get(user), user);
+
+        return true;
+
     }
 }
