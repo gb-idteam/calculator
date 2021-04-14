@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("calculator").authenticated()
                 .antMatchers("adminForm").hasAnyAuthority(RoleName.ADMIN.name())
+                .antMatchers("/script.js").permitAll()
                 .anyRequest().permitAll()
                 .and ()
                 .formLogin()

@@ -23,7 +23,6 @@ public class Project {
 
     private String address;
     private String title;
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "project_id")
     private List<Calculation> calculations;

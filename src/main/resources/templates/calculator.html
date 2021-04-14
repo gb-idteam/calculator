@@ -31,22 +31,22 @@
                 <tr th:if="${projects.size() > 0}">
                     <td>Выбор существующего проекта</td>
                     <td>
-                        <select name="projectDto">
-                            <option th:each="r : ${projects}" th:value="${r}" th:text="${r.title}" th:action="change"></option>
+                        <select name = "projectDto" class="select_send_ajax selectpicker">
+                            <option th:each="r : ${projects}" th:value="${r}" th:text="${r.title}"></option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>Название проекта</td>
                     <td>
-                        <input id="project_title" type="text" th:field="*{title}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                        <input id="project_title" type="text" th:value="${projectDto.title}" th:field="*{title}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
                         <span></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Адрес проекта</td>
                     <td>
-                        <input id="project_address" type="text" th:field="*{address}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                        <input id="project_address" type="text" th:value="${projectDto.address}" th:field="*{address}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
                         <span></span>
                     </td>
                 </tr>

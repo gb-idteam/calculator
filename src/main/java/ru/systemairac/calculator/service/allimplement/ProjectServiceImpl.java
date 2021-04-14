@@ -38,6 +38,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ProjectDto findById(Long id) {
+        return mapper.fromProject(projectRepository.findById(id).orElseThrow());
+    }
+
+    @Override
     public ProjectDto findByCalculation(Calculation calculation) {
         return mapper.fromProject(calculation.getProject());
     }

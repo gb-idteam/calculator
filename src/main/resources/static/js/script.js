@@ -74,8 +74,17 @@ function priceHumidifier() {
     }
     return 0;
 }
+// 3-й вариант отправки запроса на сервес. Тоже без результатно. Не отправляет выбранную projectDto
+// $(document).ready(function() {
+//     $('.select_send_ajax').on('change', function () {
+//         $(this.form).attr('projectDto', this.form.getElementsByTagName('select').projectDto.value);
+//         $(document).attr('projectDto', this.form.getElementsByTagName('select').projectDto.value);
+//         $(this.form).submit();
+//     });
+// });
 
 function post(id, path) {
+    // 2 варианта отправки post запроса на сервер.
     // var xhr = new XMLHttpRequest();
     // xhr.open('POST', document.URL + path, true);
     // xhr.withCredentials = true;
@@ -98,18 +107,18 @@ function post(id, path) {
     //     // обработаем ошибку, не связанную с HTTP (например, нет соединения)
     // };
 
-    $.ajax({
-        url : document.URL + path,
-        accept : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        data : 'idSelectHumidifier='+ id,
-        contentType : 'application/x-www-form-urlencoded',
-        type : 'POST',
-        success : function(data) {
-            alert('save');
-        },
-        error : function(xhr, status, errorThrown) {
-            alert('adding component failed with status: ' + status + ". "
-                + errorThrown);
-        }
-    });
+    // $.ajax({
+    //     url : document.URL + path,
+    //     accept : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    //     data : 'idSelectHumidifier='+ id,
+    //     contentType : 'application/x-www-form-urlencoded',
+    //     type : 'POST',
+    //     success : function(data) {
+    //         alert('save');
+    //     },
+    //     error : function(xhr, status, errorThrown) {
+    //         alert('adding component failed with status: ' + status + ". "
+    //             + errorThrown);
+    //     }
+    // });
 }

@@ -23,7 +23,6 @@ public class Calculation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "calculation_id")
     private List<TechData> techData;
