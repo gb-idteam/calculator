@@ -94,6 +94,16 @@ public class MainController {
         return "redirect:/calculator";
     }
 
+    @PostMapping("/selectProject")
+    public String selectProject(Long idSelectedProject, Principal principal){
+        if (idSelectedProject!=null) {
+            User user = userService.findByEmail( principal.getName() ).orElseThrow();
+            this.projectDto = projectService.findById(idSelectedProject);
+            this.calculation = calculationService.save(projectDto,user);
+        }
+        return "redirect:/calculator";
+    }
+
     @PostMapping("/selectHumidifier")
     public String selectHumidifier(@RequestParam(value = "idSelectHumidifier") Long idSelectHumidifier){
         this.idSelectHumidifier = idSelectHumidifier;
@@ -121,10 +131,9 @@ public class MainController {
         PDDocument document = pdDocumentService.toPDDocument(userService.getByEmail(principal.getName()),
                 projectDto,
                 techDataDto,
-                estimateDto); //TODO исправить когду будет возможность выбора вентиляторного распределителя
-        document.save("result.pdf");
-        document.close();
-        return "redirect:/calculator";
+                estimateDto);
+        String path = fileService.savePDDocument(document,projectDto.getId());
+        return "redirect:/file/" + path;
     }
 
     @PostMapping("/clear")

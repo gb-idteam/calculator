@@ -1,6 +1,7 @@
 package ru.systemairac.calculator.service.allimplement;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.hibernate.id.UUIDGenerator;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.FileEntity;
@@ -44,10 +45,11 @@ public class FileServiceImpl implements FileService {
         String name;
         do {
             name = UUID.randomUUID().toString() + ".pdf";
-            file = new File(name); // TODO: папка сохранения
+            file = new File(name);
         } while (file.exists());
         try {
             document.save(file);
+            document.close();
         } catch (IOException e) {
             throw new IOException("Document " + name + " couldn't be saved: " + e.getMessage());
         }
@@ -70,5 +72,10 @@ public class FileServiceImpl implements FileService {
 //        FileEntity fileEntity = fileRepository.findByName(fileName).orElseThrow();
 //        Project project = fileEntity.getProject();
 //        return project.getUser().getEmail().equals(username);
+    }
+
+    @Override
+    public void deleteFile(File file) {
+        if (fileExists(file.getName())) file.delete();
     }
 }

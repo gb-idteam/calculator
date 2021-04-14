@@ -43,9 +43,11 @@ public class EstimateServiceImpl implements EstimateService {
         Calculation calculation = calculationRepository.findById(calculationId).orElseThrow();
         Humidifier humidifier = humidifierRepository.findById(idHumidifier).orElseThrow();
         List<HumidifierComponent> options=null;
+        VaporDistributor distributor = null;
         if (idSelectedOptions!=null)
             options = humidifierComponentService.findAllByIds(Arrays.asList(idSelectedOptions));
-        VaporDistributor distributor  = vaporDistributorRepository.findById(idDistributor).orElse(null);
+        if (idDistributor!=null)
+            distributor  = vaporDistributorRepository.findById(idDistributor).orElseThrow();
         Estimate estimate = Estimate.builder().
                 humidifier(humidifier).
                 vaporDistributor(distributor).

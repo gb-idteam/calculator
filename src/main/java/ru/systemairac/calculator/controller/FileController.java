@@ -1,11 +1,14 @@
 package ru.systemairac.calculator.controller;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import ru.systemairac.calculator.service.allinterface.FileService;
+import org.springframework.web.bind.annotation.*;
+import ru.systemairac.calculator.domain.Calculation;
+import ru.systemairac.calculator.dto.EstimateDto;
+import ru.systemairac.calculator.dto.ProjectDto;
+import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.service.allinterface.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +20,9 @@ import java.security.Principal;
 @RequestMapping("/file")
 @Controller
 public class FileController {
-
-    private final ServletContext servletContext;
     private final FileService fileService;
 
-    public FileController(ServletContext servletContext, FileService fileService) {
-        this.servletContext = servletContext;
+    public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 
@@ -42,13 +42,13 @@ public class FileController {
         }
 
         try (FileInputStream fis = new FileInputStream(fileService.getPath(name).toFile());
-             OutputStream os = response.getOutputStream()) {
+            OutputStream os = response.getOutputStream()) {
             fis.transferTo(os);
             response.flushBuffer();
         } catch (IOException e) {
             throw new RuntimeException("Exception when sending file " + name + ": " + e.getMessage());
         }
+        fileService.deleteFile(fileService.getPath(name).toFile());
     }
-
 
 }

@@ -26,16 +26,20 @@
             <span class="bg_circle" style="background: rgb(122, 214, 211);">1</span>
             Заполнение информации об объекте
         </h1>
+        <table>
+            <tr th:if="${projects.size() > 0}">
+                <td>Выбор существующего проекта</td>
+                <td>
+                    <form th:action="@{calculator/selectProject}" method="post">
+                        <select name = "idSelectedProject" class="send_ajax selectpicker">
+                            <option th:each="r : ${projects}" th:value="${r.id}" th:text="${r.title}"></option>
+                        </select>
+                    </form>
+                </td>
+            </tr>
+        </table>
         <form th:action="@{calculator/saveProject}" th:object="${projectDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
-                <tr th:if="${projects.size() > 0}">
-                    <td>Выбор существующего проекта</td>
-                    <td>
-                        <select name = "projectDto" class="select_send_ajax selectpicker">
-                            <option th:each="r : ${projects}" th:value="${r}" th:text="${r.title}"></option>
-                        </select>
-                    </td>
-                </tr>
                 <tr>
                     <td>Название проекта</td>
                     <td>
@@ -189,7 +193,7 @@
                 <tbody id="data">
                 <tr th:each="humidifier : ${humidifiers}">
                     <td>
-                        <input name="idSelectHumidifier" type="radio" th:value="${humidifier.id}" style="width: 50px;" th:checked="${humidifier.id==idSelectHumidifier}">
+                        <input name="idSelectHumidifier" class="send_ajax" type="radio" th:value="${humidifier.id}" style="width: 50px;" th:checked="${humidifier.id==idSelectHumidifier}">
                     </td>
                     <td>
                         <div>
@@ -208,7 +212,6 @@
                 </tr>
                 </tbody>
             </table>
-            <button th:disabled="${humidifiers.size()==0 ? true: false}" type="submit">Выбрать</button>
         </form>
 
         <!--  part-4  -->
