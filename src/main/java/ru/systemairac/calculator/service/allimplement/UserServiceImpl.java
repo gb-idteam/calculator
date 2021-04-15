@@ -1,6 +1,7 @@
 package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,10 +63,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findFirstByEmail(email);
     }
-
-//    public Optional <User> getAnonymousUser() {
-//        return userRepository.findByEmail("Anonymous user");
-//    }
 
     @Override
     public Optional<UserDto> getDtoById(Long id) {
