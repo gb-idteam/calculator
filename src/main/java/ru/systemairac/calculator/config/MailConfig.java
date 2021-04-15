@@ -11,10 +11,10 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    @Value("kuznechik.86@mail.ru")
+    @Value("${spring.mail.username}")
     private String username;
 
-    @Value("revftd1986")
+    @Value("${spring.mail.password}")
     private String password;
 
     @Bean
@@ -31,7 +31,6 @@ public class MailConfig {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
-
         return mailSender;
     }
 }
