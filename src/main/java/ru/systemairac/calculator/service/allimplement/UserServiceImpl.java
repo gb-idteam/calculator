@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void userConfirmation(User user, String confirmation){
         if (user.getConfirmKeys().equals(confirmation)){
-            user.setIsConfirmed(1);
+            user.setConfirmed(true);
             userRepository.save(user);
         } else try {
             throw new ValidationException("User cannot verification!");

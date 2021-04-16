@@ -67,11 +67,13 @@ public class MainController {
 
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal){
+        boolean isConfirmed = false;
         if (principal!=null) {
-            projects = projectService.findByUser(
-                    userService.findByEmail( principal.getName() ).orElseThrow()
-            );
+            User user = userService.findByEmail( principal.getName() ).orElseThrow();
+            projects = projectService.findByUser(user);
+            isConfirmed = user.isConfirmed();
         }
+        model.addAttribute("isConfirmed", isConfirmed);
         model.addAttribute("projects", projects);
         model.addAttribute("estimate", estimateDto);
         model.addAttribute("humidifiers", humidifiers);

@@ -21,7 +21,7 @@
             <input type="password" id="password" class="fadeIn third" name="password" placeholder="пароль">
             <input type="submit" class="fadeIn fourth" name="submit" value="Войти">
         </form>
-
+        <span th:if="${verificationMessage}">Подтвердите свою почту.</span>
         <div id="formFooter">
             <a class="underlineHover" th:href="@{register}">У меня нет аккаунта</a>
         </div>

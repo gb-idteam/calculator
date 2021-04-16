@@ -18,6 +18,7 @@ public class UserDto {
     private String nameCompany;
     private String addressCompany;
     private String position;
+    private boolean isConfirmed;
     private Long phone;
     private String email;
     private String matchingPassword;

@@ -22,8 +22,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @Column(name = "is_confirmed")
-    private int isConfirmed;
+    @Column
+    private boolean isConfirmed;
 
     private String password;
     @LazyCollection(LazyCollectionOption.FALSE)

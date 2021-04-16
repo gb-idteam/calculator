@@ -38,9 +38,10 @@ public class RegistrationController {
 
     @PostMapping("/register")
     @PreAuthorize("permitAll()")
-    public String registerButtonClick(UserDto userDto) {
+    public String registerButtonClick(Model model,UserDto userDto) {
         try {
             userService.save(userDto);
+            model.addAttribute("verificationMessage",true);
         } catch (RuntimeException e) {
             // пока так?
             return "";
