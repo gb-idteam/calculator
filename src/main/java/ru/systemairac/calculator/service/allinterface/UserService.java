@@ -15,4 +15,6 @@ public interface UserService extends UserDetailsService {
     Optional<User> getById(Long id);
     Optional<UserDto> getDtoById(Long id);
     UserDto getByEmail(String email);
+    boolean existsByEmail(String email);
+    void userConfirmation(User user, String confirmation);
 }

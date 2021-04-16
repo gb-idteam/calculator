@@ -1,52 +1,41 @@
 package ru.systemairac.calculator.service.allimplement;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.systemairac.calculator.domain.Role;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.mapper.UserMapper;
-import ru.systemairac.calculator.myenum.RoleName;
-import ru.systemairac.calculator.repository.RoleRepository;
 import ru.systemairac.calculator.repository.UserRepository;
+import ru.systemairac.calculator.service.allinterface.MailService;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import javax.xml.bind.ValidationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    private MailService mailService;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper = UserMapper.MAPPER;
 
-    private List<Role> roles;
-
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Autowired
+    public void setMailService(MailService mailService){
+        this.mailService = mailService;
     }
 
-    private void init() {
-        roles = new ArrayList<>();
-        roleRepository.findAll().forEach(roles::add);
-        if (roles.size() == 0) {
-            // initialize roles
-            short id = 1;
-            for (RoleName roleName : RoleName.values()) {
-                roleRepository.save(new Role(id++, roleName.name()));
-            }
-        } else {
-            // TODO: verify roles in db
-        }
+    public UserServiceImpl( UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -55,8 +44,7 @@ public class UserServiceImpl implements UserService {
         if(!Objects.equals(userDto.getPassword(), userDto.getMatchingPassword())){
             throw new RuntimeException ("Password is not equal");
         }
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(mapper.toUser(userDto));
+        createNewUser(mapper.toUser(userDto));
         return true;
     }
 
@@ -106,5 +94,42 @@ public class UserServiceImpl implements UserService {
                 user.getEmail(),
                 user.getPassword(),
                 authorityList);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public void generateKey(User user) {
+        Random random = new Random();
+        user.setConfirmKeys(
+                String.format ("%04d",
+                        random.ints(0, 9999)
+                                .findFirst()
+                                .getAsInt()));
+        userRepository.save(user);
+    }
+    @Override
+    public void userConfirmation(User user, String confirmation){
+        if (user.getConfirmKeys().equals(confirmation)){
+            user.setIsConfirmed(1);
+            userRepository.save(user);
+        } else try {
+            throw new ValidationException("User cannot verification!");
+        } catch (ValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean createNewUser(User user){
+        if (userRepository.findByEmail(user.getEmail()) != null){
+            return false;
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        generateKey(user);
+        mailService.sendCalculationMail(user.getConfirmKeys(), user);
+        return true;
     }
 }
