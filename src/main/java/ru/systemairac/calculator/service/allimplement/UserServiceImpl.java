@@ -17,6 +17,7 @@ import ru.systemairac.calculator.service.allinterface.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import javax.xml.bind.ValidationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -116,11 +117,16 @@ public class UserServiceImpl implements UserService {
                                 .getAsInt()));
 
     }
-
+    @Override
     public void userConfirmation(User user, String confirmation){
         if (confirmKeys.get(user).equals(confirmation)){
             user.setIsConfirmed(1);
             userRepository.save(user);
+            confirmKeys.remove(user);
+        } else try {
+            throw new ValidationException("User cannot verification!");
+        } catch (ValidationException e) {
+            e.printStackTrace();
         }
     }
 

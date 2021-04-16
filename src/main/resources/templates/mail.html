@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:remove="all">Template for HTML email with inline image</title>
+    <title>Mail</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="#{'Hello,' ${user.getFullName()}}">
+<p th:text="${user.getFullName()}">
     Hello, Peter Static!
 </p>
 <p>
     Your authorisation code:
-    <a th:href="@{http://${host}:${port}/${path}/registration?user=${user.id}&code=${code}}" th:value="${code}"></a>
+    <a th:href="@{http://__${host}__:__${port}__/__${path}__verifacation(param1=${user.id},param2=${code})}">Code [[${code}]]</a>
 </p>
 
 <p>
-    <img id="logoPrint" src="statico/img/logo.png" height="80px" alt="">
+    <img src="/systemair-ac/statico/img/logo.png" height="80px" alt="">
 </p>
 <p>
     Regards, <br />
-    <em>The IDTeam Team</em>
+    <em>The IDTeam </em>
 </p>
 </body>
 </html>
