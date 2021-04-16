@@ -44,6 +44,9 @@ public class User {
     @Column
     private Long phone;
 
+    @Column
+    private String confirmKeys;
+
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

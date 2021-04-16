@@ -33,7 +33,7 @@ public class RegistrationController {
             User user = userService.getById(idUser).orElseThrow();
             userService.userConfirmation(user, code);
         }
-        return "registration";
+        return "redirect:/calculator";
     }
 
     @PostMapping("/register")

@@ -1,7 +1,6 @@
 package ru.systemairac.calculator.service.allimplement;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,22 +24,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private MailService mailService;
-    private HashMap<User, String> confirmKeys;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper = UserMapper.MAPPER;
-
-    @PostConstruct
-    public void initConfirmKeys(){
-        confirmKeys = new HashMap<User, String>();
-    }
 
     @Autowired
     public void setMailService(MailService mailService){
         this.mailService = mailService;
     }
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl( UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -110,19 +103,18 @@ public class UserServiceImpl implements UserService {
 
     public void generateKey(User user) {
         Random random = new Random();
-        confirmKeys.put(user,
+        user.setConfirmKeys(
                 String.format ("%04d",
                         random.ints(0, 9999)
                                 .findFirst()
                                 .getAsInt()));
-
+        userRepository.save(user);
     }
     @Override
     public void userConfirmation(User user, String confirmation){
-        if (confirmKeys.get(user).equals(confirmation)){
+        if (user.getConfirmKeys().equals(confirmation)){
             user.setIsConfirmed(1);
             userRepository.save(user);
-            confirmKeys.remove(user);
         } else try {
             throw new ValidationException("User cannot verification!");
         } catch (ValidationException e) {
@@ -137,7 +129,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         generateKey(user);
-        mailService.sendCalculationMail(confirmKeys.get(user), user);
+        mailService.sendCalculationMail(user.getConfirmKeys(), user);
         return true;
     }
 }

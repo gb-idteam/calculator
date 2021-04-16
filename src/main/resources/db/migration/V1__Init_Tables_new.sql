@@ -104,6 +104,7 @@ CREATE TABLE user (
                     password VARCHAR(255),
                     phone BIGINT,
                     position VARCHAR(255),
+                    confirm_keys VARCHAR(255),
                 PRIMARY KEY (id)
 ) engine = InnoDB;
 CREATE TABLE users_roles (
