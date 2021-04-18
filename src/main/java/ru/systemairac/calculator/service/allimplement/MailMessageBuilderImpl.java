@@ -1,5 +1,7 @@
 package ru.systemairac.calculator.service.allimplement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class MailMessageBuilderImpl implements MailMessageBuilder {
     }
 
     @Override
-    public String buildCalculationEmail(String code, User user) {
+    public String buildConfirmationEmail(String code, User user) {
         Context context = new Context();
         context.setVariable("code", code);
         context.setVariable("user", user);

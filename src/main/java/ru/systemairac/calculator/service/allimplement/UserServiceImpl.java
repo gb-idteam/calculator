@@ -14,7 +14,6 @@ import ru.systemairac.calculator.repository.UserRepository;
 import ru.systemairac.calculator.service.allinterface.MailService;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
 import java.util.*;
@@ -129,7 +128,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         generateKey(user);
-        mailService.sendCalculationMail(user.getConfirmKeys(), user);
+        mailService.sendConfirmationMail(user.getConfirmKeys(), user);
         return true;
     }
 }
