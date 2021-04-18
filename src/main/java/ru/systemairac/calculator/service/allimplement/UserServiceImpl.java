@@ -128,7 +128,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         generateKey(user);
-        mailService.sendConfirmationMail(user.getConfirmKeys(), user);
+        Runnable mailTask = () -> {
+            mailService.sendConfirmationMail(user.getConfirmKeys(), user);
+        };
+        Thread thread = new Thread(mailTask);
+        thread.start();
         return true;
     }
 }
