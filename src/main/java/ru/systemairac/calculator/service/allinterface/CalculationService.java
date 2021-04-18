@@ -3,7 +3,6 @@ package ru.systemairac.calculator.service.allinterface;
 import ru.systemairac.calculator.domain.Calculation;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.User;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
@@ -17,5 +16,5 @@ public interface CalculationService {
     List<HumidifierDto> getHumidifiers(TechDataDto techDataDto);
     HashMap<Long, VaporDistributorDto> getDistributors(int width, List<HumidifierDto> humidifiers);
     Calculation createNewCalculation(TechDataDto techDataDto, Project project);
-    Calculation save(ProjectDto project, User user);
+    Long save(ProjectDto project, User user);
 }

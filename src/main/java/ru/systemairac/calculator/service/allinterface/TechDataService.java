@@ -10,7 +10,8 @@ import java.util.Optional;
 
 public interface TechDataService {
 
-    void save(TechDataDto dto, Long idCalc);
+    Long save(TechDataDto dto, Long idCalc);
 
     Optional<TechData> getById(long id);
+    TechDataDto findById(long id);
 }

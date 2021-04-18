@@ -27,15 +27,19 @@ public class TechDataServiceImpl implements TechDataService {
 
     @Override
     @Transactional
-    public void save(TechDataDto dto, Long idCalc) {
+    public Long save(TechDataDto dto, Long idCalc) {
         TechData techData = mapper.toTechData(dto);
         Calculation calculation = calculationRepository.findById(idCalc).orElseThrow();
         techData.setCalculation(calculation);
-        repository.save(techData);
+        return repository.save(techData).getId();
     }
 
     @Override
     public Optional<TechData> getById(long id) {
         return repository.findById(id);
+    }
+    @Override
+    public TechDataDto findById(long id) {
+        return mapper.fromTechData(getById(id).orElse(null));
     }
 }

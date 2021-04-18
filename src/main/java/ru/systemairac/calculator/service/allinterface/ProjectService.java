@@ -15,6 +15,6 @@ public interface ProjectService {
     void delete(Long id);
     void save(Project project);
     ProjectDto findById(Long id);
-    ProjectDto findByCalculation(Calculation calculation);
+    Long findByCalculation(Long calcId);
     Project getOldProjectByTitleAndAddress(User user, String title, String address);
 }

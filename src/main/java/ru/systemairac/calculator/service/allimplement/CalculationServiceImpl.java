@@ -11,7 +11,6 @@ import ru.systemairac.calculator.dto.TechDataDto;
 import ru.systemairac.calculator.dto.VaporDistributorDto;
 import ru.systemairac.calculator.mapper.ProjectMapper;
 import ru.systemairac.calculator.repository.CalculationRepository;
-import ru.systemairac.calculator.repository.ProjectRepository;
 import ru.systemairac.calculator.service.Point;
 import ru.systemairac.calculator.service.allinterface.CalculationService;
 import ru.systemairac.calculator.service.allinterface.HumidifierService;
@@ -65,7 +64,7 @@ public class CalculationServiceImpl implements CalculationService {
 
     @Override
     @Transactional
-    public Calculation save(ProjectDto dto, User user) {
+    public Long save(ProjectDto dto, User user) {
         Calculation calculation = new Calculation();
         Project project;
         Project oldProject = projectService.getOldProjectByTitleAndAddress(user,dto.getTitle(),dto.getAddress());
@@ -77,7 +76,7 @@ public class CalculationServiceImpl implements CalculationService {
         } else {
             calculation.setProject(oldProject);
         }
-        return calculationRepository.save(calculation);
+        return calculationRepository.save(calculation).getId();
     }
 
     @Override
