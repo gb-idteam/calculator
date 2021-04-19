@@ -71,13 +71,13 @@ public class MailServiceImpl implements MailService {
         sender.send(message);
     }
     @Override
-    public void sendEstimateMail(String toMail, String nameFile) {
+    public void sendEstimateMail(String toMail, String nameFile,String projectTitle) {
         logger.info("--in the function of sendMail");
         User user = userRepository.findByEmail(toMail);
         if (!user.isConfirmed()) return; //TODO Вывод сообщения
         try {
             sendMessageWithAttachment (toMail,
-                    String.format("Расчет увлажнителя проект %s - %s","project.title",new SimpleDateFormat().format(new Date())),
+                    String.format("Расчет увлажнителя проект %s - %s",projectTitle,new SimpleDateFormat().format(new Date())),
                     "Во вложении Вы найдете Ваш расчет",
                     nameFile);
             logger.info("--Mail Sent Successfully");
