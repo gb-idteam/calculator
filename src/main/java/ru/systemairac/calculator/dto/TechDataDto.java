@@ -28,7 +28,7 @@ public class TechDataDto implements Serializable {
     private EnumHumidifierType enumHumidifierType;
     private TypeMontage typeMontage;
     private EnumVoltageType voltage;
-    private int height = 500;
-    private int width = 300;
+    private int height = 300;
+    private int width = 500;
     private double calcCapacity;
 }

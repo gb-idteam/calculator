@@ -31,32 +31,55 @@ public class FileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{name}")
-    public void getAndSendFile(@PathVariable String name, HttpSession session, HttpServletResponse response, Principal principal) throws IOException {
+    @GetMapping("/show-and-send/{name}")
+    public void showAndSendFile(@PathVariable String name, HttpSession session, HttpServletResponse response, Principal principal) throws IOException {
         response.setHeader("content-type", "application/pdf");
+        if (checkFile(name, response, principal)) return;
+        String projectTitle = getProjectTitle(session);
+        sendFileToMail(name, principal,projectTitle);
+        viewFile(name, response);
+        fileService.deleteFile(fileService.getPath(name).toFile());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/show/{name}")
+    public void showFile(@PathVariable String name, HttpSession session, HttpServletResponse response, Principal principal) throws IOException {
+        response.setHeader("content-type", "application/pdf");
+        if (checkFile(name, response, principal)) return;
+        viewFile(name, response);
+        fileService.deleteFile(fileService.getPath(name).toFile());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/send/{name}")
+    public void sendFile(@PathVariable String name, HttpSession session, HttpServletResponse response, Principal principal) throws IOException {
+        if (checkFile(name, response, principal)) return;
+        String projectTitle = getProjectTitle(session);
+        sendFileToMail(name, principal,projectTitle);
+        fileService.deleteFile(fileService.getPath(name).toFile());
+    }
+
+    private String getProjectTitle(HttpSession session) {
         Long idProject = (Long) session.getAttribute("projectId");
         if (idProject==null)
             throw new NullPointerException(
                     String.format("Нулевое значение проекта: idProject=%d", idProject));
-        Project project = projectRepository.findById(idProject).orElseThrow();
+        return projectRepository.findById(idProject).orElseThrow().getTitle();
+    }
+
+    private boolean checkFile(String name, HttpServletResponse response, Principal principal) throws IOException {
         if (!fileService.fileExists(name)) {
             response.sendError(404);
-            return;
+            return true;
         }
         if (!fileService.fileBelongsToUser(name, principal.getName())) {
             response.sendError(401);
-            return;
+            return true;
         }
-        try {
-            sendFileToMail(name, principal,project.getTitle());
-            viewFile(name, response);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        fileService.deleteFile(fileService.getPath(name).toFile());
+        return false;
     }
 
-    private void viewFile(String name, HttpServletResponse response) throws InterruptedException {
+    private void viewFile(String name, HttpServletResponse response){
         Runnable viewFileTask = () -> {
             try (FileInputStream fis = new FileInputStream(fileService.getPath(name).toFile());
                  OutputStream os = response.getOutputStream()) {
@@ -68,16 +91,22 @@ public class FileController {
         };
         Thread thread2 = new Thread(viewFileTask);
         thread2.start();
-        thread2.join();
+        try {
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void sendFileToMail(String name, Principal principal, String projectTitle) throws InterruptedException {
-        Runnable mailTask = () -> {
-            mailService.sendEstimateMail(principal.getName(), name,projectTitle);
-        };
+    private void sendFileToMail(String name, Principal principal, String projectTitle) {
+        Runnable mailTask = () -> mailService.sendEstimateMail(principal.getName(), name,projectTitle);
         Thread thread1 = new Thread(mailTask);
         thread1.start();
-        thread1.join();
+        try {
+            thread1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

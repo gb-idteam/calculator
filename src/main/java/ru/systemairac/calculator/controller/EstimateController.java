@@ -23,6 +23,9 @@ public class EstimateController {
     private final EstimateService estimateService;
     private final PDDocumentService pdDocumentService;
     private final FileService fileService;
+    private static final String SHOW="show";
+    private static final String SEND="send";
+    private static final String SHOW_AND_SEND="show-and-send";
 
     public EstimateController(UserService userService, TechDataService techDataService, ProjectService projectService, EstimateService estimateService, PDDocumentService pdDocumentService, FileService fileService) {
         this.userService = userService;
@@ -36,6 +39,7 @@ public class EstimateController {
     @PostMapping("")
     public String resultEstimate(Principal principal,
                                  HttpServletRequest request,
+                                 @RequestParam(value="action") String action,
                                  @RequestParam(value = "selectedOptions" , required = false) Long[] idSelectedOptions,
                                  @RequestParam(value = "selectedDistributor" , required = false) Long idDistributor) throws IOException {
         Long idSelectHumidifier = (Long) request.getSession().getAttribute("idSelectHumidifier");
@@ -59,6 +63,14 @@ public class EstimateController {
                 techDataDto,
                 estimateDto);
         String path = fileService.savePDDocument(document,projectDto.getId());
-        return "redirect:/file/" + path;
+        switch (action) {
+            case SHOW:
+                return "redirect:/"+SHOW+"/file/" + path;
+            case SEND:
+                return "redirect:/"+SEND+"/file/" + path;
+            case SHOW_AND_SEND:
+                return "redirect:/"+SHOW_AND_SEND+"/file/" + path;
+        }
+        return "redirect:/calculator/estimate";
     }
 }

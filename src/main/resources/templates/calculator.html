@@ -23,11 +23,13 @@
 <div name="common" id="common" class="frame content">
     <!-- part-1 -->
     <div id="part1" class="box">
+
         <h1  id="part1-head">
             <span class="bg_circle" style="background: rgb(122, 214, 211);">1</span>
             Заполнение информации об объекте
         </h1>
-        <table>
+        <span th:if="${!isConfirmed}">Подтвердите свою почту!</span>
+        <table th:if="${isConfirmed}">
             <tr th:if="${projects.size() > 0}">
                 <td>Выбор существующего проекта</td>
                 <td>
@@ -40,7 +42,7 @@
             </tr>
         </table>
         <form th:action="@{calculator/project/save}" th:object="${projectDto}" method="post">
-            <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
+            <table th:if="${isConfirmed}" border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
                 <tr>
                     <td>Название проекта</td>
                     <td>
@@ -56,10 +58,10 @@
                     </td>
                 </tr>
             </table>
-            <button id="btn-save" type="submit" th:disabled="${projectDto.id!=null}">Сохранить</button>
+            <button id="btn-save" type="submit" th:if="${isConfirmed}" th:disabled="${projectDto.id!=null}">Сохранить</button>
         </form>
         <form th:action="@{calculator/clear}" method="post">
-            <button id="btn-clear" type="submit" th:disabled="${projectDto.id==null}">Сброс</button>
+            <button id="btn-clear" type="submit" th:if="${isConfirmed}" th:disabled="${projectDto.id==null}">Сброс</button>
         </form>
     </div>
     <!--  part-2  -->
@@ -223,9 +225,9 @@
                     <span class="bg_circle" style="background: rgb(122, 214, 211);">4</span>
                     Выбор опций увлажнителя
                 </h1>
-                <span th:if="${idSelectHumidifier!=null}">Выберите увлажнитель</span>
+                <span th:if="${idSelectHumidifier==null}">Выберите увлажнитель</span>
                 <form th:action="@{calculator/estimate}" method="post">
-                    <table id="table_option" border="1" class="table table-hover-option">
+                    <table th:if="${idSelectHumidifier!=null}" id="table_option" border="1" class="table table-hover-option">
                         <thead id="thead_option">
                         <tr>
                             <td>№</td>
@@ -274,7 +276,9 @@
                             </td>
                         </tr>
                     </table>
-                    <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" type="submit">Смета</button>
+                    <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" name="action" value="show" type="submit">Посмотреть</button>
+                    <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" name="action" value="send" type="submit">Отправить на почту</button>
+                    <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" name="action" value="show-and-send" type="submit">Посмотреть и отправить</button>
                 </form>
             </div>
         </div>
