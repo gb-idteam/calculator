@@ -9,6 +9,7 @@ import org.springframework.format.annotation.NumberFormat;
 import ru.systemairac.calculator.myenum.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "tech_data")
-public class TechData {
+public class TechData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

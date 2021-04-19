@@ -9,6 +9,7 @@ import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "humidifier")
-public class Humidifier {
+public class Humidifier implements Serializable {
 
     /**
      * Идентификатор в таблице.

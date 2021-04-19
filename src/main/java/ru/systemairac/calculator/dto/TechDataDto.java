@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
 import ru.systemairac.calculator.myenum.*;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TechDataDto {
+public class TechDataDto implements Serializable {
     private Long id;
     private Integer airFlow;
     @NumberFormat(pattern = "###")

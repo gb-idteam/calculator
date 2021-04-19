@@ -10,6 +10,7 @@ import ru.systemairac.calculator.myenum.ConverterHumidifierComponentType;
 import ru.systemairac.calculator.myenum.HumidifierComponentType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity(name = "humidifier_component")
 @Table(name = "humidifier_component")
-public class HumidifierComponent {
+public class HumidifierComponent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

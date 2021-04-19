@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Project;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserDto implements Serializable {
     private String password;
     private String fullName;
     private String nameCompany;

@@ -174,7 +174,7 @@
         </h1>
         <span th:if="${humidifiers == null}">Расчет не выполненен</span>
         <form th:action="@{calculator/selectHumidifier}" method="post">
-            <table border="1" th:if="${humidifiers ==null}" class="table table-hover" id = "table_humidifier">
+            <table border="1" th:object="${humidifiers}" class="table table-hover" id = "table_humidifier">
                 <thead>
                 <tr>
                     <td>№</td>
@@ -222,8 +222,9 @@
                     <span class="bg_circle" style="background: rgb(122, 214, 211);">4</span>
                     Выбор опций увлажнителя
                 </h1>
+                <span th:if="${idSelectHumidifier!=null}">Выберите увлажнитель</span>
                 <form th:action="@{calculator/estimate}" method="post">
-                    <table id="table_option" border="1" class="table table-hover-option" th:if="${idSelectHumidifier!=null}">
+                    <table id="table_option" border="1" class="table table-hover-option">
                         <thead id="thead_option">
                         <tr>
                             <td>№</td>
@@ -247,7 +248,7 @@
                             <td th:text="*{title}">тип</td>
                             <td class="distributor_price" th:text="*{price}">0</td>
                         </tr>
-                        <tr id="tr_option" th:if="${options== null}" th:each ="instance : ${options.get(idSelectHumidifier)}">
+                        <tr id="tr_option" th:each ="instance : ${options.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
                                     <input type="checkbox" name="selectedOptions" th:value="${instance.id}">

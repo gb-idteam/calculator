@@ -8,6 +8,7 @@ import ru.systemairac.calculator.domain.Brand;
 import ru.systemairac.calculator.domain.Image;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "vapor_distributor")
-public class VaporDistributor {
+public class VaporDistributor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

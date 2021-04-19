@@ -6,12 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.systemairac.calculator.domain.Image;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VaporDistributorDto {
+public class VaporDistributorDto implements Serializable {
     private Long id;
     private Image image;
     private String articleNumber;

@@ -35,14 +35,6 @@ public class MainController {
     private final HumidifierComponentService humidifierComponentService;
     private final HumidifierService humidifierService;
     private final FileService fileService;
-    // Для тестирования
-    private TechDataDto techDataDto = TechDataDto.builder().
-            airFlow(500).
-            tempIn(20.0).
-            humIn(1.0).
-            voltage(EnumVoltageType.ONE_PHASE_220V).
-            humOut(60.0).
-            build();
     private final PDDocumentService pdDocumentService;
 
     public MainController(ProjectService projectService, UserService userService, CalculationService calculationService, TechDataService techDataService, ProjectRepository projectRepository, ImageService imageService, EstimateService estimateService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService, FileService fileService, PDDocumentService pdDocumentService) {
@@ -67,20 +59,23 @@ public class MainController {
             projects = projectService.findByUser(user);
             isConfirmed = user.isConfirmed();
         }
+        // Для тестирования
+        TechDataDto techDataDto = TechDataDto.builder().
+                airFlow(500).
+                tempIn(20.0).
+                humIn(1.0).
+                voltage(EnumVoltageType.ONE_PHASE_220V).
+                humOut(60.0).
+                build();
 
         List<HumidifierDto> humidifiers = (List<HumidifierDto>) session.getAttribute("humidifiers");
         HashMap<Long, List<HumidifierComponentDto>> options = (HashMap<Long, List<HumidifierComponentDto>>) session.getAttribute("options");
         HashMap<Long, VaporDistributorDto> distributors = (HashMap<Long, VaporDistributorDto>) session.getAttribute("distributors");
         Long idSelectHumidifier = (Long) session.getAttribute("idSelectHumidifier");
-        HumidifierDto selectedHumidifier=new HumidifierDto();
         ProjectDto projectDto= new ProjectDto();
-
-        if (idSelectHumidifier!=null)
-            selectedHumidifier = humidifierService.findById(idSelectHumidifier);
         Long idProject = (Long) session.getAttribute("projectId");
         if (idProject!=null)
             projectDto = projectService.findById(idProject);
-        TechDataDto techDataDto =this.techDataDto;
         Long idTechDataDto = (Long) session.getAttribute("techDataDtoId");
         if (idTechDataDto!=null)
             techDataDto = techDataService.findById(idTechDataDto);
@@ -89,7 +84,6 @@ public class MainController {
         model.addAttribute("humidifiers", humidifiers);
         model.addAttribute("projectDto", projectDto);
         model.addAttribute("idSelectHumidifier", idSelectHumidifier);
-        model.addAttribute("selectedHumidifier", selectedHumidifier);
         model.addAttribute("techDataDto", techDataDto);
         model.addAttribute("options", options);
         model.addAttribute("distributors", distributors);
@@ -122,7 +116,7 @@ public class MainController {
 
     @PostMapping("/selectHumidifier")
     public String selectHumidifier(@RequestParam(value = "idSelectHumidifier") Long idSelectHumidifier, HttpServletRequest request){
-        request.getSession().setAttribute("humidifierId",idSelectHumidifier);
+        request.getSession().setAttribute("idSelectHumidifier",idSelectHumidifier);
         return "redirect:/calculator";
     }
 
@@ -132,13 +126,12 @@ public class MainController {
         HashMap<Long, List<HumidifierComponentDto>> options;
         HashMap<Long, VaporDistributorDto> distributors;
         TechDataDto techData  = calculationService.calcPower(techDataDto);
-
         humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
         distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
         options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
         Long techDataDtoId = techDataService.save(techData, (Long) request.getSession().getAttribute("calcId"));
-
-        request.getSession().setAttribute("techDataDtoId",techDataDto.getId());
+        request.getSession().setAttribute("humidifiers",humidifiers);
+        request.getSession().setAttribute("techDataDtoId",techDataDtoId);
         request.getSession().setAttribute("distributors",distributors);
         request.getSession().setAttribute("options",options);
         return "redirect:/calculator";
@@ -149,9 +142,20 @@ public class MainController {
                                  HttpServletRequest request,
                                  @RequestParam(value = "selectedOptions" , required = false) Long[] idSelectedOptions,
                                  @RequestParam(value = "selectedDistributor" , required = false) Long idDistributor) throws IOException {
-        Long idSelectHumidifier = (Long) request.getSession().getAttribute("humidifierId");
+        Long idSelectHumidifier = (Long) request.getSession().getAttribute("idSelectHumidifier");
         Long idCalculation = (Long) request.getSession().getAttribute("calcId");
         Long idProject = (Long) request.getSession().getAttribute("projectId");
+        Long idTechDataDto = (Long) request.getSession().getAttribute("techDataDtoId");
+        if (idSelectHumidifier==null || idCalculation==null || idProject==null || idTechDataDto==null) {
+            throw new NullPointerException(
+                    String.format("Нулевое значение одного из параметров: " +
+                            "idSelectHumidifier= %d или idProject=%d или idCalculation=%d или idTechDataDto=%d",
+                            idSelectHumidifier,
+                            idProject,
+                            idCalculation,
+                            idTechDataDto));
+        }
+        TechDataDto techDataDto = techDataService.findById(idTechDataDto);
         ProjectDto projectDto = projectService.findById(idProject);
         EstimateDto estimateDto = estimateService.save(idCalculation,idSelectHumidifier,idSelectedOptions,idDistributor);
         PDDocument document = pdDocumentService.toPDDocument(userService.getByEmail(principal.getName()),
@@ -168,7 +172,7 @@ public class MainController {
         request.getSession().setAttribute("techDataDto",new TechDataDto());
         request.getSession().setAttribute("projectId",null);
         request.getSession().setAttribute("calcId",null);
-        request.getSession().setAttribute("techDataDtoId",techDataDto.getId());
+        request.getSession().setAttribute("techDataDtoId",null);
         request.getSession().setAttribute("humidifiers",new ArrayList<>());
         request.getSession().setAttribute("distributors",new HashMap<>());
         request.getSession().setAttribute("options",new HashMap<>());

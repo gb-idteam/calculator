@@ -8,13 +8,14 @@ import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.myenum.EnumHumidifierType;
 import ru.systemairac.calculator.myenum.EnumVoltageType;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class HumidifierDto {
+public class HumidifierDto implements Serializable {
     private Long id;
     private String title;
     private Image image;
