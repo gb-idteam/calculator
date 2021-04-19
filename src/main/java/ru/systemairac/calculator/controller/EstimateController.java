@@ -65,11 +65,11 @@ public class EstimateController {
         String path = fileService.savePDDocument(document,projectDto.getId());
         switch (action) {
             case SHOW:
-                return "redirect:/"+SHOW+"/file/" + path;
+                return "redirect:/file/" +SHOW+ "/" + path;
             case SEND:
-                return "redirect:/"+SEND+"/file/" + path;
+                return "redirect:/file/" +SEND+ "/" + path;
             case SHOW_AND_SEND:
-                return "redirect:/"+SHOW_AND_SEND+"/file/" + path;
+                return "redirect:/file/" +SHOW_AND_SEND+ "/" + path;
         }
         return "redirect:/calculator/estimate";
     }
