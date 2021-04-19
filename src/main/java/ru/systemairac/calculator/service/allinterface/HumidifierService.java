@@ -7,7 +7,6 @@ import ru.systemairac.calculator.myenum.EnumVoltageType;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 public interface HumidifierService {
     List<Humidifier> findHumidifiersByIds(List<Long> ids);

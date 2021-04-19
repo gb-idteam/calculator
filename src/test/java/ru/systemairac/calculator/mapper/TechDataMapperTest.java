@@ -33,7 +33,7 @@ class TechDataMapperTest {
         assertEquals(techDataDto.getEnumHumidifierType(), techData.getEnumHumidifierType());
         assertEquals(techDataDto.getTypeMontage(), techData.getTypeMontage());
         assertEquals(techDataDto.getVoltage(), techData.getVoltage());
-        assertEquals(techDataDto.getLength(), techData.getLength());
+        assertEquals(techDataDto.getHeight(), techData.getHeight());
         assertEquals(techDataDto.getWidth(), techData.getWidth());
         assertEquals(techDataDto.getCalcCapacity(), techData.getCalcCapacity());
     }

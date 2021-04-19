@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="statico/js/script.js"></script>
 </head>
 
 <body style="height: 100%" id="body-tag" >
@@ -31,7 +32,7 @@
                 <td>Выбор существующего проекта</td>
                 <td>
                     <form th:action="@{calculator/project/select}" method="post">
-                        <select name = "idSelectedProject" class="send_ajax selectpicker">
+                        <select name = "idSelectedProject" class="send_ajax selectpicker" >
                             <option th:each="r : ${projects}" th:value="${r.id}" th:text="${r.title}"></option>
                         </select>
                     </form>
@@ -133,12 +134,12 @@
                     <td colspan="2">
                         <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.myenum.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
                             <tr>
-                                <td>Длина</td>
                                 <td>Ширина</td>
+                                <td>Высота</td>
                             </tr>
                             <tr>
-                                <td><input type="number" th:field="${techDataDto.length}" th:disabled="${projectDto.title==null || projectDto.address==null}"/></td>
-                                <td><input type="number" th:field="${techDataDto.width}" th:disabled="${projectDto.title==null || projectDto.address==null}"/></td>
+                                <td><input type="number" value="1000" th:field="${techDataDto.width}" th:disabled="${projectDto.title==null || projectDto.address==null}"/></td>
+                                <td><input type="number" value="500" th:field="${techDataDto.height}" th:disabled="${projectDto.title==null || projectDto.address==null}"/></td>
                         </table>
                     </td>
                 </tr>
@@ -282,7 +283,6 @@
 </div>
 </body>
 <!-- Optional JavaScript -->
-<script type="text/javascript" src="statico/js/script.js"></script>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"

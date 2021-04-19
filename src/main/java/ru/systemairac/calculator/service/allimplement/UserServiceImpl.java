@@ -16,7 +16,10 @@ import ru.systemairac.calculator.service.allinterface.UserService;
 
 import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service

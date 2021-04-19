@@ -6,13 +6,10 @@ import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
 import ru.systemairac.calculator.mapper.HumidifierComponentMapper;
-import ru.systemairac.calculator.myenum.HumidifierComponentType;
 import ru.systemairac.calculator.repository.HumidifierComponentRepository;
 import ru.systemairac.calculator.repository.humidifier.HumidifierRepository;
 import ru.systemairac.calculator.service.allinterface.HumidifierComponentService;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;

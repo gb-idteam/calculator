@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.NumberFormat;
-import ru.systemairac.calculator.myenum.*;
+import ru.systemairac.calculator.myenum.EnumHumidifierType;
+import ru.systemairac.calculator.myenum.EnumVoltageType;
+import ru.systemairac.calculator.myenum.TypeMontage;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -48,7 +50,7 @@ public class TechData implements Serializable {
     @Enumerated(EnumType.STRING)
     private EnumVoltageType voltage;
 
-    private int length;
+    private int height;
 
     private int width;
 
@@ -68,7 +70,7 @@ public class TechData implements Serializable {
                 ", enumHumidifierType=" + enumHumidifierType +
                 ", typeMontage=" + typeMontage +
                 ", voltage=" + voltage +
-                ", length=" + length +
+                ", length=" + height +
                 ", width=" + width +
                 ", calcCapacity=" + calcCapacity +
                 ", date=" + date +

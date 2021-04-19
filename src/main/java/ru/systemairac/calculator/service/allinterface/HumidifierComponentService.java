@@ -1,6 +1,5 @@
 package ru.systemairac.calculator.service.allinterface;
 
-import ru.systemairac.calculator.domain.humidifier.Humidifier;
 import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
 import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;

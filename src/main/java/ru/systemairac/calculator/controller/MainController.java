@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.*;
-import ru.systemairac.calculator.myenum.EnumVoltageType;
-import ru.systemairac.calculator.service.allinterface.*;
+import ru.systemairac.calculator.repository.UserRepository;
+import ru.systemairac.calculator.service.allinterface.ProjectService;
+import ru.systemairac.calculator.service.allinterface.TechDataService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,52 +23,73 @@ import java.util.List;
 @Controller
 public class MainController {
     private final ProjectService projectService;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final TechDataService techDataService;
 
-    public MainController(ProjectService projectService, UserService userService, TechDataService techDataService) {
+    public MainController(ProjectService projectService, UserRepository userRepository, TechDataService techDataService) {
         this.projectService = projectService;
-        this.userService = userService;
+        this.userRepository = userRepository;
         this.techDataService = techDataService;
     }
 
     @RequestMapping({"","/"})
     public String index(Model model, Principal principal, HttpSession session){
-        boolean isConfirmed = false;
-        List<ProjectDto> projects = new ArrayList<>();
-        if (principal!=null) {
-            User user = userService.findByEmail( principal.getName() ).orElseThrow();
-            projects = projectService.findByUser(user);
-            isConfirmed = user.isConfirmed();
-        }
-        // Для тестирования
-        TechDataDto techDataDto = TechDataDto.builder().
-                airFlow(500).
-                tempIn(20.0).
-                humIn(1.0).
-                voltage(EnumVoltageType.ONE_PHASE_220V).
-                humOut(60.0).
-                build();
-        List<HumidifierDto> humidifiers = (List<HumidifierDto>) session.getAttribute("humidifiers");
-        HashMap<Long, List<HumidifierComponentDto>> options = (HashMap<Long, List<HumidifierComponentDto>>) session.getAttribute("options");
+        addProjectsAndConfirmed(model, principal);
+        addTechData(model, session);
+        addThisProject(model, session);
+        addHumidifier(model, session);
+        addSelectedHumidifier(model, session);
+        addOptions(model, session);
+        addDistributors(model, session);
+        return "calculator";
+    }
+
+    private void addDistributors(Model model, HttpSession session) {
         HashMap<Long, VaporDistributorDto> distributors = (HashMap<Long, VaporDistributorDto>) session.getAttribute("distributors");
+        model.addAttribute("distributors", distributors);
+    }
+
+    private void addSelectedHumidifier(Model model, HttpSession session) {
         Long idSelectHumidifier = (Long) session.getAttribute("idSelectHumidifier");
+        model.addAttribute("idSelectHumidifier", idSelectHumidifier);
+    }
+
+    private void addOptions(Model model, HttpSession session) {
+        HashMap<Long, List<HumidifierComponentDto>> options = (HashMap<Long, List<HumidifierComponentDto>>) session.getAttribute("options");
+        model.addAttribute("options", options);
+    }
+
+    private void addHumidifier(Model model, HttpSession session) {
+        List<HumidifierDto> humidifiers = (List<HumidifierDto>) session.getAttribute("humidifiers");
+        model.addAttribute("humidifiers", humidifiers);
+    }
+
+    private void addThisProject(Model model, HttpSession session) {
         ProjectDto projectDto= new ProjectDto();
         Long idProject = (Long) session.getAttribute("projectId");
         if (idProject!=null)
             projectDto = projectService.findById(idProject);
+        model.addAttribute("projectDto", projectDto);
+    }
+
+    private void addTechData(Model model, HttpSession session) {
+        TechDataDto techDataDto = new TechDataDto();
         Long idTechDataDto = (Long) session.getAttribute("techDataDtoId");
         if (idTechDataDto!=null)
             techDataDto = techDataService.findById(idTechDataDto);
+        model.addAttribute("techDataDto", techDataDto);
+    }
+
+    private void addProjectsAndConfirmed(Model model, Principal principal) {
+        boolean isConfirmed = false;
+        List<ProjectDto> projects = new ArrayList<>();
+        if (principal !=null) {
+            User user = userRepository.findByEmail(principal.getName() );
+            projects = projectService.findByUser(user);
+            isConfirmed = user.isConfirmed();
+        }
         model.addAttribute("isConfirmed", isConfirmed);
         model.addAttribute("projects", projects);
-        model.addAttribute("humidifiers", humidifiers);
-        model.addAttribute("projectDto", projectDto);
-        model.addAttribute("idSelectHumidifier", idSelectHumidifier);
-        model.addAttribute("techDataDto", techDataDto);
-        model.addAttribute("options", options);
-        model.addAttribute("distributors", distributors);
-        return "calculator";
     }
 
     @PostMapping("/clear")

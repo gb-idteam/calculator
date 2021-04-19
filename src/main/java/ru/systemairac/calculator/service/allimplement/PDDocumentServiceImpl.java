@@ -105,7 +105,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         data = new String[][]{
                 {"Парораспределитель в:", techDataDto.getTypeMontage().getTxt()},
                 {"Ширина (мм)", String.valueOf(techDataDto.getWidth())},
-                {"Высота (мм)", String.valueOf(techDataDto.getLength())}
+                {"Высота (мм)", String.valueOf(techDataDto.getHeight())}
         };
 
         float yPositionLeft = yPosition;
@@ -114,7 +114,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         drawTable(table, font, name, data);
         yPositionLeft -= table.getHeaderAndDataHeight() + marginBetweenTables;
-        Double velocity = Double.valueOf(techDataDto.getAirFlow())/ (Double.valueOf(techDataDto.getWidth())/1000 * Double.valueOf(techDataDto.getLength())/1000)/3600;
+        Double velocity = Double.valueOf(techDataDto.getAirFlow())/ (Double.valueOf(techDataDto.getWidth())/1000 * Double.valueOf(techDataDto.getHeight())/1000)/3600;
         name = "Информация по увлажнению";
         data = new String[][]{
                 {"Температура увлажнения (°С)", String.format("%.1f", techDataDto.getTempIn())},

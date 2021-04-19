@@ -1,12 +1,12 @@
 package ru.systemairac.calculator.service.allinterface;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import ru.systemairac.calculator.domain.User;
-import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
-import ru.systemairac.calculator.dto.*;
+import ru.systemairac.calculator.dto.EstimateDto;
+import ru.systemairac.calculator.dto.ProjectDto;
+import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.dto.UserDto;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface PDDocumentService {
 

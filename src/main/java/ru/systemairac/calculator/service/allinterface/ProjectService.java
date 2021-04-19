@@ -1,11 +1,8 @@
 package ru.systemairac.calculator.service.allinterface;
 
-import org.springframework.stereotype.Service;
-import ru.systemairac.calculator.domain.Calculation;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.dto.ProjectDto;
-import ru.systemairac.calculator.dto.TechDataDto;
 
 import java.util.List;
 

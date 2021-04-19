@@ -86,7 +86,7 @@ CREATE TABLE tech_data (
                     enum_humidifier_type VARCHAR(255),
                     hum_in DOUBLE PRECISION NOT NULL,
                     hum_out DOUBLE PRECISION NOT NULL,
-                    length INTEGER NOT NULL,
+                    height INTEGER NOT NULL,
                     temp_in DOUBLE PRECISION NOT NULL,
                     type_montage VARCHAR(255),
                     voltage VARCHAR(255),

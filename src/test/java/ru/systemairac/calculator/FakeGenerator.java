@@ -58,7 +58,7 @@ public class FakeGenerator {
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
                 .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
                 .width(random.nextInt(1000))
-                .length(random.nextInt(1000))
+                .height(random.nextInt(1000))
                 .build();
     }
 
@@ -75,7 +75,7 @@ public class FakeGenerator {
                 .typeMontage(TypeMontage.values()[random.nextInt(TypeMontage.values().length)])
                 .voltage(EnumVoltageType.values()[random.nextInt(EnumVoltageType.values().length)])
                 .width(random.nextInt(1000))
-                .length(random.nextInt(1000))
+                .height(random.nextInt(1000))
                 .build();
     }
 

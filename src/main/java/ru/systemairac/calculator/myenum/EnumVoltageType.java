@@ -1,7 +1,7 @@
 package ru.systemairac.calculator.myenum;
 
 public enum EnumVoltageType {
-    ONE_PHASE_220V("1~220"), THREE_PHASE_380V("3~380");
+    THREE_PHASE_380V("3~380"),ONE_PHASE_220V("1~220");
     private final String txt;
 
     EnumVoltageType(String txt) {

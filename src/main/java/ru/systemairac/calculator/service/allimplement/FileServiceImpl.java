@@ -1,15 +1,11 @@
 package ru.systemairac.calculator.service.allimplement;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.hibernate.id.UUIDGenerator;
 import org.springframework.stereotype.Service;
 import ru.systemairac.calculator.domain.FileEntity;
 import ru.systemairac.calculator.domain.Project;
-import ru.systemairac.calculator.domain.User;
 import ru.systemairac.calculator.repository.FileRepository;
 import ru.systemairac.calculator.repository.ProjectRepository;
-import ru.systemairac.calculator.repository.UserRepository;
 import ru.systemairac.calculator.service.allinterface.FileService;
 
 import java.io.File;
