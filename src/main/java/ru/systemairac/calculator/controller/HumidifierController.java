@@ -1,27 +1,56 @@
 package ru.systemairac.calculator.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.systemairac.calculator.dto.HumidifierComponentDto;
 import ru.systemairac.calculator.dto.HumidifierDto;
-import ru.systemairac.calculator.service.allinterface.HumidifierService;
+import ru.systemairac.calculator.dto.TechDataDto;
+import ru.systemairac.calculator.dto.VaporDistributorDto;
+import ru.systemairac.calculator.service.allinterface.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-@RequestMapping("/humidifier")
+@RequestMapping("calculator/humidifier")
 @Controller
 public class HumidifierController {
-    @Autowired
-    private HumidifierService humidifierService;
+    private final CalculationService calculationService;
+    private final TechDataService techDataService;
+    private final HumidifierComponentService humidifierComponentService;
+    private final HumidifierService humidifierService;
 
-    public HumidifierController(HumidifierService humidifierService) {
+    public HumidifierController(CalculationService calculationService, TechDataService techDataService, HumidifierComponentService humidifierComponentService, HumidifierService humidifierService) {
+        this.calculationService = calculationService;
+        this.techDataService = techDataService;
+        this.humidifierComponentService = humidifierComponentService;
         this.humidifierService = humidifierService;
     }
+
+    @PostMapping("/select")
+    public String selectHumidifier(@RequestParam(value = "idSelectHumidifier") Long idSelectHumidifier, HttpServletRequest request){
+        request.getSession().setAttribute("idSelectHumidifier",idSelectHumidifier);
+        return "redirect:/calculator";
+    }
+
+    @PostMapping("/calculation")
+    public String calcAndGetHumidifier(TechDataDto techDataDto, HttpServletRequest request){
+        List<HumidifierDto> humidifiers = new ArrayList<>();
+        TechDataDto techData  = calculationService.calcPower(techDataDto);
+        humidifiers.addAll(calculationService.getHumidifiers(techDataDto));
+        HashMap<Long, VaporDistributorDto> distributors = calculationService.getDistributors(techDataDto.getWidth(),humidifiers);
+        HashMap<Long, List<HumidifierComponentDto>> options = humidifierComponentService.getAllComponentByHumidifiers(humidifiers);
+        Long techDataDtoId = techDataService.save(techData, (Long) request.getSession().getAttribute("calcId"));
+        request.getSession().setAttribute("humidifiers",humidifiers);
+        request.getSession().setAttribute("techDataDtoId",techDataDtoId);
+        request.getSession().setAttribute("distributors",distributors);
+        request.getSession().setAttribute("options",options);
+        return "redirect:/calculator";
+    }
+
 
     @GetMapping
     public String humidifierList(Model model) {

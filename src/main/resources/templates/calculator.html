@@ -30,7 +30,7 @@
             <tr th:if="${projects.size() > 0}">
                 <td>Выбор существующего проекта</td>
                 <td>
-                    <form th:action="@{calculator/selectProject}" method="post">
+                    <form th:action="@{calculator/project/select}" method="post">
                         <select name = "idSelectedProject" class="send_ajax selectpicker">
                             <option th:each="r : ${projects}" th:value="${r.id}" th:text="${r.title}"></option>
                         </select>
@@ -38,7 +38,7 @@
                 </td>
             </tr>
         </table>
-        <form th:action="@{calculator/saveProject}" th:object="${projectDto}" method="post">
+        <form th:action="@{calculator/project/save}" th:object="${projectDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="input-info-table" width="100%">
                 <tr>
                     <td>Название проекта</td>
@@ -68,7 +68,7 @@
             <span class="bg_circle" style="background: rgb(122, 214, 211);">2</span>
             Ввод технических данных
         </h1>
-        <form th:action="@{calculator/calc}" th:object="${techDataDto}" method="post">
+        <form th:action="@{calculator/humidifier/calculation}" th:object="${techDataDto}" method="post">
             <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
                 <tr>
 
@@ -173,7 +173,7 @@
             Выбор увлажнителя
         </h1>
         <span th:if="${humidifiers == null}">Расчет не выполненен</span>
-        <form th:action="@{calculator/selectHumidifier}" method="post">
+        <form th:action="@{calculator/humidifier/select}" method="post">
             <table border="1" th:object="${humidifiers}" class="table table-hover" id = "table_humidifier">
                 <thead>
                 <tr>
@@ -237,7 +237,7 @@
                         <tr id="tr_distributor" th:if="${distributors.get(idSelectHumidifier)!=null}" th:object = "${distributors.get(idSelectHumidifier)}">
                             <td>
                                 <label class="container">
-                                    <input type="checkbox" name="selectedDistributor" th:if="${distributors ==null}" th:value="*{id}">
+                                    <input type="checkbox" name="selectedDistributor" th:if="${distributors!=null}" th:value="*{id}">
                                     <span class="checkmark"></span>
                                 </label>
                             </td>
