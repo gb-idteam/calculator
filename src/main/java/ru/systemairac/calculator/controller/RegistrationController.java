@@ -9,7 +9,6 @@ import ru.systemairac.calculator.dto.UserDto;
 import ru.systemairac.calculator.service.allinterface.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-
 @Controller
 public class RegistrationController {
 

@@ -16,7 +16,8 @@ public class AppErrorController implements ErrorController {
 
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
-            String message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE).toString();
+            Object messageObj = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
+            String message = messageObj.toString();
             model.addAttribute("message", message);
             model.addAttribute("status", statusCode);
             return "myError";

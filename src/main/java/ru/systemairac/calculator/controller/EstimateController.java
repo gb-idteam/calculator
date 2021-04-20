@@ -67,7 +67,7 @@ public class EstimateController {
             case SHOW:
                 return "redirect:/file/" +SHOW+ "/" + path;
             case SEND:
-                return "redirect:/file/" +SEND+ "/" + path;
+                return "calculator";
             case SHOW_AND_SEND:
                 return "redirect:/file/" +SHOW_AND_SEND+ "/" + path;
         }

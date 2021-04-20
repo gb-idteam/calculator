@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("calculator")
+@RequestMapping("/calculator")
 @Controller
 public class MainController {
     private final ProjectService projectService;

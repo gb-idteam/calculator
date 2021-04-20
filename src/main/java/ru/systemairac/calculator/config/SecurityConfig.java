@@ -11,12 +11,19 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.systemairac.calculator.myenum.RoleName;
 import ru.systemairac.calculator.service.allinterface.UserService;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -64,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("calculator").authenticated()
+                .antMatchers("/calculator").authenticated()
                 .antMatchers("adminForm").hasAnyAuthority(RoleName.ADMIN.name())
                 .antMatchers("/script.js").permitAll()
                 .anyRequest().permitAll()
@@ -72,11 +79,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/auth")
+                    .successForwardUrl("/calculator")
                     .failureUrl("/login-error")
                     .permitAll()
                 .and()
                     .logout().logoutRequestMatcher(new AntPathRequestMatcher ("/logout"))
-                    .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/login").deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                 .and()
                     .csrf().disable();
