@@ -75,3 +75,22 @@ $(document).ready(function() {
         calcSummaryPrice();
     });
 });
+
+
+// Работа с recaptcha
+var captcha = grecaptcha.getResponse();
+
+if (!captcha.length) {
+    $('#recaptchaError').text('* You did not pass check "I am not a robot"');
+} else {
+    $('#recaptchaError').text('');
+}
+if ((formValid) && (captcha.length)) {
+    // добавить в formData значение 'g-recaptcha-response'=значение_recaptcha
+    formData.append('g-recaptcha-response', captcha);
+}
+grecaptcha.reset();
+
+if ($data.msg) {
+    $('#recaptchaError').text($data.msg);
+}
