@@ -14,27 +14,27 @@
 <body>
 
 <div th:fragment="navigation(activeTab)">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item" th:classappend="${activeTab == 'About' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{'/'}" th:text="#{nav.about}"></a>
+                    <a class="nav-link" th:href="@{''}" th:text="#{nav.about}"></a>
                 </li>
                 <li class="nav-item" th:classappend="${activeTab == 'Calculator' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{'/'}" th:text="#{nav.calculator}"></a>
+                    <a class="nav-link" th:href="@{'/calculator'}" th:text="#{nav.calculator}"></a>
                 </li>
                 <li class="nav-item" th:classappend="${activeTab == 'Reference' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{'/'}" th:text="#{nav.reference}"></a>
+                    <a class="nav-link" th:href="@{''}" th:text="#{nav.reference}"></a>
                 </li>
                 <li class="nav-item" th:classappend="${activeTab == 'Contacts' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{'/'}" th:text="#{nav.contacts}"></a>
+                    <a class="nav-link" th:href="@{''}" th:text="#{nav.contacts}"></a>
                 </li>
 
-<!--                <li sec:authorize="isAuthenticated()" class="nav-item">-->
-<!--                    <form th:action="@{/logout}" method="POST">-->
-<!--                        <button id="navLogout" class="btn btn-outline-secondary" type="submit"  th:text="#{nav.logout}"></button>-->
-<!--                    </form>-->
-<!--                </li>-->
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/logout}" method="POST">
+                        <button id="navLogout" class="btn btn-outline-secondary" type="submit"  th:text="#{nav.logout}"></button>
+                    </form>
+                </li>
 
                 <li sec:authorize="isAnonymous()" class="nav-item">
                     <form class="align-middle" th:action="@{/authenticate}" method="POST">
@@ -48,9 +48,9 @@
                     </form>
                 </li>
 
-<!--                <li sec:authorize="isAnonymous()" class="nav-item">-->
-<!--                    <a class="btn btn-outline-primary" th:href="@{/register}" th:text="'Registration'" />-->
-<!--                </li>-->
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a class="btn btn-outline-primary" th:action="@{/register}" th:text="#{nav.register}" />
+                </li>
 
                 <div class="dropdown" style="margin-left: 10px;">
                     <button class="btn btn-outline-secondary dropdown-toggle" th:text="#{nav.lang}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
