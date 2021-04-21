@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/auth")
-                    .successForwardUrl("/calculator")
+                    .successHandler(new MyCustomLoginSuccessHandler("/calculator"))
                     .failureUrl("/login-error")
                     .permitAll()
                 .and()
