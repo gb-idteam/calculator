@@ -218,3 +218,50 @@ input[type=text]::placeholder, input[type=password]::placeholder {
 #icon {
     width:60%;
 }
+
+/* затемнение фона */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 186, 0, 0.7);
+    z-index: 100;
+}
+
+/* всплывающее окно */
+.popWindow{
+    display: none;
+    background-color: #161613;
+    color: #fff;
+    width: 90%;
+    max-width: 720px;
+    padding: 40px 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -360px;
+    margin-top: -185px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(18, 17, 12, 0.5);
+}
+
+/* адаптивность всплывающего окна */
+@media only screen and (max-width : 800px) {
+    .popWindow {
+        margin-left: -45%;
+    }
+}
+/* закрыть всплывающее окно */
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 40px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #999;
+    padding: 10px;
+}
