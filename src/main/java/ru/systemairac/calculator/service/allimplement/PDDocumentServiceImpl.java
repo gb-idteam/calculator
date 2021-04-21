@@ -148,24 +148,21 @@ public class PDDocumentServiceImpl implements PDDocumentService {
         yPosition = Math.min(yPositionLeft, yPositionRight);
 
         name = "Результаты расчета увлажнения";
+        String vaporTitle = String.format("%d %s ø:%dmm L:%dmm",
+                estimateDto.getHumidifier().getNumberOfCylinders(), // число дисперсионных трубок
+                "Дисперсионная трубка", // разные данные для разных чисел
+                estimateDto.getHumidifier().getVaporPipeDiameter(), // диаметр трубок
+                techDataDto.getWidth());
         data = new String[][]{
                 { "Тип увлажнения",
-                        String.format("1 x %s, %.1f kg/h, %sV %.2f kW - %.1f€",
+                        String.format("1 x %s, %.1f kg/h, %sV %.2f kW",
                                 estimateDto.getHumidifier().getTitle(),
                                 estimateDto.getHumidifier().getCapacity(),
                                 estimateDto.getHumidifier().getVoltage().getTxt(),
-                                estimateDto.getHumidifier().getElectricPower(),
-                                estimateDto.getHumidifier().getPrice()
+                                estimateDto.getHumidifier().getElectricPower()
                         )
                 },
-                { "Тип распыления",
-                        String.format("%d %s ø:%dmm L:%dmm",
-                                estimateDto.getHumidifier().getNumberOfCylinders(), // число дисперсионных трубок
-                                "Дисперсионная трубка", // разные данные для разных чисел
-                                estimateDto.getHumidifier().getVaporPipeDiameter(), // диаметр трубок
-                                techDataDto.getWidth() // длина трубок //TODO исправить
-                        )
-                }// нужно передавать в метод данные о компонентах
+                { "Тип распыления",vaporTitle }
         };
 
         table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
@@ -203,27 +200,46 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         yPosition = 650;
 
-        name = null;
+        name = "Смета";
 
         List<String[]> prices = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
+        Integer nymberOfCylinders = estimateDto.getHumidifier().getNumberOfCylinders();
         total = total.add(estimateDto.getHumidifier().getPrice());
-        prices.add(new String[] {"Наименование товара", "Цена"});
-        prices.add(new String[] {estimateDto.getHumidifier().getTitle(), estimateDto.getHumidifier().getPrice().toString()});
-        for (HumidifierComponent component : estimateDto.getHumidifierComponents()) {
-            total = total.add(component.getPrice());
-            prices.add(new String[] {component.getType().getTxt() + " " + component.getArticleNumber(), component.getPrice().toString()});
-        }
+        prices.add(new String[] {"Артикул","Наименование товара","Количество", "Цена"});
+        prices.add(new String[]
+                {
+                        estimateDto.getHumidifier().getArticleNumber(),
+                        estimateDto.getHumidifier().getTitle(),
+                        "1",
+                        estimateDto.getHumidifier().getPrice().toString()  + " €"
+                });
         VaporDistributor vaporDistributor = estimateDto.getVaporDistributor();
         if (vaporDistributor != null) {
-            prices.add(new String[]{vaporDistributor.getTitle(), vaporDistributor.getPrice().toString()});
-            total = total.add(vaporDistributor.getPrice());
+            prices.add(new String[]
+                    {
+                            vaporDistributor.getArticleNumber(),
+                            vaporTitle,
+                            nymberOfCylinders.toString(),
+                            vaporDistributor.getPrice().toString()  + " €"
+                    });
+            total = total.add(vaporDistributor.getPrice().multiply(new BigDecimal(nymberOfCylinders)));
         }
-        prices.add(new String[]{"Итого: " + total});
+        for (HumidifierComponent component : estimateDto.getHumidifierComponents()) {
+            total = total.add(component.getPrice());
+            prices.add(new String[]
+                    {
+                            component.getArticleNumber(),
+                            component.getType().getTxt(),
+                            "1",
+                            component.getPrice().toString()  + " €"
+                    });
+        }
+        prices.add(new String[]{"Итого: " + total + " €"});
 
         data = prices.toArray(new String[0][0]);
 
-        table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
+        table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, true, true);
 
         drawTable(table, font, name, data);
         yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
