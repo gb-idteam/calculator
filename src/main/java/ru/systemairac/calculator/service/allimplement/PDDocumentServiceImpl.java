@@ -9,6 +9,8 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Service;
+import ru.systemairac.calculator.domain.humidifier.HumidifierComponent;
+import ru.systemairac.calculator.domain.humidifier.VaporDistributor;
 import ru.systemairac.calculator.dto.EstimateDto;
 import ru.systemairac.calculator.dto.ProjectDto;
 import ru.systemairac.calculator.dto.TechDataDto;
@@ -17,7 +19,10 @@ import ru.systemairac.calculator.service.allinterface.PDDocumentService;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PDDocumentServiceImpl implements PDDocumentService {
@@ -188,6 +193,40 @@ public class PDDocumentServiceImpl implements PDDocumentService {
                 200,
                 780
         );
+
+        contentStream.close();
+
+        myPage = new PDPage(PDRectangle.A4);
+        mainDocument.addPage(myPage);
+        contentStream = new PDPageContentStream(mainDocument, myPage);
+
+
+        yPosition = 650;
+
+        name = null;
+
+        List<String[]> prices = new ArrayList<>();
+        BigDecimal total = BigDecimal.ZERO;
+        total = total.add(estimateDto.getHumidifier().getPrice());
+        prices.add(new String[] {"Наименование товара", "Цена"});
+        prices.add(new String[] {estimateDto.getHumidifier().getTitle(), estimateDto.getHumidifier().getPrice().toString()});
+        for (HumidifierComponent component : estimateDto.getHumidifierComponents()) {
+            total = total.add(component.getPrice());
+            prices.add(new String[] {component.getType().getTxt() + " " + component.getArticleNumber(), component.getPrice().toString()});
+        }
+        VaporDistributor vaporDistributor = estimateDto.getVaporDistributor();
+        if (vaporDistributor != null) {
+            prices.add(new String[]{vaporDistributor.getTitle(), vaporDistributor.getPrice().toString()});
+            total = total.add(vaporDistributor.getPrice());
+        }
+        prices.add(new String[]{"Итого: " + total});
+
+        data = prices.toArray(new String[0][0]);
+
+        table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, false, true);
+
+        drawTable(table, font, name, data);
+        yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         contentStream.close();
 
