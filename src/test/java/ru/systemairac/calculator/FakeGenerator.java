@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.systemairac.calculator.domain.Image;
 import ru.systemairac.calculator.domain.Project;
 import ru.systemairac.calculator.domain.TechData;
 import ru.systemairac.calculator.domain.User;
@@ -91,6 +92,7 @@ public class FakeGenerator {
                 .numberOfCylinders(1 + random.nextInt(3)) // от 1 до 3
                 .vaporPipeDiameter(random.nextInt(31) + 15) // от 15 до 45
                 .price(BigDecimal.valueOf(random.nextInt(100_000_000) * 0.01)) // от 0 до 1_000_000
+                .image(new Image(fakeId(), "src/main/resources/static/img/humidifiers/ehu-1.png"))
                 .build();
     }
 
@@ -108,6 +110,7 @@ public class FakeGenerator {
                 .vaporDistributors(null) // TODO: пока без парораспределителей
                 .humidifierComponents(null) // TODO: пока без компонентов
                 .price(fakePrice(0, 50_000_000)) // от 0 до 500_000 рублей
+                .image(new Image(fakeId(), "src/main/resources/static/img/humidifiers/ehu-1.png"))
                 .build();
     }
 
