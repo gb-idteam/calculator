@@ -113,14 +113,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="column_title">Расход воздуха</td>
+                        <td class="column_title">Расход воздуха м³/ч</td>
                         <td>
                             <input class="input" type="number" min="1" th:field="*{airFlow}" required th:disabled="${projectDto.id==null}"/>
                             <span></span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="column_title">Температура на входе</td>
+                        <td class="column_title">Температура на входе °С</td>
                         <td>
                             <input class="input" type="number" min="16" max="30" th:field="*{tempIn}" required
                                    th:disabled="${projectDto.id==null}"/>
@@ -128,7 +128,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="column_title">Влажность на входе</td>
+                        <td class="column_title">Влажность на входе %</td>
                         <td>
                             <input class="input" type="number" min="0" max="100" step="0.1" th:field="*{humIn}" required
                                    th:disabled="${projectDto.id==null}"/>
@@ -136,7 +136,7 @@
                         </td>
                     </tr>
                     <tr th:border="2">
-                        <td class="column_title">Влажность на выходе</td>
+                        <td class="column_title">Влажность на выходе %</td>
                         <td>
                             <input class="input" type="number" min="0" max="100" step="0.1" th:field="*{humOut}" required
                                    th:disabled="${projectDto.id==null}"/>
@@ -160,8 +160,8 @@
                         <td colspan="2">
                             <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.myenum.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
                                 <tr>
-                                    <td class="column_title">Ширина</td>
-                                    <td class="column_title">Высота</td>
+                                    <td class="column_title">Ширина мм</td>
+                                    <td class="column_title">Высота мм</td>
                                 </tr>
                                 <tr>
                                     <td>
