@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Расчет увлажнителя</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="statico/css/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="statico/css/mycheckbox.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body style="height: 100%" id="body-tag">
+<div class="top">
+    <div class="container">
+        <div class="header">
+            <div id="DivLogoPrint" class="header_info">
+                <a href="http://www.systemair-ac.ru/" id="logoLink">
+                    <img class="logo" id="logoPrint" src="statico/img/logo.png" alt="">
+                </a>
+            </div>
+            <div class="navigation">
+                <div th:replace="~{navigation :: navigation(Calculator)}"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content container">
+    <div name="common" id="common" class="frame content">
+        <!-- part-1 -->
+        <div id="part1" class="project box">
+            <h1  id="part1-head" class="heading_top">
+                <span class="bg_circle">1</span>
+                Заполнение информации об объекте
+            </h1>
+            <span th:if="${!isConfirmed}">Подтвердите свою почту!</span>
+            <table th:if="${isConfirmed}" border="0" cellspacing="0" cellpadding="0" width="100%">
+                <tr th:if="${projects.size() > 0}">
+                    <td  class="column_title">Выбор существующего проекта</td>
+                    <td>
+                        <form th:action="@{calculator/project/select}" method="post">
+                            <select name = "idSelectedProject" class="send_ajax selectpicker">
+                                <option th:each="r : ${projects}" th:value="${r.id}" th:text="${r.title}"
+                                        th:action="change"></option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <form  id="save" th:action="@{calculator/project/save}" th:object="${projectDto}" method="post" class="save form">
+                <table th:if="${isConfirmed}" border="0" cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="column_title">Название проекта</td>
+                        <td>
+                            <input  class="input" id="project_title" type="text" th:value="${projectDto.title}" th:field="*{title}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column_title">Адрес проекта</td>
+                        <td>
+                            <input class="input" id="project_address" type="text" th:value="${projectDto.address}" th:field="*{address}" required th:disabled="${projectDto.title!=null || projectDto.address!=null}"/>
+                            <span></span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="save_btn">
+                    <button form="save" id="btn-save" class="submit" type="submit" th:if="${isConfirmed}"
+                            th:disabled="${projectDto.id!=null}">Сохранить</button>
+                </div>
+            </form>
+            <form th:action="@{calculator/clear}" method="post">
+                <div class="clean_btn">
+                    <button id="btn-clear" class="submit" type="submit" th:if="${isConfirmed}"
+                            th:disabled="${projectDto.id==null}">Сброс</button>
+                </div>
+            </form>
+        </div>
+        <!--  part-2  -->
+        <div id="part2" class="info_input box">
+
+            <h1 id="part2-head" class="heading_top">
+                <span class="bg_circle">2</span>
+                Ввод технических данных
+            </h1>
+            <form th:action="@{calculator/humidifier/calculation}" th:object="${techDataDto}" method="post">
+                <table border="0" cellspacing="0" cellpadding="0" id="info-input" width="100%">
+                    <tr>
+
+                        <td class="column_title">Высота над уровнем моря</td>
+                        <td>
+                            <input class="input" id="textAltitude" oninput="calcAtmospherePressure(this.value)" type="number" step="1" th:field="${techDataDto.altitude}" th:value="${techDataDto.altitude != null} ? ${techDataDto.altitude}" th:disabled="${projectDto.id==null}"/>
+                        </td>
+                        <td class="radio_from">
+                            <input id="radioAltitude" name="radioAltitude" type="radio" style="width: 50px;" value="0" checked>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td class="column_title">Атмосферное давление</td>
+                        <td>
+                            <input class="input" id="textAtmospherePressure" oninput="calcAltitude(this.value)"
+                                   type="number" step="0.01" th:field="${techDataDto.atmospherePressure}"
+                                   th:value="${techDataDto.atmospherePressure != null} ? ${techDataDto.atmospherePressure}"
+                                   disabled/>
+                        </td>
+                        <td>
+                            <input class="radio" id="radioAtmospherePressure" name="radioAltitude" type="radio" style="width: 50px;" value="1" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column_title">Расход воздуха м³/ч</td>
+                        <td>
+                            <input class="input" type="number" min="1" th:field="*{airFlow}" required th:disabled="${projectDto.id==null}"/>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column_title">Температура на входе °С</td>
+                        <td>
+                            <input class="input" type="number" min="16" max="30" th:field="*{tempIn}" required
+                                   th:disabled="${projectDto.id==null}"/>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column_title">Влажность на входе %</td>
+                        <td>
+                            <input class="input" type="number" min="0" max="100" step="0.1" th:field="*{humIn}" required
+                                   th:disabled="${projectDto.id==null}"/>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr th:border="2">
+                        <td class="column_title">Влажность на выходе %</td>
+                        <td>
+                            <input class="input" type="number" min="0" max="100" step="0.1" th:field="*{humOut}" required
+                                   th:disabled="${projectDto.id==null}"/>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <h3 class="input_form heading ">Тип расположения парораспределителя</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <select name="typeMontage">
+                                <option th:each="r : ${T(ru.systemairac.calculator.myenum.TypeMontage).values()}"
+                                        th:value="${r}" th:text="${r.getTxt()}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table th:if="${techDataDto.typeMontage}!=${T(ru.systemairac.calculator.myenum.TypeMontage).FAN_DISTRIBUTOR.getTxt()}">
+                                <tr>
+                                    <td class="column_title">Ширина мм</td>
+                                    <td class="column_title">Высота мм</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input class="input" type="number" th:field="${techDataDto.width}"
+                                               min="0" max="10000"
+                                               th:disabled="${projectDto.title==null || projectDto.address==null}"/>
+                                    </td>
+                                    <td>
+                                        <input class="input" type="number" th:field="${techDataDto.height}"
+                                               min="0" max="10000"
+                                               th:disabled="${projectDto.title==null || projectDto.address==null}"/>
+                                    </td>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column_title">Выберите тип увлажнителя</td>
+                        <td>
+                            <select name="EnumHumidifierType">
+                                <option th:each="r : ${T(ru.systemairac.calculator.myenum.EnumHumidifierType).values()}"
+                                        th:value="${r}" th:text="${r.getTxt()}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column_title">Выберите вольтаж сети</td>
+                        <td>
+                            <select name="voltage" id="voltage">
+                                <option th:each="r : ${T(ru.systemairac.calculator.myenum.EnumVoltageType).values()}"
+                                        th:value="${r}" th:text="${r.getTxt()}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" class="submit"
+                        th:disabled="${projectDto.title==null || projectDto.address==null}">Расчет
+                </button>
+            </form>
+        </div>
+        <!--  part-3  -->
+        <div id="part3" class="humidifier box">
+            <h1  id="part3-head" class="heading_top">
+                <span class="bg_circle">3</span>
+                Выбор увлажнителя
+            </h1>
+            <span th:if="${humidifiers == null}">Расчет не выполненен</span>
+            <form th:action="@{calculator/humidifier/select}" method="post" class="humidifier form">
+                <table border="1" th:object="${humidifiers}" class="table table-hover" id = "table_humidifier">
+                    <thead>
+                    <tr class="column_title">
+                        <td>№</td>
+                        <td>Вид</td>
+                        <td>Артикул</td>
+                        <td>Модель</td>
+                        <td>Расчетная мощность</td>
+                        <td>Мощность</td>
+                        <td>Потребление</td>
+                        <td>Вольтаж</td>
+                        <td>Количество цилиндров</td>
+                        <td>Диаметр парораспределителя</td>
+                        <td>Цена</td>
+                    </tr>
+                    </thead>
+                    <tbody id="data">
+                    <tr th:each="humidifier : ${humidifiers}">
+                        <td>
+                            <input name="idSelectHumidifier" class="send_ajax" type="radio" th:value="${humidifier.id}" style="width: 50px;" th:checked="${humidifier.id==idSelectHumidifier}">
+                        </td>
+                        <td>
+                            <div>
+                                <img th:if="${humidifier.image!=null}" th:src="@{${humidifier.image.link}}" alt="">
+                            </div>
+                        </td>
+                        <td th:text="${humidifier.articleNumber}">Article</td>
+                        <td th:text="${humidifier.title}">Title</td>
+                        <td th:text="${#numbers.formatDecimal(techDataDto.getCalcCapacity(),1,1)}" >10.0</td>
+                        <td th:text="${humidifier.capacity}">10</td>
+                        <td th:text="${humidifier.electricPower}">11.1</td>
+                        <td th:text="${humidifier.voltage.getTxt()}">1~220</td>
+                        <td th:text="${humidifier.numberOfCylinders}"></td>
+                        <td th:text="${humidifier.vaporPipeDiameter}"></td>
+                        <td th:text="${humidifier.price}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+
+            <!--  part-4  -->
+
+            <div>
+                <div id="part4" class="option box">
+                    <h1  id="part4-head" class="heading_top">
+                        <span class="bg_circle">4</span>
+                        Выбор опций увлажнителя
+                    </h1>
+                    <span th:if="${idSelectHumidifier==null}">Выберите увлажнитель</span>
+                    <form th:action="@{calculator/estimate}" method="post" class="option form">
+                        <table th:if="${idSelectHumidifier!=null}" id="table_option" border="1" class="table table-hover-option">
+                            <thead id="thead_option">
+                            <tr class="column_title">
+                                <td>№</td>
+                                <td>Вид</td>
+                                <td>Артикул</td>
+                                <td>Название</td>
+                                <td>Цена</td>
+                            </tr>
+                            </thead>
+                            <tr id="tr_distributor" th:if="${distributors.get(idSelectHumidifier)!=null}" th:object = "${distributors.get(idSelectHumidifier)}">
+                                <td>
+                                    <label class="case">
+                                        <input type="checkbox" name="selectedDistributor" th:if="${distributors!=null}" th:value="*{id}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <img th:if="*{image!=null}" th:src="@{*{image.link}}" alt="">
+                                </td>
+                                <td th:text="*{articleNumber}">арт</td>
+                                <td th:text="*{title}">тип</td>
+                                <td class="distributor_price" th:text="*{price}">0</td>
+                            </tr>
+                            <tr id="tr_option" th:if="${options.size() > 0}" th:each ="instance : ${options.get(idSelectHumidifier)}">
+                                <td>
+                                    <label class="case">
+                                        <input type="checkbox" name="selectedOptions" th:value="${instance.id}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <img th:if="${instance.image!=null}" th:src="@{${instance.image.link}}" alt="">
+                                </td>
+                                <td th:text="${instance.articleNumber}">арт</td>
+                                <td th:text="${instance.type.getTxt()}">тип</td>
+                                <td class="option_price" th:text="${instance.price}">0</td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>
+                                    <h3 class="heading">Сумма: </h3>
+                                </td>
+                                <td>
+                                    <h3 class="heading" id="Summary" th:text="${selectedHumidifier} ? ${selectedHumidifier.price}"></h3>
+                                </td>
+                            </tr>
+                        </table>
+                        <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" name="action" value="show" class="submit" type="submit">Посмотреть</button>
+                        <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" name="action" value="send" class="submit" type="submit">Отправить на почту</button>
+                        <button th:disabled="${projectDto.title==null || projectDto.address==null  || idSelectHumidifier==null}" name="action" value="show-and-send" class="submit" type="submit">Посмотреть и отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="footer container"></div>
+</div>
+</body>
+<!-- Optional JavaScript -->
+<script type="text/javascript" src="statico/js/script.js"></script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</html>

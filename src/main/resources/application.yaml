@@ -1,37 +1,46 @@
 server:
   port: ${PORT:8080}
   hostname: localhost
+  servlet:
+    context-path: /systemair-ac
 spring:
   application:
-    name: calculator
+    name: systemair-ac
+  session:
+    jdbc:
+      initialize-schema: always
+    store-type: jdbc
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  datasource:
-    url: jdbc:h2:file:~/test
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
 #  datasource:
-#     name: 'dataCalculator'
-#     url: jdbc:${DATABASE_PATH:mysql://localhost:3306/db_calculator?serverTimezone=UTC}
-#     username: ${DATABASE_USER:root}
-#     password: ${DATABASE_PASSWORD:12345}
-
+#    url: jdbc:h2:file:~/test
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
+  mvc:
+    static-path-pattern: statico/**
+  datasource:
+     name: 'systemairac'
+     url: jdbc:${DATABASE_PATH:mysql://localhost:3306/systemairac?serverTimezone=UTC}
+     username: ${DATABASE_USER:root}
+     password: ${DATABASE_PASSWORD:Nbirf}
+  flyway:
+    baseline-on-migrate: true
+    user: ${DATABASE_USER:root}
+    password: ${DATABASE_PASSWORD:Nbirf}
+    schemas: 'systemairac'
+    url: jdbc:${DATABASE_PATH:mysql://localhost:3306/systemairac?serverTimezone=UTC}
 #    driver-class-name: org.postgresql.Driver
 #    url: jdbc:${DATABASE_PATH:postgresql://localhost:5432/db_calculator}
 #    username: ${DATABASE_USER:postgres}
 #    password: ${DATABASE_PASSWORD:123456}
 #    driver-class-name: org.postgresql.Driver
-
-  flyway:
-    baseline-on-migrate: false
 management:
   endpoints:
     web:

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" id="bootstrap-css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="statico/js/script.js"></script>
+</head>
+<body>
+<div class="content" style="margin-left: 50px;" align="center">
+    <form class="form-horizontal" th:action="@{#}" th:object="${userDto}" method="post">
+        <fieldset>
+            <div id="legend">
+                <legend class="">Регистрация</legend>
+            </div>
+            <div class="control-group">
+                <label class="control-label"  for="fullName">Полное имя</label>
+                <div class="controls">
+                    <input type="text" id="fullName" name="fullName" placeholder="" class="input-xlarge" th:field="*{fullName}">
+                    <p class="help-block">Ваше полное имя (ФИО)</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"  for="position">Должность</label>
+                <div class="controls">
+                    <input type="text" id="position" name="position" placeholder="" class="input-xlarge" th:field="*{position}">
+                    <p class="help-block">Ваша должность в компании</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"  for="nameCompany">Название компании</label>
+                <div class="controls">
+                    <input type="text" id="nameCompany" name="nameCompany" placeholder="" class="input-xlarge" th:field="*{nameCompany}">
+                    <p class="help-block">Полное название компании</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"  for="addressCompany">Адрес компании</label>
+                <div class="controls">
+                    <input type="text" id="addressCompany" name="addressCompany" placeholder="" class="input-xlarge" th:field="*{addressCompany}">
+                    <p class="help-block">Адрес компании</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="phone">Телефон</label>
+                <div class="controls">
+                    <input type="text" id="phone" name="phone" placeholder="" class="tel input-xlarge" th:field="*{phone}">
+                    <p class="help-block">Номер телефона</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="email">Электронная почта</label>
+                <div class="controls">
+                    <input type="email" id="email" name="email" placeholder="" class="input-xlarge" th:field="*{email}">
+                    <p class="help-block">Ваша электронная почта. Будет использоваться для входа</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="password">Пароль</label>
+                <div class="controls">
+                    <input type="password" id="password" name="password" placeholder="" class="input-xlarge" th:field="*{password}">
+                    <p class="help-block">Пароль</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"  for="password_confirm">Пароль (подтверждение)</label>
+                <div class="controls">
+                    <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge" th:field="*{matchingPassword}">
+                    <p class="help-block">Пожалуйста, введите пароль ещё раз</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-success" type="submit" name="submit">Зарегистрироваться</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
