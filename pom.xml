@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>ru.systemair-ac</groupId>
 	<artifactId>calculator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>systemair-ac/calculator</name>
-	<description>Calculator project</description>
+	<description>Humidifier selection application</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
