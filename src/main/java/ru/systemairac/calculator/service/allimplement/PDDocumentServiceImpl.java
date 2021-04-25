@@ -204,7 +204,7 @@ public class PDDocumentServiceImpl implements PDDocumentService {
 
         List<String[]> prices = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
-        Integer nymberOfCylinders = estimateDto.getHumidifier().getNumberOfCylinders();
+        Integer numberOfCylinders = estimateDto.getHumidifier().getNumberOfCylinders();
         total = total.add(estimateDto.getHumidifier().getPrice());
         prices.add(new String[] {"Артикул","Наименование товара","Количество", "Цена"});
         prices.add(new String[]
@@ -220,10 +220,10 @@ public class PDDocumentServiceImpl implements PDDocumentService {
                     {
                             vaporDistributor.getArticleNumber(),
                             vaporTitle,
-                            nymberOfCylinders.toString(),
+                            numberOfCylinders.toString(),
                             vaporDistributor.getPrice().toString()  + " €"
                     });
-            total = total.add(vaporDistributor.getPrice().multiply(new BigDecimal(nymberOfCylinders)));
+            total = total.add(vaporDistributor.getPrice().multiply(new BigDecimal(numberOfCylinders)));
         }
         for (HumidifierComponent component : estimateDto.getHumidifierComponents()) {
             total = total.add(component.getPrice());
@@ -235,13 +235,42 @@ public class PDDocumentServiceImpl implements PDDocumentService {
                             component.getPrice().toString()  + " €"
                     });
         }
-        prices.add(new String[]{"Итого: " + total + " €"});
 
         data = prices.toArray(new String[0][0]);
 
         table = new BaseTable( yPosition, yStartNewPage, bottomMargin, tableWidth, margin, mainDocument, myPage, true, true);
 
-        drawTable(table, font, name, data);
+        row = table.createRow(12);
+        cell = row.createCell(100, name);
+        cell.setFont(font);
+        cell.setFontSize(fontSizeNormal);
+        cell.setAlign(HorizontalAlignment.CENTER);
+        for (int i = 0; i < data.length; i++) {
+            row = table.createRow(0);
+            for (int j = 0; j < data[i].length; j++) {
+                cell = row.createCell(100f / data[i].length, data[i][j]);
+                cell.setFont(font);
+                cell.setFontSize(fontSizeNormal);
+                if (j < data[i].length - 1)
+                    cell.setAlign(HorizontalAlignment.LEFT);
+                else
+                    cell.setAlign(HorizontalAlignment.RIGHT);
+                cell.setValign(VerticalAlignment.MIDDLE);
+            }
+        }
+        row = table.createRow(12);
+        cell = row.createCell(75f, "Итого");
+        cell.setFont(font);
+        cell.setFontSize(fontSizeNormal);
+        cell.setAlign(HorizontalAlignment.RIGHT);
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = row.createCell(25f, total + " €");
+        cell.setFont(font);
+        cell.setFontSize(fontSizeNormal);
+        cell.setAlign(HorizontalAlignment.RIGHT);
+        cell.setValign(VerticalAlignment.MIDDLE);
+
+        table.draw();
         yPosition -= table.getHeaderAndDataHeight() + marginBetweenTables;
 
         contentStream.close();
